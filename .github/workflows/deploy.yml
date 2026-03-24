@@ -1,0 +1,112 @@
+name: Deploy lab artifacts to S3
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  LAB_SLUG: virtualized-nac-incident-validation
+  LAB_TITLE: Virtualized NAC Incident Validation
+  TEX_SOURCE: docs/virtualized-nac-incident-validation.tex
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            pandoc \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            lmodern
+
+      - name: Build lab artifacts into dist/
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm -rf dist
+          mkdir -p dist/docs/diagrams dist/docs/assets
+
+          if compgen -G "diagrams/*.mmd" > /dev/null; then
+            for f in diagrams/*.mmd; do
+              base="$(basename "$f" .mmd)"
+              docker run --rm \
+                -v "$PWD:/data" \
+                minlag/mermaid-cli \
+                -i "/data/$f" \
+                -o "/data/dist/docs/diagrams/${base}.png" \
+                -t default \
+                -b transparent \
+                -s 3
+            done
+          else
+            echo "No Mermaid diagrams found."
+          fi
+
+          if [ -d assets ]; then
+            cp -R assets/* dist/docs/assets/ || true
+          fi
+
+          pandoc "$TEX_SOURCE" \
+            -s \
+            --toc \
+            --toc-depth=3 \
+            --css=assets/doc.css \
+            --resource-path=.:dist:dist/docs \
+            --include-after-body=assets/header.html \
+            -M title="$LAB_TITLE" \
+            -o "dist/docs/${LAB_SLUG}.html"
+
+          pandoc "$TEX_SOURCE" \
+            -s \
+            --toc \
+            --toc-depth=3 \
+            --resource-path=.:dist:dist/docs \
+            -M title="$LAB_TITLE" \
+            --pdf-engine=pdflatex \
+            -o "dist/docs/${LAB_SLUG}.pdf"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::948544151710:role/GitHubActionsDeployRole
+          aws-region: us-east-1
+
+      - name: Upload lab artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          aws s3 cp "dist/docs/${LAB_SLUG}.html" \
+            "s3://network-blog-assets/docs/${LAB_SLUG}.html" \
+            --content-type text/html
+
+          aws s3 cp "dist/docs/${LAB_SLUG}.pdf" \
+            "s3://network-blog-assets/docs/${LAB_SLUG}.pdf" \
+            --content-type application/pdf
+
+          if [ -d dist/docs/diagrams ]; then
+            aws s3 sync dist/docs/diagrams/ s3://network-blog-assets/docs/diagrams/
+          fi
+
+          if [ -d dist/docs/assets ]; then
+            aws s3 sync dist/docs/assets/ s3://network-blog-assets/assets/
+          fi
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id E2K6CM81Z0U5LV \
+            --paths "/docs/${LAB_SLUG}.html" "/docs/${LAB_SLUG}.pdf" "/docs/diagrams/*" "/assets/*"

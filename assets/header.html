@@ -1,0 +1,34 @@
+<!--
+======================================================================
+Persistent Document Header (Injected via Pandoc)
+
+Purpose:
+  Provides fixed-position navigation across all generated HTML pages.
+  Inserted using Pandoc --include-after-body during build pipeline.
+
+Layout Dependencies:
+  - Styled via #site-header in assets/doc.css
+  - Left offset aligns with fixed #TOC sidebar (280px)
+  - Width constrained to readable document column
+
+Navigation Model:
+  - Home: Returns to portfolio landing page
+  - PDF: Direct download of generated documentation artifact
+  - GitHub: Source repository for transparency and version control
+
+Design Intent:
+  Maintain minimal, distraction-free navigation GUI consistent with
+  enterprise documentation standards.
+======================================================================
+-->
+
+<div id="site-header">
+  <!-- Root landing page -->
+  <a href="/">Home</a>
+
+  <!-- Direct access to versioned PDF artifact -->
+  <a href="/docs/aws-wireguard-bgp-wan.pdf">⬇ PDF</a>
+
+  <!-- Public source repository -->
+  <a href="https://github.com/erschmittnetwork/aws-wireguard-bgp-wan">GitHub</a>
+</div>
