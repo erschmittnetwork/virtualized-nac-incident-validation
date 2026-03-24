@@ -507,7 +507,7 @@ Each system in the final lab has a deliberately constrained but clearly defined 
     \item serving as the packet capture location for both EAPOL and RADIUS control-plane captures during incident validation.
 \end{itemize}
 
-Its final-state configuration artifacts will be documented later (see Section~\ref{sec:appendix-a-access-node-netplan-config}, Section~\ref{sec:appendix-a-hostapd-wired-config}, Section~\ref{sec:appendix-a-hostapd-wired-systemd-unit}, and Section~\ref{sec:appendix-b-final-routing-and-interface-validation}).
+Its final-state configuration artifacts will be documented later (see Section~\ref{sec:appendix-a-access-node-netplan-config}, Section~\ref{sec:appendix-a-access-node-hostapd-wired-config}, Section~\ref{sec:appendix-a-access-node-hostapd-wired-systemd-unit}, and Section~\ref{sec:appendix-b-final-routing-and-interface-validation}).
 
 \subsubsection{4.3.2 client-1}
 \label{sec:client-1-role}
@@ -521,7 +521,7 @@ Its final-state configuration artifacts will be documented later (see Section~\r
     \item providing endpoint-perspective evidence for successful and failed authorization states.
 \end{itemize}
 
-Its final-state network configuration and wired supplicant configuration will be documented later (see Section~\ref{sec:appendix-a-client-1-netplan-config}, Section~\ref{sec:appendix-a-client-1-wpa-supplicant-config}, and Section~\ref{sec:appendix-c-client-incident-evidence-excerpts}).
+Its final-state network configuration and wired supplicant configuration will be documented later (see Section~\ref{sec:appendix-a-client-1-netplan-config}, Section~\ref{sec:appendix-a-client-1-wpa-supplicant-wired-8021x-config}, and Section~\ref{sec:appendix-c-client-incident-evidence-excerpts}).
 
 \subsubsection{4.3.3 dist-router}
 \label{sec:dist-router-role}
@@ -564,7 +564,7 @@ Its final interface assignments, DHCP configuration, and guest firewall rules wi
     \item the Ansible control environment used for repeatable validation and bounded remediation workflows.
 \end{itemize}
 
-Because this node combines policy authority, observability, and automation, it is central to both the steady-state validation path and the incident-response narrative. Its configuration artifacts will be referenced extensively later (see Section~\ref{sec:appendix-a-radius-splunk-netplan-config}, Section~\ref{sec:appendix-a-freeradius-authorize-excerpt}, Section~\ref{sec:appendix-a-freeradius-clients-conf-excerpt}, Section~\ref{sec:appendix-a-splunk-inputs-conf}, Section~\ref{sec:appendix-a-python-incident-parser}, and Section~\ref{sec:appendix-a-ansible-validation-and-remediation-playbook}).
+Because this node combines policy authority, observability, and automation, it is central to both the steady-state validation path and the incident-response narrative. Its configuration artifacts will be referenced extensively later (see Section~\ref{sec:appendix-a-radius-splunk-netplan-config}, Section~\ref{sec:appendix-a-radius-splunk-freeradius-users-config}, Section~\ref{sec:appendix-a-radius-splunk-freeradius-clients-config}, Section~\ref{sec:appendix-a-splunk-uf-inputs-conf}, Section~\ref{sec:appendix-a-python-nac-incident-parser}, and Section~\ref{sec:appendix-a-ansible-nac-validation-playbook}).
 
 \subsubsection{4.3.6 ops-glpi}
 \label{sec:ops-glpi-role}
@@ -833,7 +833,7 @@ Starting - reading configuration files ...
 Configuration appears to be OK
 \end{verbatim}
 
-The local authorization source contains the lab user entry required for the controlled 802.1X workflow. Only the relevant excerpt is reproduced below, with the shared credential redacted. The full authoritative excerpt is referenced later in Appendix A (see Section~\ref{sec:appendix-a-freeradius-authorize-excerpt}).
+The local authorization source contains the lab user entry required for the controlled 802.1X workflow. Only the relevant excerpt is reproduced below, with the shared credential redacted. The full authoritative excerpt is referenced later in Appendix A (see Section~\ref{sec:appendix-a-radius-splunk-freeradius-users-config}).
 
 \begin{verbatim}
 radius-splunk: grep excerpt from /etc/freeradius/3.0/mods-config/files/authorize
@@ -842,7 +842,7 @@ radius-splunk: grep excerpt from /etc/freeradius/3.0/mods-config/files/authorize
 207:nacuser Cleartext-Password := "<REDACTED>"
 \end{verbatim}
 
-The RADIUS client definition for the Linux-based authenticator is reproduced below, again with the shared secret redacted. The authoritative appendix target for this excerpt is Section~\ref{sec:appendix-a-freeradius-clients-conf-excerpt}.
+The RADIUS client definition for the Linux-based authenticator is reproduced below, again with the shared secret redacted. The authoritative appendix target for this excerpt is Section~\ref{sec:appendix-a-radius-splunk-freeradius-clients-config}.
 
 \begin{verbatim}
 radius-splunk: grep excerpt from /etc/freeradius/3.0/clients.conf
@@ -928,7 +928,7 @@ access-node: sysctl net.ipv4.ip_forward
 net.ipv4.ip_forward = 1
 \end{verbatim}
 
-The final \texttt{hostapd} wired configuration is reproduced below, with the shared secret redacted. The authoritative appendix target for this file is Section~\ref{sec:appendix-a-hostapd-wired-config}.
+The final \texttt{hostapd} wired configuration is reproduced below, with the shared secret redacted. The authoritative appendix target for this file is Section~\ref{sec:appendix-a-access-node-hostapd-wired-config}.
 
 \begin{verbatim}
 access-node: /etc/hostapd/lab/hostapd-wired.conf
@@ -954,7 +954,7 @@ ctrl_interface=/var/run/hostapd
 ctrl_interface_group=0
 \end{verbatim}
 
-To make the authenticator role operationally realistic and manageable, the lab does not rely solely on ad hoc foreground invocations. Instead, the final design includes a dedicated systemd unit, reproduced below and referenced later in Appendix A (see Section~\ref{sec:appendix-a-hostapd-wired-systemd-unit}).
+To make the authenticator role operationally realistic and manageable, the lab does not rely solely on ad hoc foreground invocations. Instead, the final design includes a dedicated systemd unit, reproduced below and referenced later in Appendix A (see Section~\ref{sec:appendix-a-access-node-hostapd-wired-systemd-unit}).
 
 \begin{verbatim}
 access-node: /etc/systemd/system/hostapd-wired.service
@@ -1030,7 +1030,7 @@ network:
           via: 10.0.12.1
 \end{verbatim}
 
-The final wired supplicant configuration is reproduced below, with the secret redacted. The authoritative appendix target for this file is Section~\ref{sec:appendix-a-client-1-wpa-supplicant-config}.
+The final wired supplicant configuration is reproduced below, with the secret redacted. The authoritative appendix target for this file is Section~\ref{sec:appendix-a-client-1-wpa-supplicant-wired-8021x-config}.
 
 \begin{verbatim}
 client-1: /etc/wpa_supplicant/lab/wired-8021x.conf
@@ -1083,7 +1083,7 @@ splunkd is running (PID: 1671).
 splunk helpers are running (PIDs: 1672).
 \end{verbatim}
 
-The monitored input definitions are maintained in a dedicated local app and are reproduced in full below. The authoritative appendix target for this file is Section~\ref{sec:appendix-a-splunk-inputs-conf}.
+The monitored input definitions are maintained in a dedicated local app and are reproduced in full below. The authoritative appendix target for this file is Section~\ref{sec:appendix-a-splunk-uf-inputs-conf}.
 
 \begin{verbatim}
 radius-splunk: /opt/splunkforwarder/etc/apps/lab_nac_inputs/local/inputs.conf
@@ -1236,7 +1236,7 @@ Operationally, GLPI is not treated as a passive accessory to the environment. In
     \item a resolved ticket state reflecting successful remediation.
 \end{itemize}
 
-These GUI-derived artifacts will be represented later through figure placeholders and appendix references rather than terminal transcription alone (see Section~\ref{sec:appendix-a-glpi-apache-and-mariadb-status}, Section~\ref{sec:appendix-d-glpi-asset-and-incident-figures}, and the later incident section of this document).
+These GUI-derived artifacts will be represented later through figure placeholders and appendix references rather than terminal transcription alone (see Section~\ref{sec:appendix-a-glpi-apache-and-mariadb-status}, Section~\ref{sec:appendix-b-glpi-screenshot-figure-mapping}, and the later incident section of this document).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 5.8: PYTHON AND ANSIBLE AUTOMATION ARTIFACTS
@@ -1258,7 +1258,7 @@ The final platform state includes two automation artifacts that are operationall
 
 These artifacts are treated as part of the implemented platform rather than as external supporting material because they are stored, executed, and maintained within the lab environment itself. Their purpose is not to inflate the apparent sophistication of the project, but to provide repeatable operational utility directly tied to the incident scenario described later in this document.
 
-The Python parser is maintained under the local incident-evidence directory on \texttt{radius-splunk}. Its purpose is to consume the saved incident artifacts from the failed-authentication and successful-remediation workflows and produce a deterministic summary of whether the expected failure and recovery indicators are present. The authoritative full source of this parser is reproduced in Appendix A (see Section~\ref{sec:appendix-a-python-incident-parser}).
+The Python parser is maintained under the local incident-evidence directory on \texttt{radius-splunk}. Its purpose is to consume the saved incident artifacts from the failed-authentication and successful-remediation workflows and produce a deterministic summary of whether the expected failure and recovery indicators are present. The authoritative full source of this parser is reproduced in Appendix A (see Section~\ref{sec:appendix-a-python-nac-incident-parser}).
 
 The Ansible workflow is also maintained on \texttt{radius-splunk} and consists of:
 
@@ -1267,7 +1267,7 @@ The Ansible workflow is also maintained on \texttt{radius-splunk} and consists o
     \item a validation and optional remediation playbook capable of checking service state, collecting recent logs, and conditionally restarting the core NAC services when explicitly requested by the operator.
 \end{itemize}
 
-The automation workflow uses SSH key-based authentication rather than hardcoded credentials, consistent with the document's stated security and publication posture. The authoritative full inventory and playbook contents are reproduced in Appendix A (see Section~\ref{sec:appendix-a-ansible-inventory} and Section~\ref{sec:appendix-a-ansible-validation-and-remediation-playbook}).
+The automation workflow uses SSH key-based authentication rather than hardcoded credentials, consistent with the document's stated security and publication posture. The authoritative full inventory and playbook contents are reproduced in Appendix A (see Section~\ref{sec:appendix-a-ansible-inventory-hosts-ini} and Section~\ref{sec:appendix-a-ansible-nac-validation-playbook}).
 
 The presence of these artifacts in the final platform state is significant for two reasons. First, they demonstrate that the environment includes repeatable operational tooling rather than only static configuration. Second, they provide a bridge between the platform build described in this section and the incident-handling and validation workflows described later in Sections~\ref{sec:incident-scenario-wired-8021x-authentication-failure-and-remediation} and~\ref{sec:automation-workflows}.
 
@@ -1826,7 +1826,7 @@ radius-splunk: python3 ~/incident-evidence/nac_incident_parser.py
 
 This parser output is significant because it provides a deterministic, cross-file synthesis of the incident evidence. It does not replace the underlying artifacts, but it does provide a concise operational summary that agrees with the raw evidence reproduced below.
 
-The full parser source is maintained separately as a platform artifact in Appendix A (see Section~\ref{sec:appendix-a-python-incident-parser}).
+The full parser source is maintained separately as a platform artifact in Appendix A (see Section~\ref{sec:appendix-a-python-nac-incident-parser}).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 7.4: FAILED AUTHENTICATION EVIDENCE
@@ -2054,7 +2054,7 @@ This simulated a realistic enterprise NAC incident involving endpoint credential
 
 This GLPI record matters for two reasons. First, it makes the lab operationally richer by tying technical evidence to a formal incident artifact. Second, it helps position the project as an enterprise-style environment rather than as a purely technical sandbox.
 
-The GLPI incident screenshot is available and will be inserted later as a figure in the document and cross-referenced in the appendix figure inventory (see Section~\ref{sec:appendix-d-glpi-asset-and-incident-figures}).
+The GLPI incident screenshot is available and will be inserted later as a figure in the document and cross-referenced in the appendix figure inventory (see Section~\ref{sec:appendix-b-glpi-screenshot-figure-mapping}).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 7.9: INCIDENT CONCLUSION
@@ -2103,7 +2103,7 @@ The following Wireshark screenshot inventory is available for later insertion:
     \item success authenticator-side Wireshark screenshot.
 \end{itemize}
 
-These figures are not reproduced in this section because the dedicated packet-capture analysis section will provide the proper protocol context for interpreting them. They will be incorporated later in Section~\ref{sec:packet-capture-analysis-tcpdump-and-wireshark}, where the failed and successful EAPOL and RADIUS captures are analyzed directly, and they will also be referenced in the appendix figure inventory (see Section~\ref{sec:appendix-d-glpi-asset-and-incident-figures}).
+These figures are not reproduced in this section because the dedicated packet-capture analysis section will provide the proper protocol context for interpreting them. They will be incorporated later in Section~\ref{sec:packet-capture-analysis-tcpdump-and-wireshark}, where the failed and successful EAPOL and RADIUS captures are analyzed directly, and they will also be referenced in the appendix figure inventory (see Section~\ref{sec:appendix-b-glpi-screenshot-figure-mapping}).
 
 % =====================================================================
 % SECTION 8: AUTOMATION WORKFLOWS
@@ -2185,7 +2185,7 @@ radius-splunk: ls -lh ~/incident-evidence/nac_incident_parser.py
 -rw-r--r-- 1 root root 3.5K Mar 24 09:52 /home/nac-lab/incident-evidence/nac_incident_parser.py
 \end{verbatim}
 
-The full inventory file, the authoritative revised playbook, and the full parser source are reproduced in Appendix A (see Section~\ref{sec:appendix-a-ansible-inventory}, Section~\ref{sec:appendix-a-ansible-validation-playbook}, and Section~\ref{sec:appendix-a-python-incident-parser}).
+The full inventory file, the authoritative revised playbook, and the full parser source are reproduced in Appendix A (see Section~\ref{sec:appendix-a-ansible-inventory-hosts-ini}, Section~\ref{sec:appendix-a-ansible-nac-validation-playbook}, and Section~\ref{sec:appendix-a-python-nac-incident-parser}).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 8.2: PLAYBOOK DESIGN AND REVISION RATIONALE
@@ -2647,7 +2647,7 @@ The parser therefore complements the Ansible workflow rather than competing with
     \item both workflows remain transparent and auditable because their underlying inputs are preserved.
 \end{itemize}
 
-The full parser source is reproduced in Appendix A (see Section~\ref{sec:appendix-a-python-incident-parser}).
+The full parser source is reproduced in Appendix A (see Section~\ref{sec:appendix-a-python-nac-incident-parser}).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 8.7: OPERATIONAL ASSESSMENT
@@ -2814,7 +2814,7 @@ Together, these monitored inputs provide coverage over:
 - administrative activity,
 - and the primary authentication service itself.
 
-The full UF input configuration is reproduced in Appendix A (see Section~\ref{sec:appendix-a-splunk-inputs-conf}).
+The full UF input configuration is reproduced in Appendix A (see Section~\ref{sec:appendix-a-splunk-uf-inputs-conf}).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 9.3: PRIMARY CONTINUOUS LOG SOURCES ON RADIUS-SPLUNK
@@ -3187,7 +3187,7 @@ sudo timeout 15s wpa_supplicant -i ens33 -D wired -c /etc/wpa_supplicant/lab/wir
 
 This method is appropriate for a controlled lab because it produces deterministic, low-noise captures focused only on the authentication event under investigation.
 
-The authoritative capture commands and retained packet inventory will be reproduced in full in Appendix~A (see Section~\ref{sec:a1-packet-capture-commands} and Section~\ref{sec:a1-packet-capture-inventory}).
+The authoritative capture commands and retained packet inventory will be reproduced in full in Appendix~A (see Section~\ref{sec:appendix-b-packet-capture-methodology-and-tcpdump-commands} and Section~\ref{sec:appendix-b-pcap-file-inventory}).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 10.4: FAILED AUTHENTICATION - CLIENT-FACING EAPOL ANALYSIS
@@ -3445,7 +3445,7 @@ The final screenshot inventory for this section was confirmed as follows:
     \item Figure candidate 4: success authenticator-side screenshot --- available
 \end{itemize}
 
-The authoritative packet capture commands, capture file inventory, and related supporting artifact references are preserved in Appendix~A. See Section~\ref{sec:a1-packet-capture-commands} and Section~\ref{sec:a1-packet-capture-inventory}. The four Wireshark screenshots referenced in this section should be retained as redacted publication-safe figure assets whose filenames and figure captions align with the labels defined above.
+The authoritative packet capture commands, capture file inventory, and related supporting artifact references are preserved in Appendix~A. See Section~\ref{sec:appendix-b-packet-capture-methodology-and-tcpdump-commands} and Section~\ref{sec:appendix-b-pcap-file-inventory}. The four Wireshark screenshots referenced in this section should be retained as redacted publication-safe figure assets whose filenames and figure captions align with the labels defined above.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 10.11: SECTION CONCLUSION
@@ -4281,7 +4281,7 @@ Automatic
 % ---------------------------------------------------------------------
 
 \subsubsection{A.4.1 Ansible Inventory}
-\label{sec:appendix-a-ansible-inventory-hosts-ini}
+\label{sec:appendix-a-ansible-inventory-hosts-ini-hosts-ini}
 
 \begin{verbatim}
 radius-splunk: ~/ansible-nac/inventory/hosts.ini
