@@ -480,7 +480,7 @@ The protected services segment (\texttt{10.0.30.0/24}) is the most operationally
 
 The guest access segment (\texttt{10.0.20.0/24}) is not intended to be interpreted as a dynamically assigned VLAN in the switch-native sense. Rather, it is the authoritative guest-policy enforcement domain used by this lab to represent how an unauthenticated or otherwise restricted endpoint would be treated under a constrained virtualized implementation. The guest segment receives DHCP from pfSense and can reach the guest gateway for local validation, but it is intentionally restricted from reaching the protected services segment as part of the policy model described later in Section~\ref{sec:access-control-model-and-policy-enforcement}.
 
-The authoritative final-state interface configurations and route outputs that support this addressing model will be captured later in the document and in the appendices. Where exact file-based network definitions are relevant, they will be cross-referenced directly (for example, see Section~\ref{sec:appendix-a-radius-splunk-netplan-config}, Section~\ref{sec:appendix-a-ops-glpi-netplan-config}, Section~\ref{sec:appendix-a-access-node-netplan-config}, Section~\ref{sec:appendix-a-client-1-netplan-config}, and Section~\ref{sec:appendix-b-final-routing-and-interface-validation}).
+The authoritative final-state interface configurations and route outputs that support this addressing model will be captured later in the document and in the appendices. Where exact file-based network definitions are relevant, they will be cross-referenced directly (for example, see Section~\ref{sec:appendix-a-radius-splunk-netplan-config}, Section~\ref{sec:appendix-a-ops-glpi-netplan-config}, Section~\ref{sec:appendix-a-access-node-netplan-config}, Section~\ref{sec:appendix-a-client-1-netplan-config}, and Section~\ref{sec:platform-build-and-final-state-configuration}).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 4.3: FINAL SYSTEM ROLES
@@ -507,7 +507,7 @@ Each system in the final lab has a deliberately constrained but clearly defined 
     \item serving as the packet capture location for both EAPOL and RADIUS control-plane captures during incident validation.
 \end{itemize}
 
-Its final-state configuration artifacts will be documented later (see Section~\ref{sec:appendix-a-access-node-netplan-config}, Section~\ref{sec:appendix-a-access-node-hostapd-wired-config}, Section~\ref{sec:appendix-a-access-node-hostapd-wired-systemd-unit}, and Section~\ref{sec:appendix-b-final-routing-and-interface-validation}).
+Its final-state configuration artifacts will be documented later (see Section~\ref{sec:appendix-a-access-node-netplan-config}, Section~\ref{sec:appendix-a-access-node-hostapd-wired-config}, Section~\ref{sec:appendix-a-access-node-hostapd-wired-systemd-unit}, and Section~\ref{sec:platform-build-and-final-state-configuration}).
 
 \subsubsection{4.3.2 client-1}
 \label{sec:client-1-role}
@@ -521,7 +521,7 @@ Its final-state configuration artifacts will be documented later (see Section~\r
     \item providing endpoint-perspective evidence for successful and failed authorization states.
 \end{itemize}
 
-Its final-state network configuration and wired supplicant configuration will be documented later (see Section~\ref{sec:appendix-a-client-1-netplan-config}, Section~\ref{sec:appendix-a-client-1-wpa-supplicant-wired-8021x-config}, and Section~\ref{sec:appendix-c-client-incident-evidence-excerpts}).
+Its final-state network configuration and wired supplicant configuration will be documented later (see Section~\ref{sec:appendix-a-client-1-netplan-config}, Section~\ref{sec:appendix-a-client-1-wpa-supplicant-wired-8021x-config}, and Section~\ref{sec:appendix-b-incident-evidence-files}).
 
 \subsubsection{4.3.3 dist-router}
 \label{sec:dist-router-role}
@@ -534,7 +534,7 @@ Its final-state network configuration and wired supplicant configuration will be
     \item supporting final-state path validation and demonstrating that the RADIUS control path traverses a realistic routed intermediate node.
 \end{itemize}
 
-Its final-state interface and route evidence will be included later as part of the validation and appendix materials (see Section~\ref{sec:appendix-b-final-routing-and-interface-validation}).
+Its final-state interface and route evidence will be included later as part of the validation and appendix materials (see Section~\ref{sec:platform-build-and-final-state-configuration}).
 
 \subsubsection{4.3.4 pfSense}
 \label{sec:pfsense-role}
@@ -550,7 +550,7 @@ pfSense is the authoritative security boundary and policy-enforcement node in th
     \item serving as the primary firewall boundary used to simulate guest access control in the absence of true switch-native dynamic VLAN reassignment.
 \end{itemize}
 
-Its final interface assignments, DHCP configuration, and guest firewall rules will be documented later (see Section~\ref{sec:appendix-a-pfsense-interface-summary}, Section~\ref{sec:appendix-a-pfsense-guest-dhcp-summary}, Section~\ref{sec:appendix-a-pfsense-guest-policy-summary}, and the related figure placeholders in the main body).
+Its final interface assignments, DHCP configuration, and guest firewall rules will be documented later (see Section~\ref{sec:appendix-a-pfsense-authenticated-interface-summary}, Section~\ref{sec:appendix-a-pfsense-guest-interface-summary}, Section~\ref{sec:appendix-a-pfsense-guest-firewall-rules}, and the related figure placeholders in the main body).
 
 \subsubsection{4.3.5 radius-splunk}
 \label{sec:radius-splunk-role}
@@ -577,7 +577,7 @@ Because this node combines policy authority, observability, and automation, it i
     \item maintaining the incident ticket used to document the failed authentication event, remediation, and closure.
 \end{itemize}
 
-Its final-state configuration and deployment validation will be documented later (see Section~\ref{sec:appendix-a-ops-glpi-netplan-config}, Section~\ref{sec:appendix-a-glpi-apache-and-mariadb-status}, and the later GLPI figure placeholders in the incident section).
+Its final-state configuration and deployment validation will be documented later (see Section~\ref{sec:appendix-a-ops-glpi-netplan-config}, Section~\ref{sec:glpi-final-configuration}, and the later GLPI figure placeholders in the incident section).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 4.4: TOPOLOGY DIAGRAM
@@ -613,7 +613,7 @@ Figure~\ref{fig:reference-topology-diagram} is the authoritative logical topolog
     %\label{fig:reference-topology-diagram}
 %\end{figure}
 
-The diagram is intended to function as the reader's primary visual reference for the rest of the document. Later sections will rely on the topology as the basis for explaining the authenticated access path, the guest-policy enforcement model, the incident flow, and the packet capture locations. Supporting final-state interface and route evidence will be provided later in the appendices and validation sections rather than embedded directly here (see Section~\ref{sec:appendix-b-final-routing-and-interface-validation}).
+The diagram is intended to function as the reader's primary visual reference for the rest of the document. Later sections will rely on the topology as the basis for explaining the authenticated access path, the guest-policy enforcement model, the incident flow, and the packet capture locations. Supporting final-state interface and route evidence will be provided later in the appendices and validation sections rather than embedded directly here (see Section~\ref{sec:platform-build-and-final-state-configuration}).
 
 % =====================================================================
 % SECTION 5: PLATFORM BUILD AND FINAL-STATE CONFIGURATION
@@ -746,7 +746,7 @@ pfSense is the authoritative security boundary in the environment. Its final int
 
 This interface design allows pfSense to sit directly between the routed access path and the protected services segment, while also hosting a guest segment whose policy can be enforced independently.
 
-The authoritative manual transcription of the final pfSense interface summary is reproduced below and will later be supported by a figure placeholder and appendix reference (see Section~\ref{sec:appendix-a-pfsense-interface-summary}).
+The authoritative manual transcription of the final pfSense interface summary is reproduced below and will later be supported by a figure placeholder and appendix reference (see Section~\ref{sec:appendix-a-pfsense-authenticated-interface-summary}).
 
 \begin{verbatim}
 pfSense final interface summary
@@ -1236,7 +1236,7 @@ Operationally, GLPI is not treated as a passive accessory to the environment. In
     \item a resolved ticket state reflecting successful remediation.
 \end{itemize}
 
-These GUI-derived artifacts will be represented later through figure placeholders and appendix references rather than terminal transcription alone (see Section~\ref{sec:appendix-a-glpi-apache-and-mariadb-status}, Section~\ref{sec:appendix-b-glpi-screenshot-figure-mapping}, and the later incident section of this document).
+These GUI-derived artifacts will be represented later through figure placeholders and appendix references rather than terminal transcription alone (see Section~\ref{sec:glpi-final-configuration}, Section~\ref{sec:appendix-b-glpi-screenshot-figure-mapping}, and the later incident section of this document).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 5.8: PYTHON AND ANSIBLE AUTOMATION ARTIFACTS
