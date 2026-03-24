@@ -108,7 +108,7 @@ Primary Scope & Virtualized wired 802.1X NAC proof-of-concept with policy-based 
 \hline
 Author & Eric Schmitt \\
 \hline
-Execution Platform & VMware Workstation Pro on Ubuntu 24.04 host \\
+Execution Platform & VMware Workstation Pro on Ubuntu Server 24.04 LTS host \\
 \hline
 Primary Lab Purpose & Demonstrate a realistic small-scale NAC architecture with authenticated access control, constrained guest access, observability, ITSM workflow integration, automation, and protocol validation \\
 \hline
@@ -143,12 +143,12 @@ This document is intentionally written as an engineering implementation and vali
 \hline
 \textbf{Version} & \textbf{Date} & \textbf{Author} & \textbf{Description} \\
 \hline
-1.0 & \today & Eric Schmitt & Initial production release documenting final lab architecture, validation, incident simulation, automation artifacts, and packet capture analysis workflow. \\
+1.0 & \today & Eric Schmitt & Initial documentation draft; text-only. \\
 \hline
 \end{tabular}
 \end{center}
 
-Future revisions, if any, SHOULD preserve the same evidence-handling model used in this document: final-state operational outputs, explicitly approved log excerpts, complete configuration artifacts where relevant, and untruncated raw data in verbatim blocks for all authoritative command or file-based evidence included in scope.
+Future revisions should preserve the same evidence-handling model used in this document: final-state operational outputs, explicitly approved log excerpts, complete configuration artifacts where relevant, and untruncated raw data in verbatim blocks for all authoritative command or file-based evidence included in scope.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 1.3: INTENDED AUDIENCE AND USAGE
@@ -169,7 +169,7 @@ This document is intended for the following audiences:
     \item Technical reviewers evaluating the project as a portfolio artifact intended to demonstrate enterprise-relevant design and operational execution rather than isolated tool familiarity.
 \end{itemize}
 
-This document SHOULD be interpreted as a formal record of the \textbf{final implemented state} of the environment and the \textbf{authoritative incident validation path}, not as a chronological build log. Intermediate troubleshooting states, temporary misconfigurations, and transient construction artifacts that were used only to arrive at the final design are intentionally excluded unless they are directly relevant to the incident narrative or to explaining an architectural decision.
+This document should be interpreted as a formal record of the final implemented state of the environment and the authoritative incident validation path, not as a chronological build log. Intermediate troubleshooting states, temporary misconfigurations, and transient construction artifacts that were used only to arrive at the final design are intentionally excluded unless they are directly relevant to the incident narrative or to explaining an architectural decision.
 
 The operational evidence included in this document is constrained by the following rules:
 
@@ -181,7 +181,7 @@ The operational evidence included in this document is constrained by the followi
     \item Sensitive values, including passwords, shared secrets, tokens, and authentication material, MUST be redacted in all published forms of the document.
 \end{itemize}
 
-The environment documented herein is intentionally designed as a \textbf{constrained but defensible approximation} of enterprise NAC behavior within a virtualization platform. In particular, the guest-access model implemented in this lab is a \textbf{policy-based guest access simulation} enforced through Linux and pfSense control points rather than true switch-driven dynamic VLAN reassignment. This distinction is central to the technical integrity of the document and will be treated explicitly in subsequent sections.
+The environment documented herein is intentionally designed as a constrained but defensible approximation of enterprise NAC behavior within a virtualization platform. In particular, the guest-access model implemented in this lab is a policy-based guest access simulation enforced through Linux and pfSense control points rather than true switch-driven dynamic VLAN reassignment. This distinction is central to the technical integrity of the document and will be treated explicitly in subsequent sections.
 
 % =====================================================================
 % SECTION 2: EXECUTIVE SUMMARY
@@ -276,7 +276,7 @@ However, it cannot credibly claim to implement:
     \item switch-specific enforcement semantics such as vendor ACL or downloadable ACL features.
 \end{itemize}
 
-For that reason, the guest-access component of this lab is explicitly defined as a \textbf{policy-based guest access simulation} rather than as a true dynamic guest VLAN implementation. The enforcement boundary is achieved through Linux and pfSense control points: the access path models authentication state, while pfSense enforces the differentiated reachability policy for the guest segment. This is not mutually exclusive with the broader segmentation model used throughout the lab; rather, it is the most defensible way to preserve the operational objective of differentiated access within the constraints of a virtualized platform.
+For that reason, the guest-access component of this lab is explicitly defined as a policy-based guest access simulation rather than as a true dynamic guest VLAN implementation. The enforcement boundary is achieved through Linux and pfSense control points: the access path models authentication state, while pfSense enforces the differentiated reachability policy for the guest segment. This is not mutually exclusive with the broader segmentation model used throughout the lab; rather, it is the most defensible way to preserve the operational objective of differentiated access within the constraints of a virtualized platform.
 
 This design decision is central to the technical integrity of the document. It allows the environment to remain enterprise-relevant without overstating equivalence to production hardware behavior, and it ensures that the incident and automation workflows presented later in the document are evaluated against the architecture that was actually built, not against an idealized architecture that was not.
 
@@ -429,7 +429,7 @@ At a high level, the architecture consists of the following functional layers:
     \item \textbf{Out-of-band management paths:} VMware-provided host-side virtual network access used where necessary for administrative reachability to otherwise isolated interfaces during build and validation.
 \end{itemize}
 
-The most important architectural distinction in this environment is the separation between \textbf{authentication state} and \textbf{guest-policy enforcement state}. Authentication is modeled directly in the Linux-based 802.1X control path between the supplicant, the authenticator, and FreeRADIUS. Guest-policy enforcement is modeled at the pfSense boundary, where a dedicated guest subnet receives DHCP service and is restricted from reaching protected service resources. This division is intentional and reflects the platform constraint that the lab cannot perform true switch-native dynamic VLAN reassignment.
+The most important architectural distinction in this environment is the separation between authentication state and guest-policy enforcement state. Authentication is modeled directly in the Linux-based 802.1X control path between the supplicant, the authenticator, and FreeRADIUS. Guest-policy enforcement is modeled at the pfSense boundary, where a dedicated guest subnet receives DHCP service and is restricted from reaching protected service resources. This division is intentional and reflects the platform constraint that the lab cannot perform true switch-native dynamic VLAN reassignment.
 
 In practical terms, the environment therefore demonstrates the following control-plane relationships:
 
@@ -1531,7 +1531,7 @@ Pass  | IPv4* | Source: 10.0.20.0/24 | Destination: *                  | ALLOW-G
 
 This ruleset is deliberately explicit. Rather than relying on an implicit deny plus a broad allow, the internal networks are individually enumerated and blocked before the final permissive rule. That makes the guest policy easier to explain, easier to audit, and more suitable for publication as a portfolio artifact.
 
-At the time of validation, pfSense outbound NAT was confirmed to be in \textbf{Automatic} mode, which is relevant because it explains why the guest network can successfully access the internet without requiring separately documented manual NAT rules.
+At the time of validation, pfSense outbound NAT was confirmed to be in Automatic mode, which is relevant because it explains why the guest network can successfully access the internet without requiring separately documented manual NAT rules.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 6.5: GUEST DHCP AND ISOLATION VALIDATION
@@ -1725,7 +1725,7 @@ These artifacts will be incorporated in the dedicated packet-capture analysis se
 
 The final lab environment is not presented solely as a static implementation. It is also used to simulate and document a realistic operational incident in which a wired endpoint fails 802.1X authentication, remains unauthorized, is investigated through multiple evidence sources, and is restored to service through a controlled remediation workflow.
 
-This section documents that incident as the authoritative operational scenario for the environment. The incident validation date used throughout this section is \textbf{2026-03-22}.
+This section documents that incident as the authoritative operational scenario for the environment. The incident validation date used throughout this section is 2026-03-22.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 7.1: INCIDENT DEFINITION
@@ -1748,7 +1748,7 @@ Within this path:
     \item \texttt{radius-splunk} hosts FreeRADIUS as the authentication and policy service.
 \end{itemize}
 
-The incident was defined as a \textbf{wired 802.1X authentication failure caused by invalid supplicant credentials}. This was not an accidental outage but a controlled failure injection introduced for the purpose of validating the lab's ability to:
+The incident was defined as a wired 802.1X authentication failure caused by invalid supplicant credentials. This was not an accidental outage but a controlled failure injection introduced for the purpose of validating the lab's ability to:
 
 \begin{itemize}
     \item detect a failed NAC event;
@@ -2125,7 +2125,7 @@ The lab includes a lightweight but operationally meaningful automation layer des
     \item preserve local evidence artifacts for later review and appendix inclusion.
 \end{itemize}
 
-This design is best characterized as \textbf{validation-first with optional service remediation}. That phrasing is deliberate. The automation is primarily an evidence and control workflow, not a blind auto-restart mechanism.
+This design is best characterized as validation-first with optional service remediation. That phrasing is deliberate. The automation is primarily an evidence and control workflow, not a blind auto-restart mechanism.
 
 The automation controller for this lab is \texttt{radius-splunk}. From that node, Ansible is used to validate the Linux-based wired 802.1X authenticator on \texttt{access-node} and the FreeRADIUS service on \texttt{radius-splunk} itself. A separate Python parser is then used to summarize the incident evidence set collected during the failure-and-remediation scenario described in Section~\ref{sec:incident-scenario-wired-8021x-authentication-failure-and-remediation}.
 
@@ -2735,7 +2735,7 @@ The objective is not to claim a full centralized SIEM deployment, but rather to 
 \subsection{9.1 Observability Scope and Positioning}
 \label{sec:observability-scope-and-positioning}
 
-The Splunk component in this lab is deliberately scoped as a \textbf{local monitored-input configuration without demonstrated remote indexer or search-head integration}. That scope is both accurate and sufficient for the environment that was built.
+The Splunk component in this lab is deliberately scoped as a local monitored-input configuration without demonstrated remote indexer or search-head integration. That scope is both accurate and sufficient for the environment that was built.
 
 This section therefore demonstrates the following, and only the following:
 
@@ -3029,7 +3029,7 @@ This distinction should be made explicit:
     \item the incident-evidence files are curated captures created to preserve high-signal artifacts from controlled validation runs.
 \end{itemize}
 
-The incident evidence files therefore \textbf{complement rather than replace} the continuous logging sources. They are particularly useful when the goal is to preserve a deterministic failure or recovery narrative in a form that is easy to reference later in the document, the parser, and the appendix sections.
+The incident evidence files therefore complement rather than replace the continuous logging sources. They are particularly useful when the goal is to preserve a deterministic failure or recovery narrative in a form that is easy to reference later in the document, the parser, and the appendix sections.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 9.6: OBSERVABILITY VALUE TO THE LAB

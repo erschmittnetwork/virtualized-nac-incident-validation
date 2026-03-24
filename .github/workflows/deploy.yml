@@ -10,7 +10,7 @@ permissions:
 
 env:
   LAB_SLUG: virtualized-nac-incident-validation
-  LAB_TITLE: Virtualized NAC Incident Validation
+  LAB_TITLE: Virtualized NAC with Automated Wired 802.1X Incident Validation
   TEX_SOURCE: docs/virtualized-nac-incident-validation.tex
 
 jobs:
