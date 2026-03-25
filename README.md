@@ -115,8 +115,7 @@ The objective is to model realistic SME-scale access-control and incident-respon
 │   ├── Wireshark_failed_8021x_ens39_pcap.png
 │   ├── Wireshark_success_8021x_ens38_pcap.png
 │   └── Wireshark_success_8021x_ens39_pcap.png
-├── README.md
-└── index.html
+└── README.md
 ```
 
 ### 4.1 Components
