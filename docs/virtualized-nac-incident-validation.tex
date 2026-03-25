@@ -610,7 +610,7 @@ Figure~\ref{fig:reference-topology-diagram} is the authoritative logical topolog
     %Placeholder for final reference topology diagram\\
     %(Mermaid export or static image asset)}}
     %\caption{Reference topology diagram for the final virtualized NAC implementation.}
-    %\label{fig:reference-topology-diagram}
+    \label{fig:reference-topology-diagram}
 %\end{figure}
 
 The diagram is intended to function as the reader's primary visual reference for the rest of the document. Later sections will rely on the topology as the basis for explaining the authenticated access path, the guest-policy enforcement model, the incident flow, and the packet capture locations. Supporting final-state interface and route evidence will be provided later in the appendices and validation sections rather than embedded directly here (see Section~\ref{sec:platform-build-and-final-state-configuration}).
@@ -3403,7 +3403,7 @@ The approved publication policy for packet screenshots is:
     \item packet payload details that unnecessarily expose sensitive values should be redacted.
 \end{itemize}
 
-At the time of review, the current Wireshark screenshots did not yet fully conform to that policy for public release. Based on the captured images, the following items should be redacted in the publication-safe versions:
+The following items should be redacted in the publication-safe versions:
 
 \begin{itemize}
     \item all visible MAC addresses in the packet list pane;
@@ -3423,7 +3423,7 @@ For publication quality, the preferred figure style is a tightly cropped Wiresha
     \item \texttt{Access-Accept}
 \end{itemize}
 
-This produces cleaner figures and avoids exposing unnecessary protocol detail in a public portfolio context.
+This produces cleaner figures and avoids exposing unnecessary protocol detail in a public context.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 10.10: FIGURE INVENTORY CONFIRMATION
