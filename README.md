@@ -141,9 +141,6 @@ Contains the primary LaTeX documentation source from which artifacts are generat
 **README.md**
 Provides an overview of the lab scope, architecture, and publishing workflow.
 
-**index.html**
-Defines the portfolio landing page for the published documentation.
-
 ---
 
 ## 5. Documentation Build Pipeline
