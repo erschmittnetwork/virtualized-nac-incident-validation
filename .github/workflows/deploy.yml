@@ -75,6 +75,7 @@ jobs:
             --toc \
             --toc-depth=3 \
             --resource-path=.:dist:dist/docs \
+            --lua-filter=assets/appendix-numbering-filter.lua \
             -M title="$LAB_TITLE" \
             --pdf-engine=pdflatex \
             -o "dist/docs/${LAB_SLUG}.pdf"
