@@ -1,215 +1,175 @@
 -- filters/appendix-numbering.lua
 --
--- Purpose:
---   Rewrite appendix header numbering and internal section references
---   for HTML output when the source is LaTeX parsed by Pandoc.
---
--- Assumptions:
---   - Appendix labels use the pattern:
---       sec:appendix-a-...
---       sec:appendix-b-...
---   - Appendix A and B are top-level \section blocks.
---   - Subsection and subsubsection titles may already contain manual
---     prefixes like "A.1 ..." or "A.1.2 ..."; those prefixes are
---     stripped from the visible heading text so the generated number
---     is not duplicated.
---
--- Result:
---   - Appendix section headings display as:
---       A Appendix A. Raw Configurations and Automation Artifacts
---   - Appendix subsection headings display as:
---       A.1 Host Network Configurations
---       A.1.1 radius-splunk Netplan Configuration
---   - Internal links pointing to those appendix labels display the same
---     appendix-style numbering in HTML.
+-- Rewrites appendix header numbering and internal reference text for HTML.
+-- Designed for LaTeX input parsed by Pandoc, with labels like:
+--   sec:appendix-a-...
+--   sec:appendix-b-...
 
-local appendix_mode = nil
-local appendix_letter = nil
+local appendix_map = {}
 
-local appendix_counters = {
-  A = { section = 0, subsection = 0, subsubsection = 0 },
-  B = { section = 0, subsection = 0, subsubsection = 0 },
-}
-
-local ref_map = {}
-
-local function starts_with(str, prefix)
-  return str ~= nil and str:sub(1, #prefix) == prefix
-end
-
-local function clone_inlines(inlines)
-  local out = {}
-  for i = 1, #inlines do
-    out[i] = inlines[i]
-  end
-  return out
-end
-
-local function stringify(inlines)
-  return pandoc.utils.stringify(inlines or {})
+local function stringify(x)
+  return pandoc.utils.stringify(x)
 end
 
 local function trim(s)
   return (s:gsub("^%s+", ""):gsub("%s+$", ""))
 end
 
-local function strip_manual_appendix_prefix(text, letter)
-  -- Removes prefixes like:
-  --   "A.1 "
-  --   "A.1.2 "
-  --   "Appendix A. "
-  --   "Appendix B. "
-  --
-  -- This is intentionally conservative.
+local function appendix_letter_from_id(id)
+  if not id then
+    return nil
+  end
+  local a = id:match("^sec:appendix%-([a-z])%-")
+  if a then
+    return string.upper(a)
+  end
+  return nil
+end
+
+local function strip_manual_prefix(text, letter)
+  -- Removes visible manual numbering already embedded in titles.
+  -- Examples:
+  --   "Appendix A. Raw Configurations..."
+  --   "A.1 Host Network Configurations"
+  --   "A.1.1 radius-splunk Netplan Configuration"
   text = text:gsub("^Appendix%s+" .. letter .. "%.%s*", "")
+  text = text:gsub("^" .. letter .. "%.%d+%.%d+%.%d+%.%s*", "")
   text = text:gsub("^" .. letter .. "%.%d+%.%d+%.%s*", "")
   text = text:gsub("^" .. letter .. "%.%d+%.%s*", "")
   text = text:gsub("^" .. letter .. "%.%d+%s*", "")
   return trim(text)
 end
 
-local function make_numbered_span(num)
-  return pandoc.Span(
-    { pandoc.Str(num) },
-    pandoc.Attr("", { "header-section-number" }, {})
-  )
+local function make_header_content(number, title_text)
+  return {
+    pandoc.Span(
+      { pandoc.Str(number) },
+      pandoc.Attr("", { "header-section-number" })
+    ),
+    pandoc.Space(),
+    pandoc.Str(title_text)
+  }
 end
 
-local function replace_heading_text(el, new_text)
-  el.content = { pandoc.Str(new_text) }
-  return el
-end
+local function collect_and_rewrite_headers(doc)
+  local current_appendix = nil
+  local counters = {}
 
-local function format_ref(letter, level, counters)
-  if level == 1 then
-    return letter
-  elseif level == 2 then
-    return string.format("%s.%d", letter, counters.subsection)
-  elseif level == 3 then
-    return string.format("%s.%d.%d", letter, counters.subsection, counters.subsubsection)
-  else
-    return letter
-  end
-end
+  for _, block in ipairs(doc.blocks) do
+    if block.t == "Header" then
+      local id = block.identifier
+      local letter = appendix_letter_from_id(id)
 
-local function header_belongs_to_appendix(identifier)
-  if starts_with(identifier, "sec:appendix-a-") then
-    return "A"
-  elseif starts_with(identifier, "sec:appendix-b-") then
-    return "B"
-  else
-    return nil
-  end
-end
+      if block.level == 1 and letter then
+        current_appendix = letter
+        counters[letter] = { section = 1, subsection = 0, subsubsection = 0, level4 = 0 }
+        appendix_map[id] = letter
 
-function Header(el)
-  local id = el.identifier or ""
-  local letter = header_belongs_to_appendix(id)
+        local title = strip_manual_prefix(stringify(block.content), letter)
+        block.content = make_header_content(letter, title)
 
-  if el.level == 1 and letter ~= nil then
-    appendix_mode = true
-    appendix_letter = letter
-    appendix_counters[letter].section = appendix_counters[letter].section + 1
-    appendix_counters[letter].subsection = 0
-    appendix_counters[letter].subsubsection = 0
+      elseif current_appendix and block.level == 2 then
+        local c = counters[current_appendix]
+        c.subsection = c.subsection + 1
+        c.subsubsection = 0
+        c.level4 = 0
 
-    local plain = stringify(el.content)
-    local cleaned = strip_manual_appendix_prefix(plain, letter)
+        local num = string.format("%s.%d", current_appendix, c.subsection)
+        appendix_map[id] = num
 
-    ref_map[id] = letter
+        local title = strip_manual_prefix(stringify(block.content), current_appendix)
+        block.content = make_header_content(num, title)
 
-    el.content = {
-      make_numbered_span(letter),
-      pandoc.Space(),
-      pandoc.Str(cleaned)
-    }
-    return el
-  end
+      elseif current_appendix and block.level == 3 then
+        local c = counters[current_appendix]
+        c.subsubsection = c.subsubsection + 1
+        c.level4 = 0
 
-  if appendix_mode and appendix_letter ~= nil and el.level == 2 then
-    local counters = appendix_counters[appendix_letter]
-    counters.subsection = counters.subsection + 1
-    counters.subsubsection = 0
+        local num = string.format("%s.%d.%d", current_appendix, c.subsection, c.subsubsection)
+        appendix_map[id] = num
 
-    local plain = stringify(el.content)
-    local cleaned = strip_manual_appendix_prefix(plain, appendix_letter)
-    local num = string.format("%s.%d", appendix_letter, counters.subsection)
+        local title = strip_manual_prefix(stringify(block.content), current_appendix)
+        block.content = make_header_content(num, title)
 
-    if id ~= "" then
-      ref_map[id] = num
+      elseif current_appendix and block.level == 4 then
+        local c = counters[current_appendix]
+        c.level4 = c.level4 + 1
+
+        local num = string.format(
+          "%s.%d.%d.%d",
+          current_appendix, c.subsection, c.subsubsection, c.level4
+        )
+        appendix_map[id] = num
+
+        local title = strip_manual_prefix(stringify(block.content), current_appendix)
+        block.content = make_header_content(num, title)
+      end
     end
-
-    el.content = {
-      make_numbered_span(num),
-      pandoc.Space(),
-      pandoc.Str(cleaned)
-    }
-    return el
   end
 
-  if appendix_mode and appendix_letter ~= nil and el.level == 3 then
-    local counters = appendix_counters[appendix_letter]
-    counters.subsubsection = counters.subsubsection + 1
-
-    local plain = stringify(el.content)
-    local cleaned = strip_manual_appendix_prefix(plain, appendix_letter)
-    local num = string.format("%s.%d.%d", appendix_letter, counters.subsection, counters.subsubsection)
-
-    if id ~= "" then
-      ref_map[id] = num
-    end
-
-    el.content = {
-      make_numbered_span(num),
-      pandoc.Space(),
-      pandoc.Str(cleaned)
-    }
-    return el
-  end
-
-  return el
+  return doc
 end
 
-function Link(el)
-  local target = el.target or ""
+local function rewrite_link_text(link)
+  local target = link.target or ""
   local id = target:match("^#(.+)$")
-
   if not id then
-    return el
+    return link
   end
 
-  local replacement = ref_map[id]
-  if not replacement then
-    return el
+  local appendix_num = appendix_map[id]
+  if not appendix_num then
+    return link
   end
 
-  local label_text = stringify(el.content)
+  local text = stringify(link.content)
 
-  -- Replace links that are effectively cross-references.
-  -- This catches common Pandoc-rendered cases like:
-  --   "13.4.3"
-  --   "14.1.2"
-  --   "Section 13.4.3"
-  --   "Section~13.4.3"
-  --
-  -- It avoids rewriting arbitrary prose links.
-  if label_text:match("^%d+%.%d+%.%d+$")
-    or label_text:match("^%d+%.%d+$")
-    or label_text:match("^%d+$")
+  -- Rewrite bare numeric refs:
+  --   13
+  --   13.1
+  --   13.1.2
+  --   13.1.2.3
+  if text:match("^%d+$")
+    or text:match("^%d+%.%d+$")
+    or text:match("^%d+%.%d+%.%d+$")
+    or text:match("^%d+%.%d+%.%d+%.%d+$")
   then
-    el.content = { pandoc.Str(replacement) }
-    return el
+    link.content = { pandoc.Str(appendix_num) }
+    return link
   end
 
-  local section_prefix = label_text:match("^(Section%s+).+$")
-  if section_prefix then
-    el.content = {
-      pandoc.Str(section_prefix:match("^Section")),
+  -- Rewrite forms like:
+  --   Section 13.1.2
+  --   Section 13.1
+  local secnum = text:match("^Section%s+(%d+[%d%.]*)$")
+  if secnum then
+    link.content = {
+      pandoc.Str("Section"),
       pandoc.Space(),
-      pandoc.Str(replacement)
+      pandoc.Str(appendix_num)
     }
-    return el
+    return link
   end
 
-  return el
+  -- Rewrite forms like:
+  --   Appendix 13
+  local appnum = text:match("^Appendix%s+(%d+[%d%.]*)$")
+  if appnum then
+    link.content = {
+      pandoc.Str("Appendix"),
+      pandoc.Space(),
+      pandoc.Str(appendix_num)
+    }
+    return link
+  end
+
+  return link
+end
+
+function Pandoc(doc)
+  doc = collect_and_rewrite_headers(doc)
+  doc = doc:walk({
+    Link = rewrite_link_text
+  })
+  return doc
 end
