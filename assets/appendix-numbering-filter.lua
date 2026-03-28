@@ -1,9 +1,4 @@
 -- filters/appendix-numbering.lua
---
--- Rewrites appendix header numbering and internal reference text for HTML.
--- Designed for LaTeX input parsed by Pandoc, with labels like:
---   sec:appendix-a-...
---   sec:appendix-b-...
 
 local appendix_map = {}
 
@@ -27,28 +22,45 @@ local function appendix_letter_from_id(id)
 end
 
 local function strip_manual_prefix(text, letter)
-  -- Removes visible manual numbering already embedded in titles.
-  -- Examples:
-  --   "Appendix A. Raw Configurations..."
-  --   "A.1 Host Network Configurations"
-  --   "A.1.1 radius-splunk Netplan Configuration"
-  text = text:gsub("^Appendix%s+" .. letter .. "%.%s*", "")
-  text = text:gsub("^" .. letter .. "%.%d+%.%d+%.%d+%.%s*", "")
-  text = text:gsub("^" .. letter .. "%.%d+%.%d+%.%s*", "")
-  text = text:gsub("^" .. letter .. "%.%d+%.%s*", "")
-  text = text:gsub("^" .. letter .. "%.%d+%s*", "")
+  text = trim(text)
+
+  -- Top-level appendix titles:
+  -- "Appendix A. Title"
+  -- "Appendix A Title"
+  text = text:gsub("^Appendix%s+" .. letter .. "%.??%s*", "")
+
+  -- Numbered appendix subsection titles:
+  -- "A.1 Title"
+  -- "A.1.2 Title"
+  -- "A.1.2.3 Title"
+  -- optional trailing period before the space is tolerated
+  text = text:gsub("^" .. letter .. "%.%d+%.%d+%.%d+%.?%s+", "")
+  text = text:gsub("^" .. letter .. "%.%d+%.%d+%.?%s+", "")
+  text = text:gsub("^" .. letter .. "%.%d+%.?%s+", "")
+
   return trim(text)
 end
 
-local function make_header_content(number, title_text)
-  return {
-    pandoc.Span(
-      { pandoc.Str(number) },
-      pandoc.Attr("", { "header-section-number" })
-    ),
-    pandoc.Space(),
-    pandoc.Str(title_text)
-  }
+local function make_header_content(number, title_text, is_appendix_top)
+  if is_appendix_top then
+    return {
+      pandoc.Span(
+        { pandoc.Str("Appendix"), pandoc.Space(), pandoc.Str(number .. ".") },
+        pandoc.Attr("", { "header-section-number" })
+      ),
+      pandoc.Space(),
+      pandoc.Str(title_text)
+    }
+  else
+    return {
+      pandoc.Span(
+        { pandoc.Str(number) },
+        pandoc.Attr("", { "header-section-number" })
+      ),
+      pandoc.Space(),
+      pandoc.Str(title_text)
+    }
+  end
 end
 
 local function collect_and_rewrite_headers(doc)
@@ -62,13 +74,13 @@ local function collect_and_rewrite_headers(doc)
 
       if block.level == 1 and letter then
         current_appendix = letter
-        counters[letter] = { section = 1, subsection = 0, subsubsection = 0, level4 = 0 }
+        counters[letter] = { subsection = 0, subsubsection = 0, level4 = 0 }
         appendix_map[id] = letter
 
         local title = strip_manual_prefix(stringify(block.content), letter)
-        block.content = make_header_content(letter, title)
+        block.content = make_header_content(letter, title, true)
 
-      elseif current_appendix and block.level == 2 then
+      elseif current_appendix and block.level == 2 and id ~= "" and appendix_letter_from_id(id) == current_appendix then
         local c = counters[current_appendix]
         c.subsection = c.subsection + 1
         c.subsubsection = 0
@@ -78,9 +90,9 @@ local function collect_and_rewrite_headers(doc)
         appendix_map[id] = num
 
         local title = strip_manual_prefix(stringify(block.content), current_appendix)
-        block.content = make_header_content(num, title)
+        block.content = make_header_content(num, title, false)
 
-      elseif current_appendix and block.level == 3 then
+      elseif current_appendix and block.level == 3 and id ~= "" and appendix_letter_from_id(id) == current_appendix then
         local c = counters[current_appendix]
         c.subsubsection = c.subsubsection + 1
         c.level4 = 0
@@ -89,9 +101,9 @@ local function collect_and_rewrite_headers(doc)
         appendix_map[id] = num
 
         local title = strip_manual_prefix(stringify(block.content), current_appendix)
-        block.content = make_header_content(num, title)
+        block.content = make_header_content(num, title, false)
 
-      elseif current_appendix and block.level == 4 then
+      elseif current_appendix and block.level == 4 and id ~= "" and appendix_letter_from_id(id) == current_appendix then
         local c = counters[current_appendix]
         c.level4 = c.level4 + 1
 
@@ -102,7 +114,7 @@ local function collect_and_rewrite_headers(doc)
         appendix_map[id] = num
 
         local title = strip_manual_prefix(stringify(block.content), current_appendix)
-        block.content = make_header_content(num, title)
+        block.content = make_header_content(num, title, false)
       end
     end
   end
@@ -124,11 +136,6 @@ local function rewrite_link_text(link)
 
   local text = stringify(link.content)
 
-  -- Rewrite bare numeric refs:
-  --   13
-  --   13.1
-  --   13.1.2
-  --   13.1.2.3
   if text:match("^%d+$")
     or text:match("^%d+%.%d+$")
     or text:match("^%d+%.%d+%.%d+$")
@@ -138,11 +145,7 @@ local function rewrite_link_text(link)
     return link
   end
 
-  -- Rewrite forms like:
-  --   Section 13.1.2
-  --   Section 13.1
-  local secnum = text:match("^Section%s+(%d+[%d%.]*)$")
-  if secnum then
+  if text:match("^Section%s+%d+[%d%.]*$") then
     link.content = {
       pandoc.Str("Section"),
       pandoc.Space(),
@@ -151,15 +154,9 @@ local function rewrite_link_text(link)
     return link
   end
 
-  -- Rewrite forms like:
-  --   Appendix 13
-  local appnum = text:match("^Appendix%s+(%d+[%d%.]*)$")
-  if appnum then
-    link.content = {
-      pandoc.Str("Appendix"),
-      pandoc.Space(),
-      pandoc.Str(appendix_num)
-    }
+  if text:match("^Appendix%s+%d+[%d%.]*$") then
+    local visible = appendix_num:match("^[A-Z]$") and ("Appendix " .. appendix_num) or appendix_num
+    link.content = { pandoc.Str(visible) }
     return link
   end
 
