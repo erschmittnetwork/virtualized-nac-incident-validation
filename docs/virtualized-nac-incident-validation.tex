@@ -1274,9 +1274,9 @@ The presence of these artifacts in the final platform state is significant for t
 % =====================================================================
 % SECTION 6: ACCESS CONTROL MODEL AND POLICY ENFORCEMENT
 % =====================================================================
-% This section documents the intended access model and proves that the
-% implemented routing and firewall controls behave as designed. It covers
-% both the authenticated endpoint path and the guest isolation path.
+% This section documents the final access-control model for the lab and
+% validates that authenticated and guest traffic are handled according
+% to the intended routed and firewall-enforced policy boundaries.
 % =====================================================================
 
 \section{6. Access Control Model and Policy Enforcement}
@@ -1288,6 +1288,10 @@ This section documents the intended policy model and then validates that the env
 
 % ---------------------------------------------------------------------
 % SUBSECTION 6.1: POLICY MODEL OVERVIEW
+% ---------------------------------------------------------------------
+% This subsection defines the two principal trust domains in the lab,
+% the expected behavior of each domain, and the internal networks from
+% which the guest segment is intentionally isolated.
 % ---------------------------------------------------------------------
 
 \subsection{6.1 Policy Model Overview}
@@ -1332,6 +1336,10 @@ This is not intended to model a full enterprise NAC enforcement platform with dy
 
 % ---------------------------------------------------------------------
 % SUBSECTION 6.2: AUTHENTICATED ENDPOINT ACCESS MODEL
+% ---------------------------------------------------------------------
+% This subsection documents the final-state posture of the authenticated
+% endpoint and validates that it can reach the protected services path
+% after successful wired 802.1X authentication.
 % ---------------------------------------------------------------------
 
 \subsection{6.2 Authenticated Endpoint Access Model}
@@ -1422,6 +1430,10 @@ Because intermediate Linux routers and pfSense do not necessarily reveal useful 
 % ---------------------------------------------------------------------
 % SUBSECTION 6.3: ROUTED PATH VALIDATION FOR AUTHENTICATED ACCESS
 % ---------------------------------------------------------------------
+% This subsection validates the authenticated endpoint path from the
+% infrastructure perspective by showing the explicit forward and return
+% routing behavior across the access, distribution, and firewall layers.
+% ---------------------------------------------------------------------
 
 \subsection{6.3 Routed Path Validation for Authenticated Access}
 \label{sec:routed-path-validation-for-authenticated-access}
@@ -1495,6 +1507,10 @@ This combination of forward-path route lookup, return-path route lookup, and bid
 % ---------------------------------------------------------------------
 % SUBSECTION 6.4: GUEST NETWORK POLICY MODEL
 % ---------------------------------------------------------------------
+% This subsection records the authoritative guest-segment DHCP and
+% firewall policy on pfSense and defines the intended isolation model
+% for the lower-trust guest network.
+% ---------------------------------------------------------------------
 
 \subsection{6.4 Guest Network Policy Model}
 \label{sec:guest-network-policy-model}
@@ -1519,6 +1535,12 @@ Address Pool Range: 10.0.20.100 - 10.0.20.199
 
 The guest firewall policy is implemented as an ordered first-match ruleset on the pfSense GUEST interface. The final manually transcribed rules are reproduced below and were explicitly re-confirmed as unchanged and in the same top-to-bottom order at the time of Section 6 validation.
 
+% ---------------------------------------------------------------------
+% NOTE: This ruleset is reproduced in full because rule order is central to
+% the guest-policy interpretation and the top-to-bottom sequence is part
+% of the technical meaning of the final pfSense configuration.
+% ---------------------------------------------------------------------
+
 \begin{verbatim}
 pfSense GUEST rules (top-to-bottom)
 Pass  | IPv4* | Source: 10.0.20.0/24 | Destination: This Firewall (Self) | ALLOW-GUEST-TO-PFSENSE
@@ -1535,6 +1557,10 @@ At the time of validation, pfSense outbound NAT was confirmed to be in Automatic
 
 % ---------------------------------------------------------------------
 % SUBSECTION 6.5: GUEST DHCP AND ISOLATION VALIDATION
+% ---------------------------------------------------------------------
+% This subsection validates guest-segment behavior with a dedicated
+% single-homed test VM by confirming DHCP lease assignment, gateway
+% reachability, and enforced failure to reach protected internal paths.
 % ---------------------------------------------------------------------
 
 \subsection{6.5 Guest DHCP and Isolation Validation}
@@ -1558,6 +1584,12 @@ default via 10.0.20.254 dev ens33 proto dhcp src 10.0.20.137 metric 100
 \end{verbatim}
 
 An explicit DHCP renewal confirms the expected pfSense DHCP behavior and the lease origin.
+
+% ---------------------------------------------------------------------
+% NOTE: This DHCP renewal transcript is included because it provides direct
+% lease-exchange evidence that pfSense is the active DHCP authority for
+% the guest segment during validation.
+% ---------------------------------------------------------------------
 
 \begin{verbatim}
 guest-test-1: sudo dhclient -v ens33
@@ -1623,6 +1655,10 @@ This confirms that the guest segment is not only blocked from protected hosts at
 % ---------------------------------------------------------------------
 % SUBSECTION 6.6: GUEST INTERNET ACCESS VALIDATION
 % ---------------------------------------------------------------------
+% This subsection confirms that the guest network remains functional for
+% general outbound connectivity and is not merely isolated from internal
+% networks by broad denial.
+% ---------------------------------------------------------------------
 
 \subsection{6.6 Guest Internet Access Validation}
 \label{sec:guest-internet-access-validation}
@@ -1658,6 +1694,10 @@ In other words, the guest segment is not simply ``isolated'' in the abstract. It
 % ---------------------------------------------------------------------
 % SUBSECTION 6.7: POLICY INTERPRETATION AND LIMITATIONS
 % ---------------------------------------------------------------------
+% This subsection summarizes the validated policy outcomes and states the
+% architectural limits of the lab so that the access model is described
+% accurately and not overstated.
+% ---------------------------------------------------------------------
 
 \subsection{6.7 Policy Interpretation and Limitations}
 \label{sec:policy-interpretation-and-limitations}
@@ -1683,6 +1723,10 @@ Within those stated limits, the access-control model is internally consistent, t
 
 % ---------------------------------------------------------------------
 % SUBSECTION 6.8: WIRESHARK CROSS-REFERENCE FOR POLICY VALIDATION
+% ---------------------------------------------------------------------
+% This subsection links the access-control conclusions in Section 6 to
+% the packet-capture evidence reviewed later, noting that the policy
+% model is also supported by observable 802.1X control-plane behavior.
 % ---------------------------------------------------------------------
 
 \subsection{6.8 Wireshark Cross-Reference for Policy Validation}
@@ -1730,6 +1774,10 @@ This section documents that incident as the authoritative operational scenario f
 % ---------------------------------------------------------------------
 % SUBSECTION 7.1: INCIDENT DEFINITION
 % ---------------------------------------------------------------------
+% This subsection defines the simulated incident, identifies the control
+% path involved, and establishes the operational goals of the failure-
+% injection and recovery workflow.
+% ---------------------------------------------------------------------
 
 \subsection{7.1 Incident Definition}
 \label{sec:incident-definition}
@@ -1763,6 +1811,10 @@ The scenario therefore serves as a practical proof that the lab can do more than
 % ---------------------------------------------------------------------
 % SUBSECTION 7.2: FAILURE INJECTION METHOD
 % ---------------------------------------------------------------------
+% This subsection documents the deliberate credential change used to
+% produce the failed authentication state and explains why that method
+% provides a controlled and reproducible endpoint-side failure.
+% ---------------------------------------------------------------------
 
 \subsection{7.2 Failure Injection Method}
 \label{sec:failure-injection-method}
@@ -1783,11 +1835,21 @@ The lab therefore treats the credential modification as a formal failure-injecti
 % ---------------------------------------------------------------------
 % SUBSECTION 7.3: AUTHORITATIVE INCIDENT ARTIFACTS
 % ---------------------------------------------------------------------
+% This subsection records the authoritative incident-evidence inventory
+% and the parser summary used to synthesize the failure and recovery
+% artifacts across the supplicant, authenticator, and RADIUS layers.
+% ---------------------------------------------------------------------
 
 \subsection{7.3 Authoritative Incident Artifacts}
 \label{sec:authoritative-incident-artifacts}
 
 The incident evidence set is maintained on \texttt{radius-splunk} under the local incident-evidence directory. The final directory inventory at the time of documentation is reproduced below.
+
+% ---------------------------------------------------------------------
+% NOTE: This directory listing is included because it establishes the retained
+% incident artifact set and the specific files that support the failure,
+% remediation, and parser-based summary described in this section.
+% ---------------------------------------------------------------------
 
 \begin{verbatim}
 radius-splunk: ls -lh ~/incident-evidence
@@ -1804,6 +1866,12 @@ total 92K
 These files are sufficient to support the full narrative of failure and recovery across the endpoint, authenticator, and RADIUS layers. They also form the input set for the Python incident parser.
 
 At the time of final documentation, the parser remained functional and produced the following authoritative summary:
+
+% ---------------------------------------------------------------------
+% NOTE: This parser output is included because it provides a concise cross-
+% artifact summary of the incident evidence and captures the final
+% operational conclusion produced by the Python validation tool.
+% ---------------------------------------------------------------------
 
 \begin{verbatim}
 radius-splunk: python3 ~/incident-evidence/nac_incident_parser.py
@@ -1830,6 +1898,10 @@ The full parser source is maintained separately as a platform artifact in Append
 
 % ---------------------------------------------------------------------
 % SUBSECTION 7.4: FAILED AUTHENTICATION EVIDENCE
+% ---------------------------------------------------------------------
+% This subsection establishes the failed state across the three control
+% points in the authentication path so that the incident is supported by
+% independent endpoint, authenticator, and RADIUS evidence.
 % ---------------------------------------------------------------------
 
 \subsection{7.4 Failed Authentication Evidence}
@@ -1892,6 +1964,10 @@ Taken together, the endpoint, authenticator, and RADIUS evidence establish the f
 % ---------------------------------------------------------------------
 % SUBSECTION 7.5: INVESTIGATION AND TRIAGE
 % ---------------------------------------------------------------------
+% This subsection summarizes the investigation logic used to distinguish
+% among endpoint, authenticator, and RADIUS failure domains and records
+% the evidence-based triage conclusions reached during the incident.
+% ---------------------------------------------------------------------
 
 \subsection{7.5 Investigation and Triage}
 \label{sec:investigation-and-triage}
@@ -1918,6 +1994,10 @@ This investigation logic is reflected directly in the GLPI incident record, whic
 % ---------------------------------------------------------------------
 % SUBSECTION 7.6: REMEDIATION ACTIONS
 % ---------------------------------------------------------------------
+% This subsection documents the targeted remediation applied to restore
+% the known-good supplicant credential state on client-1 and re-run the
+% authentication path without broader architectural changes.
+% ---------------------------------------------------------------------
 
 \subsection{7.6 Remediation Actions}
 \label{sec:remediation-actions}
@@ -1937,6 +2017,10 @@ No broad changes to routing, pfSense policy, or FreeRADIUS user logic were requi
 
 % ---------------------------------------------------------------------
 % SUBSECTION 7.7: SUCCESSFUL RE-TEST EVIDENCE
+% ---------------------------------------------------------------------
+% This subsection documents the successful recovery validation and shows
+% that the remediated endpoint returned to connected and authorized
+% state across the same control points used to establish the failure.
 % ---------------------------------------------------------------------
 
 \subsection{7.7 Successful Re-Test Evidence}
@@ -1963,6 +2047,13 @@ The final \texttt{Unauthorized} line is not interpreted as a failed remediation.
 \label{sec:authenticator-side-recovery-evidence}
 
 The successful re-test on the authenticator shows the expected sequence of RADIUS interaction, Access-Accept handling, EAP Success decapsulation, station connection, and port authorization.
+
+% ---------------------------------------------------------------------
+% NOTE: This hostapd excerpt is included because it preserves the full
+% authenticator-side success sequence from upstream RADIUS handling
+% through EAP Success, station connection, and controlled-port
+% authorization.
+% ---------------------------------------------------------------------
 
 \begin{verbatim}
 hostapd success indicators
@@ -2007,6 +2098,10 @@ In this case, the successful RADIUS outcome is most directly evidenced through t
 % ---------------------------------------------------------------------
 % SUBSECTION 7.8: GLPI INCIDENT RECORD
 % ---------------------------------------------------------------------
+% This subsection records the formal GLPI incident entry associated with
+% the simulated authentication failure and ties the technical evidence
+% to an operational ticketing workflow.
+% ---------------------------------------------------------------------
 
 \subsection{7.8 GLPI Incident Record}
 \label{sec:glpi-incident-record}
@@ -2024,6 +2119,13 @@ Solved
 \end{verbatim}
 
 The full incident text recorded in GLPI is reproduced below.
+
+% ---------------------------------------------------------------------
+% NOTE: This GLPI incident text is reproduced because it captures the
+% formal operational record of the simulated event, including observed
+% behavior, investigation steps, remediation actions, and recovery
+% validation.
+% ---------------------------------------------------------------------
 
 \begin{verbatim}
 Incident summary:
@@ -2059,6 +2161,10 @@ The GLPI incident screenshot is available and will be inserted later as a figure
 % ---------------------------------------------------------------------
 % SUBSECTION 7.9: INCIDENT CONCLUSION
 % ---------------------------------------------------------------------
+% This subsection closes the incident narrative by summarizing the full
+% failure-and-recovery lifecycle and stating its significance for the
+% lab as an operationally credible NAC validation environment.
+% ---------------------------------------------------------------------
 
 \subsection{7.9 Incident Conclusion}
 \label{sec:incident-conclusion}
@@ -2089,6 +2195,10 @@ The later automation and packet-capture sections build directly on this incident
 
 % ---------------------------------------------------------------------
 % SUBSECTION 7.10: WIRESHARK FIGURE INVENTORY CROSS-REFERENCE
+% ---------------------------------------------------------------------
+% This subsection records the available Wireshark figure inventory for
+% the failed and successful authentication paths and defers protocol-
+% level interpretation to the dedicated packet-capture analysis section.
 % ---------------------------------------------------------------------
 
 \subsection{7.10 Wireshark Figure Inventory Cross-Reference}
@@ -2131,6 +2241,10 @@ The automation controller for this lab is \texttt{radius-splunk}. From that node
 
 % ---------------------------------------------------------------------
 % SUBSECTION 8.1: AUTOMATION ASSET INVENTORY
+% ---------------------------------------------------------------------
+% This subsection records the final automation workspace layout, the
+% retained artifact set, and the authoritative playbook and parser files
+% used by the validation and incident-summary workflows.
 % ---------------------------------------------------------------------
 
 \subsection{8.1 Automation Asset Inventory}
@@ -2190,6 +2304,10 @@ The full inventory file, the authoritative revised playbook, and the full parser
 % ---------------------------------------------------------------------
 % SUBSECTION 8.2: PLAYBOOK DESIGN AND REVISION RATIONALE
 % ---------------------------------------------------------------------
+% This subsection describes the final Ansible playbook design and the
+% corrections that established the revised workflow as the authoritative
+% implementation for validation, remediation, and artifact handling.
+% ---------------------------------------------------------------------
 
 \subsection{8.2 Playbook Design and Revision Rationale}
 \label{sec:playbook-design-and-revision-rationale}
@@ -2229,6 +2347,10 @@ In practical terms, the revised playbook makes execution deterministic and avoid
 % ---------------------------------------------------------------------
 % SUBSECTION 8.3: VALIDATION-ONLY EXECUTION
 % ---------------------------------------------------------------------
+% This subsection documents the default validation-only playbook run and
+% shows how the workflow checks service state and writes artifacts
+% without attempting service restarts.
+% ---------------------------------------------------------------------
 
 \subsection{8.3 Validation-Only Execution}
 \label{sec:validation-only-execution}
@@ -2243,6 +2365,12 @@ ansible-playbook -i inventory/hosts.ini playbooks/nac_validation.yml -K
 \end{verbatim}
 
 The authoritative execution output is reproduced below.
+
+% ---------------------------------------------------------------------
+% NOTE: This Ansible console output is included because it shows the
+% complete task path for the validation-only run, including skipped
+% remediation tasks and successful artifact-writing behavior.
+% ---------------------------------------------------------------------
 
 \begin{verbatim}
 PLAY [Validate NAC services and optionally remediate] **************************
@@ -2342,6 +2470,10 @@ This is the preferred operational mode for routine health checks because it conf
 % ---------------------------------------------------------------------
 % SUBSECTION 8.4: REMEDIATION-ENABLED EXECUTION
 % ---------------------------------------------------------------------
+% This subsection documents the remediation-enabled playbook run and
+% shows the same validation workflow operating with controlled service
+% restart actions on the managed nodes.
+% ---------------------------------------------------------------------
 
 \subsection{8.4 Remediation-Enabled Execution}
 \label{sec:remediation-enabled-execution}
@@ -2356,6 +2488,12 @@ ansible-playbook -i inventory/hosts.ini playbooks/nac_validation.yml -K -e remed
 \end{verbatim}
 
 The authoritative execution output is reproduced below.
+
+% ---------------------------------------------------------------------
+% NOTE: This Ansible console output is included because it shows the
+% complete task path for the remediation-enabled run and preserves the
+% successful restart and post-check behavior for both managed services.
+% ---------------------------------------------------------------------
 
 \begin{verbatim}
 PLAY [Validate NAC services and optionally remediate] **************************
@@ -2452,6 +2590,10 @@ The post-check tasks then completed successfully, which is essential. In a produ
 
 % ---------------------------------------------------------------------
 % SUBSECTION 8.5: ARTIFACT PERSISTENCE AND EVIDENCE QUALITY
+% ---------------------------------------------------------------------
+% This subsection documents the final post-run artifact state and
+% evaluates the practical usefulness of the generated files as local
+% evidence for verification, troubleshooting, and appendix support.
 % ---------------------------------------------------------------------
 
 \subsection{8.5 Artifact Persistence and Evidence Quality}
@@ -2604,6 +2746,10 @@ This limitation is acceptable in the current lab and will be addressed explicitl
 % ---------------------------------------------------------------------
 % SUBSECTION 8.6: PYTHON INCIDENT PARSER ROLE
 % ---------------------------------------------------------------------
+% This subsection documents the role of the Python incident parser as a
+% narrow evidence-summary tool that complements the Ansible workflow by
+% synthesizing the preserved incident artifacts.
+% ---------------------------------------------------------------------
 
 \subsection{8.6 Python Incident Parser Role}
 \label{sec:python-incident-parser-role}
@@ -2652,6 +2798,10 @@ The full parser source is reproduced in Appendix A (see Section~\ref{sec:appendi
 % ---------------------------------------------------------------------
 % SUBSECTION 8.7: OPERATIONAL ASSESSMENT
 % ---------------------------------------------------------------------
+% This subsection evaluates the automation layer as an operational
+% control pattern and explains how the final workflow supports repeatable
+% validation, bounded remediation, and retained evidence collection.
+% ---------------------------------------------------------------------
 
 \subsection{8.7 Operational Assessment}
 \label{sec:operational-assessment}
@@ -2687,6 +2837,10 @@ At the same time, the automation remains intentionally modest. The purpose of th
 
 % ---------------------------------------------------------------------
 % SUBSECTION 8.8: SECTION CONCLUSION
+% ---------------------------------------------------------------------
+% This subsection closes the automation section by summarizing the role
+% of the playbook and parser in strengthening the lab as a repeatable
+% and operationally credible NAC validation environment.
 % ---------------------------------------------------------------------
 
 \subsection{8.8 Section Conclusion}
@@ -2731,6 +2885,10 @@ The objective is not to claim a full centralized SIEM deployment, but rather to 
 % ---------------------------------------------------------------------
 % SUBSECTION 9.1: OBSERVABILITY SCOPE AND POSITIONING
 % ---------------------------------------------------------------------
+% This subsection defines the scope of the observability layer and
+% positions the Splunk component as a local monitored-input deployment
+% rather than a full centralized SIEM architecture.
+% ---------------------------------------------------------------------
 
 \subsection{9.1 Observability Scope and Positioning}
 \label{sec:observability-scope-and-positioning}
@@ -2759,6 +2917,10 @@ This scope boundary matters because it allows the document to make a strong but 
 
 % ---------------------------------------------------------------------
 % SUBSECTION 9.2: SPLUNK UNIVERSAL FORWARDER MONITORED INPUTS
+% ---------------------------------------------------------------------
+% This subsection documents the active Splunk Universal Forwarder state,
+% the local monitored-input configuration, and the specific log sources
+% selected for continuous monitoring on radius-splunk.
 % ---------------------------------------------------------------------
 
 \subsection{9.2 Splunk Universal Forwarder Monitored Inputs}
@@ -2818,6 +2980,10 @@ The full UF input configuration is reproduced in Appendix A (see Section~\ref{se
 
 % ---------------------------------------------------------------------
 % SUBSECTION 9.3: PRIMARY CONTINUOUS LOG SOURCES ON RADIUS-SPLUNK
+% ---------------------------------------------------------------------
+% This subsection documents the primary continuously generated log
+% sources on radius-splunk and shows how system, administrative, and
+% FreeRADIUS application logs contribute to the observability layer.
 % ---------------------------------------------------------------------
 
 \subsection{9.3 Primary Continuous Log Sources on \texttt{radius-splunk}}
@@ -2924,6 +3090,11 @@ This source is particularly valuable because it exposes application-level readin
 % ---------------------------------------------------------------------
 % SUBSECTION 9.4: HOSTAPD OBSERVABILITY ON ACCESS-NODE
 % ---------------------------------------------------------------------
+% This subsection documents the observability path for hostapd on
+% access-node and explains that its authoritative continuous evidence is
+% exposed through the systemd service state and journal rather than a
+% dedicated application log file.
+% ---------------------------------------------------------------------
 
 \subsection{9.4 \texttt{hostapd} Observability on \texttt{access-node}}
 \label{sec:hostapd-observability-on-access-node}
@@ -2955,6 +3126,12 @@ FragmentPath=/etc/systemd/system/hostapd-wired.service
 \end{verbatim}
 
 A representative journal excerpt is reproduced below.
+
+% ---------------------------------------------------------------------
+% NOTE: This journal excerpt is included because it preserves recent
+% hostapd lifecycle and startup events from the authoritative continuous
+% log source used by the authenticator in this environment.
+% ---------------------------------------------------------------------
 
 \begin{verbatim}
 access-node: journalctl -u hostapd-wired.service -n 20 --no-pager
@@ -2993,6 +3170,10 @@ This distinction matters operationally:
 
 % ---------------------------------------------------------------------
 % SUBSECTION 9.5: CURATED INCIDENT EVIDENCE AS A COMPLEMENTARY LAYER
+% ---------------------------------------------------------------------
+% This subsection documents the curated incident-evidence directory and
+% explains how manually captured debug artifacts complement the baseline
+% continuous logging sources during controlled failure and recovery work.
 % ---------------------------------------------------------------------
 
 \subsection{9.5 Curated Incident Evidence as a Complementary Layer}
@@ -3034,6 +3215,10 @@ The incident evidence files therefore complement rather than replace the continu
 % ---------------------------------------------------------------------
 % SUBSECTION 9.6: OBSERVABILITY VALUE TO THE LAB
 % ---------------------------------------------------------------------
+% This subsection explains how the combined logging, journald, monitored-
+% input, and curated-evidence model supports the validation, incident,
+% automation, and packet-analysis sections that follow.
+% ---------------------------------------------------------------------
 
 \subsection{9.6 Observability Value to the Lab}
 \label{sec:observability-value-to-the-lab}
@@ -3053,6 +3238,10 @@ In other words, the observability layer is not an afterthought. It is one of the
 
 % ---------------------------------------------------------------------
 % SUBSECTION 9.7: SECTION CONCLUSION
+% ---------------------------------------------------------------------
+% This subsection closes the observability section by summarizing the
+% logging model as a well-scoped local evidence pipeline with clearly
+% stated bounds on what the Splunk component does and does not represent.
 % ---------------------------------------------------------------------
 
 \subsection{9.7 Section Conclusion}
@@ -4666,6 +4855,7 @@ sourcetype = freeradius
 % report. Its purpose is to provide evidentiary completeness without
 % requiring the main body to inline every raw log and command output.
 % =====================================================================
+\appendix
 
 \section{Appendix B. Incident, Validation, and Evidence Artifacts}
 \label{sec:appendix-b-incident-validation-and-evidence-artifacts}
