@@ -66,6 +66,7 @@ jobs:
             --css=assets/doc.css \
             --resource-path=.:dist:dist/docs \
             --include-after-body=assets/header.html \
+            --lua-filter=assets/appendix-numbering-filter.lua \
             -M title="$LAB_TITLE" \
             -o "dist/docs/${LAB_SLUG}.html"
 
