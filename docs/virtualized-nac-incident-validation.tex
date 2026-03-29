@@ -672,9 +672,7 @@ The diagram is intended to function as the reader's primary visual reference for
 % SUBSECTION 5.1: HYPERVISOR AND VIRTUAL NETWORK LAYOUT
 % ---------------------------------------------------------------------
 % This subsection describes the virtualization substrate and the role of
-% VMware virtual networks in the architecture. VMware UI screenshots are
-% intentionally omitted; the final design is described in operational
-% terms instead.
+% VMware virtual networks in the architecture.
 % ---------------------------------------------------------------------
 
 \subsection{5.1 Hypervisor and Virtual Network Layout}
@@ -1277,7 +1275,7 @@ Operationally, GLPI is not treated as a passive accessory to the environment. In
     \item a resolved ticket state reflecting successful remediation.
 \end{itemize}
 
-These GUI-derived artifacts will be represented later through figure placeholders and appendix references rather than terminal transcription alone (see Section~\ref{sec:glpi-final-configuration}, Section~\ref{sec:appendix-b-glpi-screenshot-figure-mapping}, and the later incident section of this document).
+These GUI-derived artifacts will be represented later through figure placeholders and appendix references rather than terminal transcription alone (see Section~\ref{sec:glpi-final-configuration} and the later incident section of this document).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 5.8: PYTHON AND ANSIBLE AUTOMATION ARTIFACTS
@@ -1782,7 +1780,7 @@ At the time of review, the packet captures were confirmed to show that the authe
     \item the \textbf{post-authentication data plane}, represented by ordinary IP traffic after successful authorization.
 \end{itemize}
 
-The available screenshot inventory includes all four relevant packet-capture perspectives:
+The screenshot inventory includes all four relevant packet-capture perspectives:
 
 \begin{itemize}
     \item failed client-side capture;
@@ -1791,7 +1789,7 @@ The available screenshot inventory includes all four relevant packet-capture per
     \item success authenticator-side capture.
 \end{itemize}
 
-These artifacts will be incorporated in the dedicated packet-capture analysis section and appendix figures rather than duplicated here. Their relevance in this section is to reinforce that the access model is not inferred only from IP reachability tests; it is also observable at the protocol level through the expected 802.1X control-plane behavior.
+These artifacts will be incorporated in the dedicated packet-capture analysis section rather than duplicated here. Their relevance in this section is to reinforce that the access model is not inferred only from IP reachability tests; it is also observable at the protocol level through the expected 802.1X control-plane behavior.
 
 % =====================================================================
 % SECTION 7: INCIDENT SCENARIO -- WIRED 802.1X AUTHENTICATION FAILURE
@@ -2197,8 +2195,6 @@ This simulated a realistic enterprise NAC incident involving endpoint credential
 
 This GLPI record matters for two reasons. First, it makes the lab operationally richer by tying technical evidence to a formal incident artifact. Second, it helps position the project as an enterprise-style environment rather than as a purely technical sandbox.
 
-The GLPI incident screenshot is available and will be inserted later as a figure in the document and cross-referenced in the appendix figure inventory (see Section~\ref{sec:appendix-b-glpi-screenshot-figure-mapping}).
-
 % ---------------------------------------------------------------------
 % SUBSECTION 7.9: INCIDENT CONCLUSION
 % ---------------------------------------------------------------------
@@ -2233,28 +2229,6 @@ This is one of the most important outcomes in the document because it transforms
 \end{itemize}
 
 The later automation and packet-capture sections build directly on this incident narrative. The Python parser summarizes the same evidence set reproduced here, and the Wireshark screenshots provide protocol-level confirmation of both the failed and successful authentication paths.
-
-% ---------------------------------------------------------------------
-% SUBSECTION 7.10: WIRESHARK FIGURE INVENTORY CROSS-REFERENCE
-% ---------------------------------------------------------------------
-% This subsection records the available Wireshark figure inventory for
-% the failed and successful authentication paths and defers protocol-
-% level interpretation to the dedicated packet-capture analysis section.
-% ---------------------------------------------------------------------
-
-\subsection{7.10 Wireshark Figure Inventory Cross-Reference}
-\label{sec:wireshark-figure-inventory-cross-reference}
-
-The following Wireshark screenshot inventory is available for later insertion:
-
-\begin{itemize}
-    \item failed client-side Wireshark screenshot;
-    \item failed authenticator-side Wireshark screenshot;
-    \item success client-side Wireshark screenshot;
-    \item success authenticator-side Wireshark screenshot.
-\end{itemize}
-
-These figures are not reproduced in this section because the dedicated packet-capture analysis section will provide the proper protocol context for interpreting them. They will be incorporated later in Section~\ref{sec:packet-capture-analysis-tcpdump-and-wireshark}, where the failed and successful EAPOL and RADIUS captures are analyzed directly, and they will also be referenced in the appendix figure inventory (see Section~\ref{sec:appendix-b-glpi-screenshot-figure-mapping}).
 
 % =====================================================================
 % SECTION 8: AUTOMATION WORKFLOWS
@@ -3644,41 +3618,8 @@ The following items should be redacted in the publication-safe versions:
     \item the visible lab username where shown in the RADIUS packet details.
 \end{itemize}
 
-For publication quality, the preferred figure style is a tightly cropped Wireshark screenshot emphasizing the packet list pane and only the minimum detail pane content required to show the relevant terminal result, such as:
-
-\begin{itemize}
-    \item \texttt{EAP Failure}
-    \item \texttt{EAP Success}
-    \item \texttt{Access-Reject}
-    \item \texttt{Access-Accept}
-\end{itemize}
-
-This produces cleaner figures and avoids exposing unnecessary protocol detail in a public context.
-
 % ---------------------------------------------------------------------
-% SUBSECTION 10.10: FIGURE INVENTORY CONFIRMATION
-% ---------------------------------------------------------------------
-% This subsection records the confirmed screenshot inventory supporting
-% the packet-analysis section and establishes that all four required
-% figure assets are available for the final production document.
-% ---------------------------------------------------------------------
-
-\subsection{10.10 Figure Inventory Confirmation}
-\label{sec:figure-inventory-confirmation}
-
-The final screenshot inventory for this section was confirmed as follows:
-
-\begin{itemize}
-    \item Figure candidate 1: failed client-side screenshot --- available
-    \item Figure candidate 2: failed authenticator-side screenshot --- available
-    \item Figure candidate 3: success client-side screenshot --- available
-    \item Figure candidate 4: success authenticator-side screenshot --- available
-\end{itemize}
-
-The authoritative packet capture commands, capture file inventory, and related supporting artifact references are preserved in Appendix~A. See Section~\ref{sec:appendix-b-packet-capture-methodology-and-tcpdump-commands} and Section~\ref{sec:appendix-b-pcap-file-inventory}. The four Wireshark screenshots referenced in this section should be retained as redacted publication-safe figure assets whose filenames and figure captions align with the labels defined above.
-
-% ---------------------------------------------------------------------
-% SUBSECTION 10.11: SECTION CONCLUSION
+% SUBSECTION 10.10: SECTION CONCLUSION
 % ---------------------------------------------------------------------
 % This subsection closes the packet-analysis section by summarizing the
 % evidentiary significance of the failed and successful capture pairs
@@ -6642,24 +6583,6 @@ Impact:
 This simulated a realistic enterprise NAC incident involving endpoint
 credential failure and demonstrated successful troubleshooting and
 service restoration.
-\end{verbatim}
-
-% ---------------------------------------------------------------------
-% SUBSECTION B.2.4: GLPI SCREENSHOT FIGURE MAPPING
-% ---------------------------------------------------------------------
-% This subsection preserves the authoritative mapping note for the GLPI
-% incident screenshot referenced elsewhere in the report.
-% ---------------------------------------------------------------------
-
-\subsubsection{B.2.4 GLPI Screenshot Figure Mapping}
-\label{sec:appendix-b-glpi-screenshot-figure-mapping}
-
-\begin{verbatim}
-GLPI incident ticket screenshot available: YES
-GLPI asset screenshot available: YES
-Authoritative GUI evidence scope:
-- GLPI incident record screenshot
-- GLPI asset screenshot
 \end{verbatim}
 
 % ---------------------------------------------------------------------
