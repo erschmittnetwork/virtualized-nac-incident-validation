@@ -2191,7 +2191,8 @@ The full incident text recorded in GLPI is reproduced below.
 \begin{verbatim}
 Incident summary:
 client-1 failed wired 802.1X authentication during NAC validation after the supplicant 
-        password was intentionally changed to an incorrect value to simulate a credential issue.
+        password was intentionally changed to an incorrect value to simulate a credential
+        issue.
 
 Observed behavior:
 - client-1 remained unauthorized during the failed test
@@ -2213,8 +2214,8 @@ Recovery validation:
 - access-node hostapd logs showed AP-STA-CONNECTED and port authorization
 
 Impact:
-This simulated a realistic enterprise NAC incident involving endpoint credential failure and 
-        demonstrated successful troubleshooting and service restoration.
+This simulated a realistic enterprise NAC incident involving endpoint credential failure 
+        and demonstrated successful troubleshooting and service restoration.
 \end{verbatim}
 
 This GLPI record matters for two reasons. First, it makes the lab operationally richer by tying technical evidence to a formal incident artifact. Second, it helps position the project as an enterprise-style environment rather than as a purely technical sandbox.
@@ -3445,8 +3446,8 @@ The captures were obtained by starting two concurrent \texttt{tcpdump} processes
 \begin{verbatim}
 access-node:
 sudo timeout 20s tcpdump -i ens38 -w /tmp/failed_8021x_ens38.pcap ether proto 0x888e &
-sudo timeout 20s tcpdump -i ens39 -w /tmp/failed_8021x_ens39.pcap host 10.0.30.10 and udp 
-        port 1812 &
+sudo timeout 20s tcpdump -i ens39 -w /tmp/failed_8021x_ens39.pcap host 10.0.30.10 and 
+        udp port 1812 &
 sleep 2
 
 client-1:
@@ -3456,8 +3457,8 @@ sudo timeout 15s wpa_supplicant -i ens33 -D wired -c
 
 access-node:
 sudo timeout 20s tcpdump -i ens38 -w ~/pcaps/success_8021x_ens38.pcap ether proto 0x888e &
-sudo timeout 20s tcpdump -i ens39 -w ~/pcaps/success_8021x_ens39.pcap host 10.0.30.10 and udp
-        port 1812 &
+sudo timeout 20s tcpdump -i ens39 -w ~/pcaps/success_8021x_ens39.pcap host 10.0.30.10 and
+        udp port 1812 &
 sleep 2
 
 client-1:
@@ -4960,7 +4961,8 @@ wpa_supplicant v2.10
 random: getrandom() support available
 Successfully initialized wpa_supplicant
 Initializing interface 'ens33' conf '/etc/wpa_supplicant/lab/wired-8021x.conf' driver 'wired' ctrl_interface 'N/A' bridge 'N/A'
-Configuration file '/etc/wpa_supplicant/lab/wired-8021x.conf' -> '/etc/wpa_supplicant/lab/wired-8021x.conf'
+Configuration file '/etc/wpa_supplicant/lab/wired-8021x.conf' -> '/etc/wpa_supplicant/lab/
+        wired-8021x.conf'
 Reading configuration file '/etc/wpa_supplicant/lab/wired-8021x.conf'
 ctrl_interface='/run/wpa_supplicant'
 ap_scan=0
@@ -5031,7 +5033,8 @@ TX EAPOL: dst=01:80:c2:00:00:03
 TX EAPOL - hexdump(len=4): 02 01 00 00
 l2_packet_receive: src=<REDACTED> len=46
 ens33: RX EAPOL from <REDACTED>
-RX EAPOL - hexdump(len=46): 02 00 00 05 01 19 00 05 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+RX EAPOL - hexdump(len=46): 02 00 00 05 01 19 00 05 01 00 00 00 00 00 00 00 00 00 00 00 00
+         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 EAPOL: Received EAP-Packet frame
 EAPOL: SUPP_PAE entering state RESTART
 EAP: EAP entering state INITIALIZE
@@ -5056,7 +5059,8 @@ TX EAPOL - hexdump(len=16): 02 00 00 0c 02 19 00 0c 01 6e 61 63 75 73 65 72
 EAPOL: SUPP_BE entering state RECEIVE
 l2_packet_receive: src=<REDACTED> len=46
 ens33: RX EAPOL from <REDACTED>
-RX EAPOL - hexdump(len=46): 02 00 00 16 01 1a 00 16 04 10 d8 d1 ca 68 87 96 28 22 03 d8 a5 44 92 bb 84 f9 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+RX EAPOL - hexdump(len=46): 02 00 00 16 01 1a 00 16 04 10 d8 d1 ca 68 87 96 28 22 03 d8 a5
+         44 92 bb 84 f9 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 EAPOL: Received EAP-Packet frame
 EAPOL: SUPP_BE entering state REQUEST
 EAPOL: getSuppRsp
@@ -5071,16 +5075,19 @@ EAP: EAP entering state METHOD
 EAP-MD5: Challenge - hexdump(len=16): d8 d1 ca 68 87 96 28 22 03 d8 a5 44 92 bb 84 f9
 EAP-MD5: Generating Challenge Response
 EAP-MD5: Response - hexdump(len=16): 41 b2 c0 1c cf a9 4d 12 fc 49 1a 04 d9 5c d9 35
-EAP: method process -> ignore=FALSE methodState=DONE decision=COND_SUCC eapRespData=0x62e714bc0420
+EAP: method process -> ignore=FALSE methodState=DONE decision=COND_SUCC eapRespData=0x62e7
+        14bc0420
 EAP: EAP entering state SEND_RESPONSE
 EAP: EAP entering state IDLE
 EAPOL: SUPP_BE entering state RESPONSE
 EAPOL: txSuppRsp
 TX EAPOL: dst=<REDACTED>
-TX EAPOL - hexdump(len=26): 02 00 00 16 02 1a 00 16 04 10 41 b2 c0 1c cf a9 4d 12 fc 49 1a 04 d9 5c d9 35
+TX EAPOL - hexdump(len=26): 02 00 00 16 02 1a 00 16 04 10 41 b2 c0 1c cf a9 4d 12 fc 49 1a
+         04 d9 5c d9 35
 EAPOL: SUPP_BE entering state RECEIVE
 ens33: Removing interface ens33
-ens33: Request to deauthenticate - bssid=<REDACTED> pending_bssid=00:00:00:00:00:00 reason=3 (DEAUTH_LEAVING) state=ASSOCIATED
+ens33: Request to deauthenticate - bssid=<REDACTED> pending_bssid=00:00:00:00:00:00 reason
+        =3 (DEAUTH_LEAVING) state=ASSOCIATED
 TDLS: Tear down peers
 ens33: Event DEAUTH (11) received
 ens33: Deauthentication notification
@@ -5088,7 +5095,8 @@ ens33:  * reason 3 (DEAUTH_LEAVING) locally_generated=1
 Deauthentication frame IE(s) - hexdump(len=0): [NULL]
 ens33: CTRL-EVENT-DISCONNECTED bssid=<REDACTED> reason=3 locally_generated=1
 ens33: Auto connect disabled: do not try to re-connect
-ens33: Ignore connection failure indication since interface has been put into disconnected state
+ens33: Ignore connection failure indication since interface has been put into disconnected
+         state
 TDLS: Remove peers on disassociation
 ens33: WPA: Clear old PMK and PTK
 ens33: Disconnect event - remove keys
@@ -5110,7 +5118,8 @@ ens33: Cancelling scan request
 ens33: Cancelling authentication timeout
 Off-channel: Clear pending Action frame TX (pending_action_tx=(nil)
 HS20: Delete all stored icons
-Off-channel: Action frame sequence done notification: pending_action_tx=(nil) drv_offchan_tx=0 action_tx_wait_time=0 off_channel_freq=0 roc_waiting_drv_freq=0
+Off-channel: Action frame sequence done notification: pending_action_tx=(nil) drv_offchan_
+        tx=0 action_tx_wait_time=0 off_channel_freq=0 roc_waiting_drv_freq=0
 QM: Clear all active DSCP policies
 ens33: CTRL-EVENT-DSCP-POLICY clear_all
 Remove interface ens33 from radio 
@@ -5130,21 +5139,30 @@ ens33: CTRL-EVENT-TERMINATING
 
 \begin{verbatim}
 radius-splunk: ~/incident-evidence/hostapd_failed_auth_incident.txt
-Mar 22 22:32:33 access-node hostapd[2052]: EAP-Identity: Peer identity - hexdump_ascii(len=7):
-Mar 22 22:32:33 access-node hostapd[2052]:      6e 61 63 75 73 65 72                              nacuser
+Mar 22 22:32:33 access-node hostapd[2052]: EAP-Identity: Peer identity - hexdump_ascii(len
+        =7):
+Mar 22 22:32:33 access-node hostapd[2052]:      6e 61 63 75 73 65 72                      
+                nacuser
 Mar 22 22:32:33 access-node hostapd[2052]: EAP: EAP entering state SELECT_ACTION
 Mar 22 22:32:33 access-node hostapd[2052]: EAP: getDecision: -> PASSTHROUGH
 Mar 22 22:32:33 access-node hostapd[2052]: EAP: EAP entering state INITIALIZE_PASSTHROUGH
 Mar 22 22:32:33 access-node hostapd[2052]: EAP: EAP entering state AAA_REQUEST
 Mar 22 22:32:33 access-node hostapd[2052]: EAP: EAP entering state AAA_IDLE
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: STA identity 'nacuser'
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: STA identity
+         'nacuser'
 Mar 22 22:32:33 access-node hostapd[2052]: Encapsulating EAP message into a RADIUS packet
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: unauthorizing port
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP Packet (identifier 25)
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP packet (code=2 id=25 len=12) from STA: EAP Response-Identity (1)
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: STA identity 'nacuser'
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authentication server
-Mar 22 22:32:33 access-node hostapd[2052]: RADIUS message: code=1 (Access-Request) identifier=0 length=165
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: unauthorizin
+        g port
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP 
+        Packet (identifier 25)
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP
+         packet (code=2 id=25 len=12) from STA: EAP Response-Identity (1)
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: STA identity
+         'nacuser'
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authent
+        ication server
+Mar 22 22:32:33 access-node hostapd[2052]: RADIUS message: code=1 (Access-Request) identif
+        ier=0 length=165
 Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 1 (User-Name) length=9
 Mar 22 22:32:33 access-node hostapd[2052]:       Value: 'nacuser'
 Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 4 (NAS-IP-Address) length=6
@@ -5165,52 +5183,75 @@ Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 12 (Framed-MTU) length=6
 Mar 22 22:32:33 access-node hostapd[2052]:       Value: 1400
 Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 79 (EAP-Message) length=14
 Mar 22 22:32:33 access-node hostapd[2052]:       Value: 0219000c016e616375736572
-Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 80 (Message-Authenticator) length=18
+Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 80 (Message-Authenticator) length=
+        18
 Mar 22 22:32:33 access-node hostapd[2052]:       Value: 71423639f013148f1ce7a71576679bbe
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 3 seconds
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authentication server
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 3 seconds
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Received 80 bytes from RADIUS server
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 
+        3 seconds
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authent
+        ication server
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 
+        3 seconds
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Received 80 bytes from RADIUS ser
+        ver
 Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Received RADIUS message
-Mar 22 22:32:33 access-node hostapd[2052]: RADIUS message: code=11 (Access-Challenge) identifier=0 length=80
+Mar 22 22:32:33 access-node hostapd[2052]: RADIUS message: code=11 (Access-Challenge) iden
+        tifier=0 length=80
 Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 80 (Message-Authenticator) length=18
 Mar 22 22:32:33 access-node hostapd[2052]:       Value: e72a3944e289c8a2d9b97adfbceb639a
 Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 79 (EAP-Message) length=24
-Mar 22 22:32:33 access-node hostapd[2052]:       Value: 011a00160410d8d1ca688796282203d8a54492bb84f9
+Mar 22 22:32:33 access-node hostapd[2052]:       Value: 011a00160410d8d1ca688796282203d8a5
+        4492bb84f9
 Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 24 (State) length=18
 Mar 22 22:32:33 access-node hostapd[2052]:       Value: bb99b235bb83b6a0b74fb036b1c91a02
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received RADIUS packet matched with a pending request, round trip time 0.00 sec
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Received 80 bytes from RADIUS server
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received RADIUS p
+        acket matched with a pending request, round trip time 0.00 sec
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Received 80 bytes from RADIUS ser
+        ver
 Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Received RADIUS message
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received RADIUS packet matched with a pending request, round trip time 0.00 sec
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: decapsulated EAP packet (code=1 id=26 len=22) from RADIUS server: EAP-Request-MD5 (4)
-Mar 22 22:32:33 access-node hostapd[2052]: RADIUS packet matching with station 00:0c:29:68:53:33
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: decapsulated EAP packet (code=1 id=26 len=22) from RADIUS server: EAP-Request-MD5 (4)
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received RADIUS p
+        acket matched with a pending request, round trip time 0.00 sec
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: decapsulated
+         EAP packet (code=1 id=26 len=22) from RADIUS server: EAP-Request-MD5 (4)
+Mar 22 22:32:33 access-node hostapd[2052]: RADIUS packet matching with station 00:0c:29:68
+        :53:33
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: decapsulated
+         EAP packet (code=1 id=26 len=22) from RADIUS server: EAP-Request-MD5 (4)
 Mar 22 22:32:33 access-node hostapd[2052]: EAP: EAP entering state AAA_RESPONSE
 Mar 22 22:32:33 access-node hostapd[2052]: EAP: getId: id=26
 Mar 22 22:32:33 access-node hostapd[2052]: EAP: EAP entering state SEND_REQUEST2
 Mar 22 22:32:33 access-node hostapd[2052]: EAP: EAP entering state IDLE2
-Mar 22 22:32:33 access-node hostapd[2052]: EAP: retransmit timeout 3 seconds (from dynamic back off; retransCount=0)
-Mar 22 22:32:33 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state REQUEST
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP Packet (identifier 26)
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP Packet (identifier 26)
+Mar 22 22:32:33 access-node hostapd[2052]: EAP: retransmit timeout 3 seconds (from dynamic
+         back off; retransCount=0)
+Mar 22 22:32:33 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state 
+        REQUEST
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP 
+        Packet (identifier 26)
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP 
+        Packet (identifier 26)
 Mar 22 22:32:33 access-node hostapd[2052]: Received EAPOL packet
 Mar 22 22:32:33 access-node hostapd[2052]: ens38: Event NEW_STA (22) received
 Mar 22 22:32:33 access-node hostapd[2052]: ens38: Event EAPOL_RX (23) received
 Mar 22 22:32:33 access-node hostapd[2052]: IEEE 802.1X: 46 bytes from 00:0c:29:68:53:33
 Mar 22 22:32:33 access-node hostapd[2052]:    IEEE 802.1X: version=2 type=0 length=22
-Mar 22 22:32:33 access-node hostapd[2052]:    ignoring 20 extra octets after IEEE 802.1X packet
+Mar 22 22:32:33 access-node hostapd[2052]:    ignoring 20 extra octets after IEEE 802.1X p
+        acket
 Mar 22 22:32:33 access-node hostapd[2052]: EAP: code=2 (response) identifier=26 length=22
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP packet (code=2 id=26 len=22) from STA: EAP Response-MD5 (4)
-Mar 22 22:32:33 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state RESPONSE
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP
+         packet (code=2 id=26 len=22) from STA: EAP Response-MD5 (4)
+Mar 22 22:32:33 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state 
+        RESPONSE
 Mar 22 22:32:33 access-node hostapd[2052]: EAP: EAP entering state RECEIVED2
-Mar 22 22:32:33 access-node hostapd[2052]: EAP: parseEapResp: rxResp=1 rxInitiate=0 respId=26 respMethod=4 respVendor=0 respVendorMethod=0
+Mar 22 22:32:33 access-node hostapd[2052]: EAP: parseEapResp: rxResp=1 rxInitiate=0 respId
+        =26 respMethod=4 respVendor=0 respVendorMethod=0
 Mar 22 22:32:33 access-node hostapd[2052]: EAP: EAP entering state AAA_REQUEST
 Mar 22 22:32:33 access-node hostapd[2052]: EAP: EAP entering state AAA_IDLE
 Mar 22 22:32:33 access-node hostapd[2052]: Encapsulating EAP message into a RADIUS packet
 Mar 22 22:32:33 access-node hostapd[2052]: Copied RADIUS State Attribute
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authentication server
-Mar 22 22:32:33 access-node hostapd[2052]: RADIUS message: code=1 (Access-Request) identifier=1 length=193
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authent
+        ication server
+Mar 22 22:32:33 access-node hostapd[2052]: RADIUS message: code=1 (Access-Request) identif
+        ier=1 length=193
 Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 1 (User-Name) length=9
 Mar 22 22:32:33 access-node hostapd[2052]:       Value: 'nacuser'
 Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 4 (NAS-IP-Address) length=6
@@ -5230,25 +5271,40 @@ Mar 22 22:32:33 access-node hostapd[2052]:       Value: '1A082DB0BEE2BD34'
 Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 12 (Framed-MTU) length=6
 Mar 22 22:32:33 access-node hostapd[2052]:       Value: 1400
 Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 79 (EAP-Message) length=24
-Mar 22 22:32:33 access-node hostapd[2052]:       Value: 021a0016041041b2c01ccfa94d12fc491a04d95cd935
+Mar 22 22:32:33 access-node hostapd[2052]:       Value: 021a0016041041b2c01ccfa94d12fc491a
+        04d95cd935
 Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 24 (State) length=18
 Mar 22 22:32:33 access-node hostapd[2052]:       Value: bb99b235bb83b6a0b74fb036b1c91a02
-Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 80 (Message-Authenticator) length=18
+Mar 22 22:32:33 access-node hostapd[2052]:    Attribute 80 (Message-Authenticator) length=
+        18
 Mar 22 22:32:33 access-node hostapd[2052]:       Value: ee00aa03a7391d212502d3e4595c510c
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 3 seconds
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP packet (code=2 id=26 len=22) from STA: EAP Response-MD5 (4)
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authentication server
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 3 seconds
-Mar 22 22:32:36 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> - (EAP) retransWhile --> 0
-Mar 22 22:32:36 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Resending RADIUS message (id=1)
-Mar 22 22:32:36 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Resending RADIUS message (id=1)
-Mar 22 22:32:36 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 6 seconds
-Mar 22 22:32:36 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 6 seconds
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 
+        3 seconds
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP
+         packet (code=2 id=26 len=22) from STA: EAP Response-MD5 (4)
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authent
+        ication server
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 
+        3 seconds
+Mar 22 22:32:36 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> - (EAP) retransWhile --
+        > 0
+Mar 22 22:32:36 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Resending RADIUS 
+        message (id=1)
+Mar 22 22:32:36 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Resending RADIUS 
+        message (id=1)
+Mar 22 22:32:36 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 
+        6 seconds
+Mar 22 22:32:36 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 
+        6 seconds
 Mar 22 22:32:36 access-node hostapd[2052]: recvmsg[RADIUS]: Connection refused
-Mar 22 22:32:42 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Resending RADIUS message (id=1)
-Mar 22 22:32:42 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 12 seconds
-Mar 22 22:32:42 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Resending RADIUS message (id=1)
-Mar 22 22:32:42 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 12 seconds
+Mar 22 22:32:42 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Resending RADIUS 
+        message (id=1)
+Mar 22 22:32:42 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 
+        12 seconds
+Mar 22 22:32:42 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Resending RADIUS 
+        message (id=1)
+Mar 22 22:32:42 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 
+        12 seconds
 Mar 22 22:32:42 access-node hostapd[2052]: recvmsg[RADIUS]: Connection refused
 \end{verbatim}
 
@@ -5559,7 +5615,8 @@ radiusd: #### Instantiating modules ####
   # Loading module "ntlm_auth" from file /etc/freeradius/3.0/mods-enabled/ntlm_auth
   exec ntlm_auth {
   	wait = yes
-  	program = "/path/to/ntlm_auth --request-nt-key --domain=MYDOMAIN --username=%{mschap:User-Name} --password=%{User-Password}"
+  	program = "/path/to/ntlm_auth --request-nt-key --domain=MYDOMAIN --username=%{mschap:Us
+        er-Name} --password=%{User-Password}"
   	shell_escape = yes
   }
   # Loaded module rlm_preprocess
@@ -5577,7 +5634,8 @@ radiusd: #### Instantiating modules ####
   # Loaded module rlm_detail
   # Loading module "detail" from file /etc/freeradius/3.0/mods-enabled/detail
   detail {
-  	filename = "/var/log/freeradius/radacct/%{%{Packet-Src-IP-Address}:-%{Packet-Src-IPv6-Address}}/detail-%Y%m%d"
+  	filename = "/var/log/freeradius/radacct/%{%{Packet-Src-IP-Address}:-%{Packet-Src-IPv6-A
+        ddress}}/detail-%Y%m%d"
   	header = "%t"
   	permissions = 384
   	locking = no
@@ -5601,7 +5659,8 @@ radiusd: #### Instantiating modules ####
   # Loaded module rlm_expr
   # Loading module "expr" from file /etc/freeradius/3.0/mods-enabled/expr
   expr {
-  	safe_characters = "@abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_: /äéöüàâæçèéêëîïôœùûüaÿÄÉÖÜßÀÂÆÇÈÉÊËÎÏÔŒÙÛÜŸ"
+  	safe_characters = "@abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_: 
+        /äéöüàâæçèéêëîïôœùûüaÿÄÉÖÜßÀÂÆÇÈÉÊËÎÏÔŒÙÛÜŸ"
   }
   # Loaded module rlm_unpack
   # Loading module "unpack" from file /etc/freeradius/3.0/mods-enabled/unpack
@@ -5671,13 +5730,15 @@ radiusd: #### Instantiating modules ####
   	key = "%{User-Name}"
   	relaxed = no
   }
-  # Loading module "attr_filter.accounting_response" from file /etc/freeradius/3.0/mods-enabled/attr_filter
+  # Loading module "attr_filter.accounting_response" from file /etc/freeradius/3.0/mods-en
+        abled/attr_filter
   attr_filter attr_filter.accounting_response {
   	filename = "/etc/freeradius/3.0/mods-config/attr_filter/accounting_response"
   	key = "%{User-Name}"
   	relaxed = no
   }
-  # Loading module "attr_filter.coa" from file /etc/freeradius/3.0/mods-enabled/attr_filter
+  # Loading module "attr_filter.coa" from file /etc/freeradius/3.0/mods-enabled/attr_filte
+        r
   attr_filter attr_filter.coa {
   	filename = "/etc/freeradius/3.0/mods-config/attr_filter/coa"
   	key = "%{User-Name}"
@@ -5715,7 +5776,8 @@ Creating attribute Unix-Group
   }
   # Loading module "auth_log" from file /etc/freeradius/3.0/mods-enabled/detail.log
   detail auth_log {
-  	filename = "/var/log/freeradius/radacct/%{%{Packet-Src-IP-Address}:-%{Packet-Src-IPv6-Address}}/auth-detail-%Y%m%d"
+  	filename = "/var/log/freeradius/radacct/%{%{Packet-Src-IP-Address}:-%{Packet-Src-IPv6-A
+        ddress}}/auth-detail-%Y%m%d"
   	header = "%t"
   	permissions = 384
   	locking = no
@@ -5725,7 +5787,8 @@ Creating attribute Unix-Group
   }
   # Loading module "reply_log" from file /etc/freeradius/3.0/mods-enabled/detail.log
   detail reply_log {
-  	filename = "/var/log/freeradius/radacct/%{%{Packet-Src-IP-Address}:-%{Packet-Src-IPv6-Address}}/reply-detail-%Y%m%d"
+  	filename = "/var/log/freeradius/radacct/%{%{Packet-Src-IP-Address}:-%{Packet-Src-IPv6-A
+        ddress}}/reply-detail-%Y%m%d"
   	header = "%t"
   	permissions = 384
   	locking = no
@@ -5735,7 +5798,8 @@ Creating attribute Unix-Group
   }
   # Loading module "pre_proxy_log" from file /etc/freeradius/3.0/mods-enabled/detail.log
   detail pre_proxy_log {
-  	filename = "/var/log/freeradius/radacct/%{%{Packet-Src-IP-Address}:-%{Packet-Src-IPv6-Address}}/pre-proxy-detail-%Y%m%d"
+  	filename = "/var/log/freeradius/radacct/%{%{Packet-Src-IP-Address}:-%{Packet-Src-IPv6-A
+        ddress}}/pre-proxy-detail-%Y%m%d"
   	header = "%t"
   	permissions = 384
   	locking = no
@@ -5745,7 +5809,8 @@ Creating attribute Unix-Group
   }
   # Loading module "post_proxy_log" from file /etc/freeradius/3.0/mods-enabled/detail.log
   detail post_proxy_log {
-  	filename = "/var/log/freeradius/radacct/%{%{Packet-Src-IP-Address}:-%{Packet-Src-IPv6-Address}}/post-proxy-detail-%Y%m%d"
+  	filename = "/var/log/freeradius/radacct/%{%{Packet-Src-IP-Address}:-%{Packet-Src-IPv6-A
+        ddress}}/post-proxy-detail-%Y%m%d"
   	header = "%t"
   	permissions = 384
   	locking = no
@@ -5786,7 +5851,8 @@ Creating attribute Unix-Group
   	reference = "Accounting-Request.%{%{Acct-Status-Type}:-unknown}"
   }
   # Loaded module rlm_dynamic_clients
-  # Loading module "dynamic_clients" from file /etc/freeradius/3.0/mods-enabled/dynamic_clients
+  # Loading module "dynamic_clients" from file /etc/freeradius/3.0/mods-enabled/dynamic_cl
+        ients
   # Loaded module rlm_files
   # Loading module "files" from file /etc/freeradius/3.0/mods-enabled/files
   files {
@@ -5807,7 +5873,8 @@ Creating attribute Unix-Group
   # Instantiating module "updated" from file /etc/freeradius/3.0/mods-enabled/always
   # Instantiating module "mschap" from file /etc/freeradius/3.0/mods-enabled/mschap
 rlm_mschap (mschap): using internal authentication
-  # Instantiating module "preprocess" from file /etc/freeradius/3.0/mods-enabled/preprocess
+  # Instantiating module "preprocess" from file /etc/freeradius/3.0/mods-enabled/
+        preprocess
 reading pairlist file /etc/freeradius/3.0/mods-config/preprocess/huntgroups
 reading pairlist file /etc/freeradius/3.0/mods-config/preprocess/hints
   # Instantiating module "detail" from file /etc/freeradius/3.0/mods-enabled/detail
@@ -5817,27 +5884,36 @@ reading pairlist file /etc/freeradius/3.0/mods-config/preprocess/hints
   # Instantiating module "bangpath" from file /etc/freeradius/3.0/mods-enabled/realm
   # Instantiating module "realmpercent" from file /etc/freeradius/3.0/mods-enabled/realm
   # Instantiating module "ntdomain" from file /etc/freeradius/3.0/mods-enabled/realm
-  # Instantiating module "attr_filter.post-proxy" from file /etc/freeradius/3.0/mods-enabled/attr_filter
+  # Instantiating module "attr_filter.post-proxy" from file /etc/freeradius/3.0/mods-enabl
+        ed/attr_filter
 reading pairlist file /etc/freeradius/3.0/mods-config/attr_filter/post-proxy
-  # Instantiating module "attr_filter.pre-proxy" from file /etc/freeradius/3.0/mods-enabled/attr_filter
+  # Instantiating module "attr_filter.pre-proxy" from file /etc/freeradius/3.0/mods-enable
+        d/attr_filter
 reading pairlist file /etc/freeradius/3.0/mods-config/attr_filter/pre-proxy
-  # Instantiating module "attr_filter.access_reject" from file /etc/freeradius/3.0/mods-enabled/attr_filter
+  # Instantiating module "attr_filter.access_reject" from file /etc/freeradius/3.0/mods-en
+        abled/attr_filter
 reading pairlist file /etc/freeradius/3.0/mods-config/attr_filter/access_reject
-  # Instantiating module "attr_filter.access_challenge" from file /etc/freeradius/3.0/mods-enabled/attr_filter
+  # Instantiating module "attr_filter.access_challenge" from file /etc/freeradius/3.0/mods
+        -enabled/attr_filter
 reading pairlist file /etc/freeradius/3.0/mods-config/attr_filter/access_challenge
-  # Instantiating module "attr_filter.accounting_response" from file /etc/freeradius/3.0/mods-enabled/attr_filter
+  # Instantiating module "attr_filter.accounting_response" from file /etc/freeradius/3.0/m
+        ods-enabled/attr_filter
 reading pairlist file /etc/freeradius/3.0/mods-config/attr_filter/accounting_response
-  # Instantiating module "attr_filter.coa" from file /etc/freeradius/3.0/mods-enabled/attr_filter
+  # Instantiating module "attr_filter.coa" from file /etc/freeradius/3.0/mods-enabled/attr
+        _filter
 reading pairlist file /etc/freeradius/3.0/mods-config/attr_filter/coa
-  # Instantiating module "expiration" from file /etc/freeradius/3.0/mods-enabled/expiration
+  # Instantiating module "expiration" from file /etc/freeradius/3.0/mods-enabled/expiratio
+        n
   # Instantiating module "pap" from file /etc/freeradius/3.0/mods-enabled/pap
   # Instantiating module "etc_passwd" from file /etc/freeradius/3.0/mods-enabled/passwd
 rlm_passwd: nfields: 3 keyfield 0(User-Name) listable: no
   # Instantiating module "auth_log" from file /etc/freeradius/3.0/mods-enabled/detail.log
 rlm_detail (auth_log): 'User-Password' suppressed, will not appear in detail output
   # Instantiating module "reply_log" from file /etc/freeradius/3.0/mods-enabled/detail.log
-  # Instantiating module "pre_proxy_log" from file /etc/freeradius/3.0/mods-enabled/detail.log
-  # Instantiating module "post_proxy_log" from file /etc/freeradius/3.0/mods-enabled/detail.log
+  # Instantiating module "pre_proxy_log" from file /etc/freeradius/3.0/mods-enabled/detail
+        .log
+  # Instantiating module "post_proxy_log" from file /etc/freeradius/3.0/mods-enabled/detai
+        l.log
   # Instantiating module "eap" from file /etc/freeradius/3.0/mods-enabled/eap
    # Linked to sub-module rlm_eap_md5
    # Linked to sub-module rlm_eap_gtc
@@ -5915,7 +5991,8 @@ tls: Using cached TLS configuration from previous invocation
    	send_error = no
    }
   # Instantiating module "linelog" from file /etc/freeradius/3.0/mods-enabled/linelog
-  # Instantiating module "log_accounting" from file /etc/freeradius/3.0/mods-enabled/linelog
+  # Instantiating module "log_accounting" from file /etc/freeradius/3.0/mods-enabled/linel
+        og
   # Instantiating module "files" from file /etc/freeradius/3.0/mods-enabled/files
 reading pairlist file /etc/freeradius/3.0/mods-config/files/authorize
 reading pairlist file /etc/freeradius/3.0/mods-config/files/accounting
@@ -5935,7 +6012,8 @@ Ignoring "ldap" (see raddb/mods-available/README.rst)
  # Loading session {...}
  # Loading post-proxy {...}
  # Loading post-auth {...}
- # Skipping contents of 'if' as it is always 'false' -- /etc/freeradius/3.0/sites-enabled/inner-tunnel:366
+ # Skipping contents of 'if' as it is always 'false' -- /etc/freeradius/3.0/sites-enabled/
+        inner-tunnel:366
 Compiling Post-Auth-Type REJECT for attr Post-Auth-Type
 } # server inner-tunnel
 server default { # from file /etc/freeradius/3.0/sites-enabled/default
@@ -6173,8 +6251,10 @@ radius-splunk: ~/incident-evidence/wpa_supplicant_success_retest_v2.txt
 wpa_supplicant v2.10
 random: getrandom() support available
 Successfully initialized wpa_supplicant
-Initializing interface 'ens33' conf '/etc/wpa_supplicant/lab/wired-8021x.conf' driver 'wired' ctrl_interface 'N/A' bridge 'N/A'
-Configuration file '/etc/wpa_supplicant/lab/wired-8021x.conf' -> '/etc/wpa_supplicant/lab/wired-8021x.conf'
+Initializing interface 'ens33' conf '/etc/wpa_supplicant/lab/wired-8021x.conf' driver 'wir
+        ed' ctrl_interface 'N/A' bridge 'N/A'
+Configuration file '/etc/wpa_supplicant/lab/wired-8021x.conf' -> '/etc/wpa_supplicant/lab/
+        wired-8021x.conf'
 Reading configuration file '/etc/wpa_supplicant/lab/wired-8021x.conf'
 ctrl_interface='/run/wpa_supplicant'
 ap_scan=0
@@ -6245,7 +6325,8 @@ TX EAPOL: dst=<REDACTED>
 TX EAPOL - hexdump(len=4): 02 01 00 00
 l2_packet_receive: src=<REDACTED> len=46
 ens33: RX EAPOL from <REDACTED>
-RX EAPOL - hexdump(len=46): 02 00 00 05 01 fe 00 05 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+RX EAPOL - hexdump(len=46): 02 00 00 05 01 fe 00 05 01 00 00 00 00 00 00 00 00 00 00 00 00
+         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 EAPOL: Received EAP-Packet frame
 EAPOL: SUPP_PAE entering state RESTART
 EAP: EAP entering state INITIALIZE
@@ -6270,7 +6351,8 @@ TX EAPOL - hexdump(len=16): 02 00 00 0c 02 fe 00 0c 01 6e 61 63 75 73 65 72
 EAPOL: SUPP_BE entering state RECEIVE
 l2_packet_receive: src=<REDACTED> len=46
 ens33: RX EAPOL from <REDACTED>
-RX EAPOL - hexdump(len=46): 02 00 00 16 01 ff 00 16 04 10 90 ab 89 1e 63 b1 ce 73 b1 28 33 17 e8 9c c4 1b 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+RX EAPOL - hexdump(len=46): 02 00 00 16 01 ff 00 16 04 10 90 ab 89 1e 63 b1 ce 73 b1 28 33
+         17 e8 9c c4 1b 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 EAPOL: Received EAP-Packet frame
 EAPOL: SUPP_BE entering state REQUEST
 EAPOL: getSuppRsp
@@ -6285,17 +6367,20 @@ EAP: EAP entering state METHOD
 EAP-MD5: Challenge - hexdump(len=16): 90 ab 89 1e 63 b1 ce 73 b1 28 33 17 e8 9c c4 1b
 EAP-MD5: Generating Challenge Response
 EAP-MD5: Response - hexdump(len=16): 61 59 ca e5 bd 45 91 62 54 d8 5a 8e 12 d8 60 af
-EAP: method process -> ignore=FALSE methodState=DONE decision=COND_SUCC eapRespData=0x623cdc395420
+EAP: method process -> ignore=FALSE methodState=DONE decision=COND_SUCC eapRespData=0x623c
+        dc395420
 EAP: EAP entering state SEND_RESPONSE
 EAP: EAP entering state IDLE
 EAPOL: SUPP_BE entering state RESPONSE
 EAPOL: txSuppRsp
 TX EAPOL: dst=<REDACTED>
-TX EAPOL - hexdump(len=26): 02 00 00 16 02 ff 00 16 04 10 61 59 ca e5 bd 45 91 62 54 d8 5a 8e 12 d8 60 af
+TX EAPOL - hexdump(len=26): 02 00 00 16 02 ff 00 16 04 10 61 59 ca e5 bd 45 91 62 54 d8 5a
+         8e 12 d8 60 af
 EAPOL: SUPP_BE entering state RECEIVE
 l2_packet_receive: src=<REDACTED> len=46
 ens33: RX EAPOL from <REDACTED>
-RX EAPOL - hexdump(len=46): 02 00 00 04 03 ff 00 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+RX EAPOL - hexdump(len=46): 02 00 00 04 03 ff 00 04 00 00 00 00 00 00 00 00 00 00 00 00 00
+         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 EAPOL: Received EAP-Packet frame
 EAPOL: SUPP_BE entering state REQUEST
 EAPOL: getSuppRsp
@@ -6316,7 +6401,8 @@ EAPOL: SUPP_BE entering state SUCCESS
 EAPOL: SUPP_BE entering state IDLE
 EAPOL authentication completed - result=SUCCESS
 ens33: Removing interface ens33
-ens33: Request to deauthenticate - bssid=<REDACTED> pending_bssid=00:00:00:00:00:00 reason=3 (DEAUTH_LEAVING) state=COMPLETED
+ens33: Request to deauthenticate - bssid=<REDACTED> pending_bssid=00:00:00:00:00:00 reason
+        =3 (DEAUTH_LEAVING) state=COMPLETED
 TDLS: Tear down peers
 ens33: Event DEAUTH (11) received
 ens33: Deauthentication notification
@@ -6324,7 +6410,8 @@ ens33:  * reason 3 (DEAUTH_LEAVING) locally_generated=1
 Deauthentication frame IE(s) - hexdump(len=0): [NULL]
 ens33: CTRL-EVENT-DISCONNECTED bssid=<REDACTED> reason=3 locally_generated=1
 ens33: Auto connect disabled: do not try to re-connect
-ens33: Ignore connection failure indication since interface has been put into disconnected state
+ens33: Ignore connection failure indication since interface has been put into disconnected
+         state
 TDLS: Remove peers on disassociation
 ens33: WPA: Clear old PMK and PTK
 ens33: Disconnect event - remove keys
@@ -6346,7 +6433,8 @@ ens33: Cancelling scan request
 ens33: Cancelling authentication timeout
 Off-channel: Clear pending Action frame TX (pending_action_tx=(nil)
 HS20: Delete all stored icons
-Off-channel: Action frame sequence done notification: pending_action_tx=(nil) drv_offchan_tx=0 action_tx_wait_time=0 off_channel_freq=0 roc_waiting_drv_freq=0
+Off-channel: Action frame sequence done notification: pending_action_tx=(nil) drv_offchan_
+        tx=0 action_tx_wait_time=0 off_channel_freq=0 roc_waiting_drv_freq=0
 QM: Clear all active DSCP policies
 ens33: CTRL-EVENT-DSCP-POLICY clear_all
 Remove interface ens33 from radio 
@@ -6368,63 +6456,91 @@ ens33: CTRL-EVENT-TERMINATING
 radius-splunk: ~/incident-evidence/hostapd_success_retest_v2.txt
 Mar 23 02:49:00 access-node hostapd[2052]: Received EAPOL packet
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: Event NEW_STA (22) received
-Mar 23 02:49:00 access-node hostapd[2052]: Data frame from unknown STA <REDACTED> - adding a new STA
+Mar 23 02:49:00 access-node hostapd[2052]: Data frame from unknown STA <REDACTED> - adding
+         a new STA
 Mar 23 02:49:00 access-node hostapd[2052]:   New STA
-Mar 23 02:49:00 access-node hostapd[2052]: ap_sta_add: register ap_handle_timer timeout for <REDACTED> (300 seconds - ap_max_inactivity)
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: start authentication
+Mar 23 02:49:00 access-node hostapd[2052]: ap_sta_add: register ap_handle_timer timeout fo
+        r <REDACTED> (300 seconds - ap_max_inactivity)
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: start authen
+        tication
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: Server state machine created
-Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state IDLE
-Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> CTRL_DIR entering state FORCE_BOTH
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: hostapd_new_assoc_sta: canceled wired ap_handle_timer timeout for <REDACTED>
+Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state 
+        IDLE
+Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> CTRL_DIR entering state
+         FORCE_BOTH
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: hostapd_new_assoc_sta: canceled wired ap
+        _handle_timer timeout for <REDACTED>
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: Event EAPOL_RX (23) received
 Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: 46 bytes from <REDACTED>
 Mar 23 02:49:00 access-node hostapd[2052]:    IEEE 802.1X: version=2 type=1 length=0
-Mar 23 02:49:00 access-node hostapd[2052]:    ignoring 42 extra octets after IEEE 802.1X packet
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAPOL-Start from STA
-Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> AUTH_PAE entering state DISCONNECTED
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: unauthorizing port
-Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> AUTH_PAE entering state RESTART
+Mar 23 02:49:00 access-node hostapd[2052]:    ignoring 42 extra octets after IEEE 802.1X p
+        acket
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP
+        OL-Start from STA
+Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> AUTH_PAE entering state
+         DISCONNECTED
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: unauthorizin
+        g port
+Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> AUTH_PAE entering state
+         RESTART
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state INITIALIZE
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: CTRL-EVENT-EAP-STARTED <REDACTED>
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state SELECT_ACTION
-Mar 23 02:49:00 access-node hostapd[2052]: EAP: getDecision: no identity known yet -> CONTINUE
+Mar 23 02:49:00 access-node hostapd[2052]: EAP: getDecision: no identity known yet -> CONT
+        INUE
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state PROPOSE_METHOD
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: getNextMethod: vendor 0 type 1
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: CTRL-EVENT-EAP-PROPOSED-METHOD vendor=0 method=1
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: CTRL-EVENT-EAP-PROPOSED-METHOD vendor=0 
+        method=1
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state METHOD_REQUEST
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: building EAP-Request: Identifier 254
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state SEND_REQUEST
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state IDLE
-Mar 23 02:49:00 access-node hostapd[2052]: EAP: retransmit timeout 3 seconds (from dynamic back off; retransCount=0)
-Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> AUTH_PAE entering state CONNECTING
-Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> AUTH_PAE entering state AUTHENTICATING
-Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state REQUEST
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP Packet (identifier 254)
+Mar 23 02:49:00 access-node hostapd[2052]: EAP: retransmit timeout 3 seconds (from dynamic
+         back off; retransCount=0)
+Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> AUTH_PAE entering state
+         CONNECTING
+Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> AUTH_PAE entering state
+         AUTHENTICATING
+Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state 
+        REQUEST
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP 
+        Packet (identifier 254)
 Mar 23 02:49:00 access-node hostapd[2052]: Received EAPOL packet
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: Event NEW_STA (22) received
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: Event EAPOL_RX (23) received
 Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: 46 bytes from <REDACTED>
 Mar 23 02:49:00 access-node hostapd[2052]:    IEEE 802.1X: version=2 type=0 length=12
-Mar 23 02:49:00 access-node hostapd[2052]:    ignoring 30 extra octets after IEEE 802.1X packet
+Mar 23 02:49:00 access-node hostapd[2052]:    ignoring 30 extra octets after IEEE 802.1X p
+        acket
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: code=2 (response) identifier=254 length=12
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: start authentication
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP packet (code=2 id=254 len=12) from STA: EAP Response-Identity (1)
-Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state RESPONSE
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: start authen
+        tication
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP
+         packet (code=2 id=254 len=12) from STA: EAP Response-Identity (1)
+Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state 
+        RESPONSE
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state RECEIVED
-Mar 23 02:49:00 access-node hostapd[2052]: EAP: parseEapResp: rxResp=1 rxInitiate=0 respId=254 respMethod=1 respVendor=0 respVendorMethod=0
+Mar 23 02:49:00 access-node hostapd[2052]: EAP: parseEapResp: rxResp=1 rxInitiate=0 respId
+        =254 respMethod=1 respVendor=0 respVendorMethod=0
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state INTEGRITY_CHECK
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state METHOD_RESPONSE
-Mar 23 02:49:00 access-node hostapd[2052]: EAP-Identity: Peer identity - hexdump_ascii(len=7):
-Mar 23 02:49:00 access-node hostapd[2052]:      6e 61 63 75 73 65 72                              nacuser
+Mar 23 02:49:00 access-node hostapd[2052]: EAP-Identity: Peer identity - hexdump_ascii(len
+        =7):
+Mar 23 02:49:00 access-node hostapd[2052]:      6e 61 63 75 73 65 72                      
+                nacuser
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state SELECT_ACTION
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: getDecision: -> PASSTHROUGH
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state INITIALIZE_PASSTHROUGH
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state AAA_REQUEST
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state AAA_IDLE
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: STA identity 'nacuser'
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: STA identity
+         'nacuser'
 Mar 23 02:49:00 access-node hostapd[2052]: Encapsulating EAP message into a RADIUS packet
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authentication server
-Mar 23 02:49:00 access-node hostapd[2052]: RADIUS message: code=1 (Access-Request) identifier=3 length=165
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authent
+        ication server
+Mar 23 02:49:00 access-node hostapd[2052]: RADIUS message: code=1 (Access-Request) identif
+        ier=3 length=165
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 1 (User-Name) length=9
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: 'nacuser'
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 4 (NAS-IP-Address) length=6
@@ -6445,51 +6561,70 @@ Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 12 (Framed-MTU) length=6
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: 1400
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 79 (EAP-Message) length=14
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: 02fe000c016e616375736572
-Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 80 (Message-Authenticator) length=18
+Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 80 (Message-Authenticator) length=
+        18
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: ede40768f3affc833f5ecb655d5f6878
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 3 seconds
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAPOL-Start from STA
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received 80 bytes from RADIUS server
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 
+        3 seconds
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP
+        OL-Start from STA
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received 80 bytes from RADIUS ser
+        ver
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received RADIUS message
-Mar 23 02:49:00 access-node hostapd[2052]: RADIUS message: code=11 (Access-Challenge) identifier=3 length=80
-Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 80 (Message-Authenticator) length=18
+Mar 23 02:49:00 access-node hostapd[2052]: RADIUS message: code=11 (Access-Challenge) iden
+        tifier=3 length=80
+Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 80 (Message-Authenticator) length=
+        18
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: e9f4ffb9acaefad6cd9fe021f6937580
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 79 (EAP-Message) length=24
-Mar 23 02:49:00 access-node hostapd[2052]:       Value: 01ff0016041090ab891e63b1ce73b1283317e89cc41b
+Mar 23 02:49:00 access-node hostapd[2052]:       Value: 01ff0016041090ab891e63b1ce73b12833
+        17e89cc41b
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 24 (State) length=18
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: 33b1db94334edf7cde63d907d83a901f
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received RADIUS packet matched with a pending request, round trip time 0.00 sec
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received RADIUS p
+        acket matched with a pending request, round trip time 0.00 sec
 Mar 23 02:49:00 access-node hostapd[2052]: RADIUS packet matching with station <REDACTED>
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: decapsulated EAP packet (code=1 id=255 len=22) from RADIUS server: EAP-Request-MD5 (4)
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: decapsulated
+         EAP packet (code=1 id=255 len=22) from RADIUS server: EAP-Request-MD5 (4)
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state AAA_RESPONSE
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: getId: id=255
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state SEND_REQUEST2
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state IDLE2
-Mar 23 02:49:00 access-node hostapd[2052]: EAP: retransmit timeout 3 seconds (from dynamic back off; retransCount=0)
-Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state REQUEST
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP Packet (identifier 255)
+Mar 23 02:49:00 access-node hostapd[2052]: EAP: retransmit timeout 3 seconds (from dynamic
+         back off; retransCount=0)
+Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state 
+        REQUEST
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP 
+        Packet (identifier 255)
 Mar 23 02:49:00 access-node hostapd[2052]: Received EAPOL packet
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: Event NEW_STA (22) received
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: Event EAPOL_RX (23) received
 Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: 46 bytes from <REDACTED>
 Mar 23 02:49:00 access-node hostapd[2052]:    IEEE 802.1X: version=2 type=0 length=22
-Mar 23 02:49:00 access-node hostapd[2052]:    ignoring 20 extra octets after IEEE 802.1X packet
+Mar 23 02:49:00 access-node hostapd[2052]:    ignoring 20 extra octets after IEEE 802.1X p
+        acket
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: code=2 (response) identifier=255 length=22
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP packet (code=2 id=255 len=22) from STA: EAP Response-MD5 (4)
-Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state RESPONSE
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP
+         packet (code=2 id=255 len=22) from STA: EAP Response-MD5 (4)
+Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state 
+        RESPONSE
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state RECEIVED2
-Mar 23 02:49:00 access-node hostapd[2052]: EAP: parseEapResp: rxResp=1 rxInitiate=0 respId=255 respMethod=4 respVendor=0 respVendorMethod=0
+Mar 23 02:49:00 access-node hostapd[2052]: EAP: parseEapResp: rxResp=1 rxInitiate=0 respId
+        =255 respMethod=4 respVendor=0 respVendorMethod=0
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state AAA_REQUEST
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state AAA_IDLE
 Mar 23 02:49:00 access-node hostapd[2052]: Encapsulating EAP message into a RADIUS packet
 Mar 23 02:49:00 access-node hostapd[2052]: Copied RADIUS State Attribute
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authentication server
-Mar 23 02:49:00 access-node hostapd[2052]: RADIUS message: code=1 (Access-Request) identifier=4 length=193
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authent
+        ication server
+Mar 23 02:49:00 access-node hostapd[2052]: RADIUS message: code=1 (Access-Request) identif
+        ier=4 length=193
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 1 (User-Name) length=9
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: 'nacuser'
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 4 (NAS-IP-Address) length=6
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: 10.0.23.1
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: unauthorizing port
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: unauthorizin
+        g port
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 30 (Called-Station-Id) length=20
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: '<REDACTED>:'
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 61 (NAS-Port-Type) length=6
@@ -6505,59 +6640,97 @@ Mar 23 02:49:00 access-node hostapd[2052]:       Value: '2268479955CB85A0'
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 12 (Framed-MTU) length=6
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: 1400
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 79 (EAP-Message) length=24
-Mar 23 02:49:00 access-node hostapd[2052]:       Value: 02ff001604106159cae5bd45916254d85a8e12d860af
+Mar 23 02:49:00 access-node hostapd[2052]:       Value: 02ff001604106159cae5bd45916254d85a
+        8e12d860af
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 24 (State) length=18
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: 33b1db94334edf7cde63d907d83a901f
-Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 80 (Message-Authenticator) length=18
+Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 80 (Message-Authenticator) length=
+        18
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: b10e50120d8d1718ff54b589c41af645
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 3 seconds
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received 53 bytes from RADIUS server
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 
+        3 seconds
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received 53 bytes from RADIUS ser
+        ver
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received RADIUS message
-Mar 23 02:49:00 access-node hostapd[2052]: RADIUS message: code=2 (Access-Accept) identifier=4 length=53
-Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 80 (Message-Authenticator) length=18
+Mar 23 02:49:00 access-node hostapd[2052]: RADIUS message: code=2 (Access-Accept) identifi
+        er=4 length=53
+Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 80 (Message-Authenticator) length=
+        18
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: e995ad8e4287ff371bdeaf07853dceac
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 79 (EAP-Message) length=6
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: 03ff0004
 Mar 23 02:49:00 access-node hostapd[2052]:    Attribute 1 (User-Name) length=9
 Mar 23 02:49:00 access-node hostapd[2052]:       Value: 'nacuser'
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received RADIUS packet matched with a pending request, round trip time 0.00 sec
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received RADIUS p
+        acket matched with a pending request, round trip time 0.00 sec
 Mar 23 02:49:00 access-node hostapd[2052]: RADIUS packet matching with station <REDACTED>
-Mar 23 02:49:00 access-node hostapd[2052]: MS-MPPE: 1x_get_keys, could not get keys: 0x5cc575f92a40  send: (nil)  recv: (nil)
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: old identity 'nacuser' updated with User-Name from Access-Accept 'nacuser'
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: decapsulated EAP packet (code=3 id=255 len=4) from RADIUS server: EAP Success
+Mar 23 02:49:00 access-node hostapd[2052]: MS-MPPE: 1x_get_keys, could not get keys: 0x5cc
+        575f92a40  send: (nil)  recv: (nil)
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: old identity
+         'nacuser' updated with User-Name from Access-Accept 'nacuser'
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: decapsulated
+         EAP packet (code=3 id=255 len=4) from RADIUS server: EAP Success
 Mar 23 02:49:00 access-node hostapd[2052]: EAP: EAP entering state SUCCESS2
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: CTRL-EVENT-EAP-SUCCESS2 <REDACTED>
-Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state SUCCESS
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP Packet (identifier 255)
-Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> AUTH_PAE entering state AUTHENTICATED
+Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state 
+        SUCCESS
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP 
+        Packet (identifier 255)
+Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> AUTH_PAE entering state
+         AUTHENTICATED
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: AP-STA-CONNECTED <REDACTED>
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP Packet (identifier 254)
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: authorizing port
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: starting accounting session 2268479955CB85A0
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: authenticated - EAP type: 4 (MD5)
-Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state IDLE
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP packet (code=2 id=254 len=12) from STA: EAP Response-Identity (1)
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: STA identity 'nacuser'
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authentication server
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 3 seconds
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received 80 bytes from RADIUS server
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP 
+        Packet (identifier 254)
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: authorizing 
+        port
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: starting accounti
+        ng session 2268479955CB85A0
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: authenticate
+        d - EAP type: 4 (MD5)
+Mar 23 02:49:00 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> BE_AUTH entering state 
+        IDLE
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP
+         packet (code=2 id=254 len=12) from STA: EAP Response-Identity (1)
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: STA identity
+         'nacuser'
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authent
+        ication server
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 
+        3 seconds
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received 80 bytes from RADIUS ser
+        ver
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received RADIUS message
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received RADIUS packet matched with a pending request, round trip time 0.00 sec
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: decapsulated EAP packet (code=1 id=255 len=22) from RADIUS server: EAP-Request-MD5 (4)
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP Packet (identifier 255)
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP packet (code=2 id=255 len=22) from STA: EAP Response-MD5 (4)
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authentication server
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 3 seconds
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received 53 bytes from RADIUS server
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received RADIUS p
+        acket matched with a pending request, round trip time 0.00 sec
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: decapsulated
+         EAP packet (code=1 id=255 len=22) from RADIUS server: EAP-Request-MD5 (4)
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP 
+        Packet (identifier 255)
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: received EAP
+         packet (code=2 id=255 len=22) from STA: EAP Response-MD5 (4)
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authent
+        ication server
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 
+        3 seconds
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received 53 bytes from RADIUS ser
+        ver
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received RADIUS message
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received RADIUS packet matched with a pending request, round trip time 0.00 sec
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: old identity 'nacuser' updated with User-Name from Access-Accept 'nacuser'
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: decapsulated EAP packet (code=3 id=255 len=4) from RADIUS server: EAP Success
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP Packet (identifier 255)
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: authorizing port
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: starting accounting session 2268479955CB85A0
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: authenticated - EAP type: 4 (MD5)
-Mar 23 02:49:03 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> - (EAP) retransWhile --> 0
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received RADIUS p
+        acket matched with a pending request, round trip time 0.00 sec
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: old identity
+         'nacuser' updated with User-Name from Access-Accept 'nacuser'
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: decapsulated
+         EAP packet (code=3 id=255 len=4) from RADIUS server: EAP Success
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: Sending EAP 
+        Packet (identifier 255)
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: authorizing 
+        port
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: starting accounti
+        ng session 2268479955CB85A0
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: authenticate
+        d - EAP type: 4 (MD5)
+Mar 23 02:49:03 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> - (EAP) retransWhile --
+        > 0
 Mar 23 02:49:30 access-node hostapd[2052]: IEEE 802.1X: <REDACTED> - aWhile --> 0
 \end{verbatim}
 
@@ -6839,8 +7012,12 @@ rtt min/avg/max/mdev = 8.043/9.758/11.444/1.326 ms
 guest-test-1: curl -I --max-time 5 http://www.google.com
 HTTP/1.1 200 OK
 Content-Type: text/html; charset=ISO-8859-1
-Content-Security-Policy-Report-Only: object-src 'none';base-uri 'self';script-src 'nonce-QUPlZ9-ttgVc2d-VTB3gXA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
-Reporting-Endpoints: default="//www.google.com/httpservice/retry/jserror?ei=n1PCacmWHbav5NoPtbr14A0&cad=crash&error=Page%20Crash&jsel=1&bver=2405&dpf=nIfF8NgQdNWxHThvch26jsRSkc4DpZUm6gVT80MTHMY"
+Content-Security-Policy-Report-Only: object-src 'none';base-uri 'self';script-src 'nonce-Q
+        UPlZ9-ttgVc2d-VTB3gXA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' 
+        https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
+Reporting-Endpoints: default="//www.google.com/httpservice/retry/jserror?ei=n1PCacmWHbav5N
+        oPtbr14A0&cad=crash&error=Page%20Crash&jsel=1&bver=2405&dpf=
+        nIfF8NgQdNWxHThvch26jsRSkc4DpZUm6gVT80MTHMY"
 P3P: CP="This is not a P3P policy! See g.co/p3phelp for more info."
 Date: Tue, 24 Mar 2026 09:04:31 GMT
 Server: gws
@@ -6955,8 +7132,10 @@ skipping: [access-node]
 ok: [radius-splunk -> localhost]
 
 PLAY RECAP *********************************************************************
-access-node                : ok=8    changed=3    unreachable=0    failed=0    skipped=11   rescued=0    ignored=0
-radius-splunk              : ok=10   changed=3    unreachable=0    failed=0    skipped=9    rescued=0    ignored=0
+access-node                : ok=8    changed=3    unreachable=0    failed=0    skipped=11   
+        rescued=0    ignored=0
+radius-splunk              : ok=10   changed=3    unreachable=0    failed=0    skipped=9    
+        rescued=0    ignored=0
 \end{verbatim}
 
 % ---------------------------------------------------------------------
@@ -7051,8 +7230,10 @@ skipping: [access-node]
 changed: [radius-splunk -> localhost]
 
 PLAY RECAP *********************************************************************
-access-node                : ok=9    changed=4    unreachable=0    failed=0    skipped=10   rescued=0    ignored=0
-radius-splunk              : ok=11   changed=5    unreachable=0    failed=0    skipped=8    rescued=0    ignored=0
+access-node                : ok=9    changed=4    unreachable=0    failed=0    skipped=10   
+        rescued=0    ignored=0
+radius-splunk              : ok=11   changed=5    unreachable=0    failed=0    skipped=8    
+        rescued=0    ignored=0
 \end{verbatim}
 
 % ---------------------------------------------------------------------
@@ -7094,7 +7275,8 @@ total 44K
 \begin{verbatim}
 ===== /home/nac-lab/ansible-nac/artifacts/access-node_hostapd_logs.txt =====
 Mar 24 12:23:12 access-node hostapd[1927]: hostapd_interface_deinit_free(0x61845b677590)
-Mar 24 12:23:12 access-node hostapd[1927]: hostapd_interface_deinit_free: num_bss=1 conf->num_bss=1
+Mar 24 12:23:12 access-node hostapd[1927]: hostapd_interface_deinit_free: num_bss=1 
+        conf->num_bss=1
 Mar 24 12:23:12 access-node hostapd[1927]: hostapd_interface_deinit(0x61845b677590)
 Mar 24 12:23:12 access-node hostapd[1927]: ens38: interface state ENABLED->DISABLED
 Mar 24 12:23:12 access-node hostapd[1927]: hostapd_bss_deinit: deinit bss ens38
@@ -7136,20 +7318,27 @@ remediation not requested
      CGroup: /system.slice/hostapd-wired.service
 
 ===== /home/nac-lab/ansible-nac/artifacts/radius-splunk_freeradius_journal.txt =====
-Mar 24 12:22:39 radius-splunk freeradius[3253]: Compiling Post-Auth-Type Challenge for attr Post-Auth-Type
-Mar 24 12:22:39 radius-splunk freeradius[3253]: Compiling Post-Auth-Type Client-Lost for attr Post-Auth-Type
-Mar 24 12:22:39 radius-splunk freeradius[3253]: radiusd: #### Skipping IP addresses and Ports ####
+Mar 24 12:22:39 radius-splunk freeradius[3253]: Compiling Post-Auth-Type Challenge for 
+        attr Post-Auth-Type
+Mar 24 12:22:39 radius-splunk freeradius[3253]: Compiling Post-Auth-Type Client-Lost for 
+        attr Post-Auth-Type
+Mar 24 12:22:39 radius-splunk freeradius[3253]: radiusd: #### Skipping IP addresses and 
+        Ports ####
 Mar 24 12:22:39 radius-splunk freeradius[3253]: Configuration appears to be OK
-Mar 24 12:22:39 radius-splunk systemd[1]: Started freeradius.service - FreeRADIUS multi-protocol policy server.
-Mar 24 12:23:12 radius-splunk systemd[1]: Stopping freeradius.service - FreeRADIUS multi-protocol policy server...
+Mar 24 12:22:39 radius-splunk systemd[1]: Started freeradius.service - FreeRADIUS 
+        multi-protocol policy server.
+Mar 24 12:23:12 radius-splunk systemd[1]: Stopping freeradius.service - FreeRADIUS 
+        multi-protocol policy server...
 Mar 24 12:23:12 radius-splunk systemd[1]: freeradius.service: Deactivated successfully.
-Mar 24 12:23:12 radius-splunk systemd[1]: Stopped freeradius.service - FreeRADIUS multi-protocol policy server.
+Mar 24 12:23:12 radius-splunk systemd[1]: Stopped freeradius.service - FreeRADIUS 
+        multi-protocol policy server.
 
 ===== /home/nac-lab/ansible-nac/artifacts/radius-splunk_freeradius_radiuslog.txt =====
 Tue Mar 24 11:34:18 2026 : Info: Loaded virtual server <default>
 Tue Mar 24 11:34:18 2026 : Warning: Ignoring "sql" (see raddb/mods-available/README.rst)
 Tue Mar 24 11:34:18 2026 : Warning: Ignoring "ldap" (see raddb/mods-available/README.rst)
-Tue Mar 24 11:34:18 2026 : Info:  # Skipping contents of 'if' as it is always 'false' -- /etc/freeradius/3.0/sites-enabled/inner-tunnel:366
+Tue Mar 24 11:34:18 2026 : Info:  # Skipping contents of 'if' as it is always 'false' -- 
+        /etc/freeradius/3.0/sites-enabled/inner-tunnel:366
 Tue Mar 24 11:34:18 2026 : Info: Loaded virtual server inner-tunnel
 Tue Mar 24 11:34:18 2026 : Info: Loaded virtual server default
 Tue Mar 24 11:34:18 2026 : Info: Ready to process requests
@@ -7226,16 +7415,27 @@ splunk helpers are running (PIDs: 1490)
 
 \begin{verbatim}
 radius-splunk: sudo tail -n 15 /var/log/syslog
-2026-03-24T13:14:41.348438+00:00 radius-splunk multipathd[467]: sda: failed to get sgio uid: No such file or directory
-2026-03-24T13:14:41.348468+00:00 radius-splunk multipathd[467]: sda: no WWID in state "undef
+2026-03-24T13:14:41.348438+00:00 radius-splunk multipathd[467]: sda: failed to get sgio 
+        uid: No such file or directory
+2026-03-24T13:14:41.348468+00:00 radius-splunk multipathd[467]: sda: no WWID in state 
+        "undef
 2026-03-24T13:14:41.348639+00:00 radius-splunk multipathd[467]: ", giving up
-2026-03-24T13:14:41.348690+00:00 radius-splunk multipathd[467]: sda: check_path() failed, removing
-2026-03-24T13:15:01.629554+00:00 radius-splunk CRON[1579]: (root) CMD (command -v debian-sa1 > /dev/null && debian-sa1 1 1)
-2026-03-24T13:17:01.652202+00:00 radius-splunk CRON[1587]: (root) CMD (cd / && run-parts --report /etc/cron.hourly)
-2026-03-24T13:19:05.468094+00:00 radius-splunk systemd[1]: Starting update-notifier-download.service - Download data for packages that failed at package install time...
-2026-03-24T13:19:05.678561+00:00 radius-splunk systemd[1]: update-notifier-download.service: Deactivated successfully.
-2026-03-24T13:19:05.678792+00:00 radius-splunk systemd[1]: Finished update-notifier-download.service - Download data for packages that failed at package install time.
-2026-03-24T13:19:31.934534+00:00 radius-splunk systemd[1376]: launchpadlib-cache-clean.service - Clean up old files in the Launchpadlib cache was skipped because of an unmet condition check (ConditionPathExists=/home/nac-lab/.launchpadlib/api.launchpad.net/cache).
+2026-03-24T13:14:41.348690+00:00 radius-splunk multipathd[467]: sda: check_path() failed, 
+        removing
+2026-03-24T13:15:01.629554+00:00 radius-splunk CRON[1579]: (root) CMD (command -v 
+        debian-sa1 > /dev/null && debian-sa1 1 1)
+2026-03-24T13:17:01.652202+00:00 radius-splunk CRON[1587]: (root) CMD (cd / && run-parts 
+        --report /etc/cron.hourly)
+2026-03-24T13:19:05.468094+00:00 radius-splunk systemd[1]: Starting update-notifier-
+        download.service - Download data for packages that failed at package install time...
+2026-03-24T13:19:05.678561+00:00 radius-splunk systemd[1]: update-notifier-download.
+        service: Deactivated successfully.
+2026-03-24T13:19:05.678792+00:00 radius-splunk systemd[1]: Finished update-notifier-
+        download.service - Download data for packages that failed at package install time.
+2026-03-24T13:19:31.934534+00:00 radius-splunk systemd[1376]: launchpadlib-cache-clean.
+        service - Clean up old files in the Launchpadlib cache was skipped because of an unmet 
+        condition check (ConditionPathExists=/home/nac-lab/.launchpadlib/api.launchpad.net
+        /cache).
 \end{verbatim}
 
 % ---------------------------------------------------------------------
@@ -7250,21 +7450,35 @@ radius-splunk: sudo tail -n 15 /var/log/syslog
 
 \begin{verbatim}
 radius-splunk: sudo tail -n 15 /var/log/auth.log
-2026-03-24T13:20:04.756710+00:00 radius-splunk sshd[1628]: pam_unix(sshd:session): session opened for user nac-lab(uid=1000) by nac-lab(uid=0)
-2026-03-24T13:20:04.762714+00:00 radius-splunk systemd-logind[816]: New session 5 of user nac-lab.
-2026-03-24T13:20:05.503276+00:00 radius-splunk sshd[1686]: Received disconnect from 192.168.195.1 port 41932:11: disconnected by user
-2026-03-24T13:20:05.503525+00:00 radius-splunk sshd[1686]: Disconnected from user nac-lab 192.168.195.1 port 41932
-2026-03-24T13:20:05.504875+00:00 radius-splunk sshd[1628]: pam_unix(sshd:session): session closed for user nac-lab
-2026-03-24T13:20:05.511847+00:00 radius-splunk systemd-logind[816]: Session 5 logged out. Waiting for processes to exit.
+2026-03-24T13:20:04.756710+00:00 radius-splunk sshd[1628]: pam_unix(sshd:session): session
+         opened for user nac-lab(uid=1000) by nac-lab(uid=0)
+2026-03-24T13:20:04.762714+00:00 radius-splunk systemd-logind[816]: New session 5 of user 
+        nac-lab.
+2026-03-24T13:20:05.503276+00:00 radius-splunk sshd[1686]: Received disconnect from 192.16
+        8.195.1 port 41932:11: disconnected by user
+2026-03-24T13:20:05.503525+00:00 radius-splunk sshd[1686]: Disconnected from user nac-lab 
+        192.168.195.1 port 41932
+2026-03-24T13:20:05.504875+00:00 radius-splunk sshd[1628]: pam_unix(sshd:session): session
+         closed for user nac-lab
+2026-03-24T13:20:05.511847+00:00 radius-splunk systemd-logind[816]: Session 5 logged out. 
+        Waiting for processes to exit.
 2026-03-24T13:20:05.514296+00:00 radius-splunk systemd-logind[816]: Removed session 5.
-2026-03-24T13:20:37.703552+00:00 radius-splunk sudo:  nac-lab : TTY=tty1 ; PWD=/home/nac-lab ; USER=root ; COMMAND=/usr/bin/tail -n 15 /var/log/syslog
-2026-03-24T13:20:37.704672+00:00 radius-splunk sudo: pam_unix(sudo:session): session opened for user root(uid=0) by nac-lab(uid=1000)
-2026-03-24T13:20:37.731117+00:00 radius-splunk sudo: pam_unix(sudo:session): session closed for user root
-2026-03-24T13:21:39.041208+00:00 radius-splunk sudo:  nac-lab : TTY=tty1 ; PWD=/home/nac-lab ; USER=root ; COMMAND=/usr/bin/tail -n 15 /var/log/auth.log
-2026-03-24T13:21:39.042808+00:00 radius-splunk sudo: pam_unix(sudo:session): session opened for user root(uid=0) by nac-lab(uid=1000)
-2026-03-24T13:21:39.068864+00:00 radius-splunk sudo: pam_unix(sudo:session): session closed for user root
-2026-03-24T13:22:03.513481+00:00 radius-splunk sudo:  nac-lab : TTY=tty1 ; PWD=/home/nac-lab ; USER=root ; COMMAND=/usr/bin/tail -n 15 /var/log/auth.log
-2026-03-24T13:22:03.514636+00:00 radius-splunk sudo: pam_unix(sudo:session): session opened for user root(uid=0) by nac-lab(uid=1000)
+2026-03-24T13:20:37.703552+00:00 radius-splunk sudo:  nac-lab : TTY=tty1 ; PWD=/home/nac-l
+        ab ; USER=root ; COMMAND=/usr/bin/tail -n 15 /var/log/syslog
+2026-03-24T13:20:37.704672+00:00 radius-splunk sudo: pam_unix(sudo:session): session opene
+        d for user root(uid=0) by nac-lab(uid=1000)
+2026-03-24T13:20:37.731117+00:00 radius-splunk sudo: pam_unix(sudo:session): session close
+        d for user root
+2026-03-24T13:21:39.041208+00:00 radius-splunk sudo:  nac-lab : TTY=tty1 ; PWD=/home/nac-l
+        ab ; USER=root ; COMMAND=/usr/bin/tail -n 15 /var/log/auth.log
+2026-03-24T13:21:39.042808+00:00 radius-splunk sudo: pam_unix(sudo:session): session opene
+        d for user root(uid=0) by nac-lab(uid=1000)
+2026-03-24T13:21:39.068864+00:00 radius-splunk sudo: pam_unix(sudo:session): session close
+        d for user root
+2026-03-24T13:22:03.513481+00:00 radius-splunk sudo:  nac-lab : TTY=tty1 ; PWD=/home/nac-l
+        ab ; USER=root ; COMMAND=/usr/bin/tail -n 15 /var/log/auth.log
+2026-03-24T13:22:03.514636+00:00 radius-splunk sudo: pam_unix(sudo:session): session opene
+        d for user root(uid=0) by nac-lab(uid=1000)
 \end{verbatim}
 
 % ---------------------------------------------------------------------
@@ -7284,7 +7498,8 @@ Tue Mar 24 12:23:12 2026 : Info: systemd watchdog interval is 30.00 secs
 Tue Mar 24 12:23:12 2026 : Info: Loaded virtual server <default>
 Tue Mar 24 12:23:12 2026 : Warning: Ignoring "sql" (see raddb/mods-available/README.rst)
 Tue Mar 24 12:23:12 2026 : Warning: Ignoring "ldap" (see raddb/mods-available/README.rst)
-Tue Mar 24 12:23:12 2026 : Info:  # Skipping contents of 'if' as it is always 'false' -- /etc/freeradius/3.0/sites-enabled/inner-tunnel:366
+Tue Mar 24 12:23:12 2026 : Info:  # Skipping contents of 'if' as it is always 'false' --
+        /etc/freeradius/3.0/sites-enabled/inner-tunnel:366
 Tue Mar 24 12:23:12 2026 : Info: Loaded virtual server inner-tunnel
 Tue Mar 24 12:23:12 2026 : Info: Loaded virtual server default
 Tue Mar 24 12:23:12 2026 : Info: Ready to process requests
@@ -7295,7 +7510,8 @@ Tue Mar 24 13:14:05 2026 : Info: systemd watchdog interval is 30.00 secs
 Tue Mar 24 13:14:05 2026 : Info: Loaded virtual server <default>
 Tue Mar 24 13:14:05 2026 : Warning: Ignoring "sql" (see raddb/mods-available/README.rst)
 Tue Mar 24 13:14:05 2026 : Warning: Ignoring "ldap" (see raddb/mods-available/README.rst)
-Tue Mar 24 13:14:05 2026 : Info:  # Skipping contents of 'if' as it is always 'false' -- /etc/freeradius/3.0/sites-enabled/inner-tunnel:366
+Tue Mar 24 13:14:05 2026 : Info:  # Skipping contents of 'if' as it is always 'false' -- 
+        /etc/freeradius/3.0/sites-enabled/inner-tunnel:366
 Tue Mar 24 13:14:05 2026 : Info: Loaded virtual server inner-tunnel
 Tue Mar 24 13:14:05 2026 : Info: Loaded virtual server default
 Tue Mar 24 13:14:05 2026 : Info: Ready to process requests
@@ -7323,11 +7539,15 @@ access-node: sudo systemctl status hostapd-wired.service --no-pager
      CGroup: /system.slice/hostapd-wired.service
              975 /usr/sbin/hostapd -dd /etc/hostapd/lab/hostapd-wired.conf
 
-Mar 24 04:20:41 access-node hostapd[975]: Using interface ens38 with hwaddr <REDACTED> and ssid ""
-Mar 24 04:20:41 access-node hostapd[975]: ens38: RADIUS Authentication server 10.0.30.10:1812
+Mar 24 04:20:41 access-node hostapd[975]: Using interface ens38 with hwaddr <REDACTED> and
+         ssid ""
+Mar 24 04:20:41 access-node hostapd[975]: ens38: RADIUS Authentication server 10.0.30.10:1
+        812
 Mar 24 04:20:41 access-node hostapd[975]: RADIUS local address: 10.0.23.1:45833
-Mar 24 04:20:41 access-node hostapd[975]: ens38: IEEE 802.11 Fetching hardware channel/rate support not supported.
-Mar 24 04:20:41 access-node hostapd[975]: ens38: RADIUS Authentication server 10.0.30.10:1812
+Mar 24 04:20:41 access-node hostapd[975]: ens38: IEEE 802.11 Fetching hardware channel/rat
+        e support not supported.
+Mar 24 04:20:41 access-node hostapd[975]: ens38: RADIUS Authentication server 10.0.30.10:1
+        812
 Mar 24 04:20:41 access-node hostapd[975]: ens38: Deauthenticate all stations at BSS start
 Mar 24 04:20:41 access-node hostapd[975]: ens38: interface state UNINITIALIZED->ENABLED
 Mar 24 04:20:41 access-node hostapd[975]: ens38: AP-ENABLED
@@ -7336,30 +7556,43 @@ Mar 24 04:20:41 access-node hostapd[975]: ens38: Setup of interface done.
 access-node: sudo journalctl -u hostapd-wired.service -n 20 --no-pager
 Mar 24 02:13:55 access-node hostapd[2398]: ens38: CTRL-EVENT-TERMINATING
 Mar 24 02:13:55 access-node hostapd[2398]: hostapd_free_hapd_data(ens38)
-Mar 24 02:13:55 access-node hostapd[2398]: hostapd_interface_deinit_free: driver=0x565a2d747060 drv_priv=0x565a38444cd0 -> hapd_deinit
+Mar 24 02:13:55 access-node hostapd[2398]: hostapd_interface_deinit_free: driver=0x565a2d7
+        47060 drv_priv=0x565a38444cd0 -> hapd_deinit
 Mar 24 02:13:55 access-node hostapd[2398]: hostapd_interface_free(0x565a38442590)
-Mar 24 02:13:55 access-node hostapd[2398]: hostapd_interface_free: free hapd 0x565a38443d40
+Mar 24 02:13:55 access-node hostapd[2398]: hostapd_interface_free: free hapd 0x565a38443d4
+        0
 Mar 24 02:13:55 access-node hostapd[2398]: hostapd_cleanup_iface(0x565a38442590)
 Mar 24 02:13:55 access-node hostapd[2398]: hostapd_cleanup_iface_partial(0x565a38442590)
-Mar 24 02:13:55 access-node hostapd[2398]: hostapd_cleanup_iface: free iface=0x565a38442590
+Mar 24 02:13:55 access-node hostapd[2398]: hostapd_cleanup_iface: free iface=0x565a3844259
+        0
 Mar 24 02:13:55 access-node systemd[1]: hostapd-wired.service: Deactivated successfully.
-Mar 24 02:13:55 access-node systemd[1]: Stopped hostapd-wired.service - hostapd wired 802.1X authenticator (lab).
+Mar 24 02:13:55 access-node systemd[1]: Stopped hostapd-wired.service - hostapd wired 802.
+        1X authenticator (lab).
 -- Boot 4efbb5bbbad2458a94bc281c688f0c9b --
-Mar 24 04:20:41 access-node systemd[1]: Started hostapd-wired.service - hostapd wired 802.1X authenticator (lab).
+Mar 24 04:20:41 access-node systemd[1]: Started hostapd-wired.service - hostapd wired 802.
+        1X authenticator (lab).
 Mar 24 04:20:41 access-node hostapd[975]: random: getrandom() support available
-Mar 24 04:20:41 access-node hostapd[975]: Configuration file: /etc/hostapd/lab/hostapd-wired.conf
+Mar 24 04:20:41 access-node hostapd[975]: Configuration file: /etc/hostapd/lab/hostapd-wir
+        ed.conf
 Mar 24 04:20:41 access-node hostapd[975]: eapol_version=2
 Mar 24 04:20:41 access-node hostapd[975]: ctrl_interface_group=0
 Mar 24 04:20:41 access-node hostapd[975]: Opening raw packet socket for ifindex 3
-Mar 24 04:20:41 access-node hostapd[975]: BSS count 1, BSSID mask 00:00:00:00:00:00 (0 bits)
-Mar 24 04:20:41 access-node hostapd[975]: ens38: IEEE 802.11 Fetching hardware channel/rate support not supported.
+Mar 24 04:20:41 access-node hostapd[975]: BSS count 1, BSSID mask 00:00:00:00:00:00 (0 bit
+        s)
+Mar 24 04:20:41 access-node hostapd[975]: ens38: IEEE 802.11 Fetching hardware channel/rat
+        e support not supported.
 Mar 24 04:20:41 access-node hostapd[975]: Completing interface initialization
-Mar 24 04:20:41 access-node hostapd[975]: hostapd_setup_bss(hapd=0x648c62cc3d40 (ens38), first=1)
-Mar 24 04:20:41 access-node hostapd[975]: Using interface ens38 with hwaddr <REDACTED> and ssid ""
-Mar 24 04:20:41 access-node hostapd[975]: ens38: RADIUS Authentication server 10.0.30.10:1812
+Mar 24 04:20:41 access-node hostapd[975]: hostapd_setup_bss(hapd=0x648c62cc3d40 (ens38), f
+        irst=1)
+Mar 24 04:20:41 access-node hostapd[975]: Using interface ens38 with hwaddr <REDACTED> and
+         ssid ""
+Mar 24 04:20:41 access-node hostapd[975]: ens38: RADIUS Authentication server 10.0.30.10:1
+        812
 Mar 24 04:20:41 access-node hostapd[975]: RADIUS local address: 10.0.23.1:45833
-Mar 24 04:20:41 access-node hostapd[975]: ens38: IEEE 802.11 Fetching hardware channel/rate support not supported.
-Mar 24 04:20:41 access-node hostapd[975]: ens38: RADIUS Authentication server 10.0.30.10:1812
+Mar 24 04:20:41 access-node hostapd[975]: ens38: IEEE 802.11 Fetching hardware channel/rat
+        e support not supported.
+Mar 24 04:20:41 access-node hostapd[975]: ens38: RADIUS Authentication server 10.0.30.10:1
+        812
 Mar 24 04:20:41 access-node hostapd[975]: ens38: Deauthenticate all stations at BSS start
 Mar 24 04:20:41 access-node hostapd[975]: ens38: interface state UNINITIALIZED->ENABLED
 Mar 24 04:20:41 access-node hostapd[975]: ens38: AP-ENABLED
@@ -7408,42 +7641,29 @@ access-node: ls -lh ~/pcaps
 \begin{verbatim}
 access-node:
 sudo timeout 20s tcpdump -i ens38 -w /tmp/failed_8021x_ens38.pcap ether proto 0x888e &
-sudo timeout 20s tcpdump -i ens39 -w /tmp/failed_8021x_ens39.pcap host 10.0.30.10 and udp port 1812 &
+sudo timeout 20s tcpdump -i ens39 -w /tmp/failed_8021x_ens39.pcap host 10.0.30.10 and 
+        udp port 1812 &
 sleep 2
 
 client-1:
 sudo systemctl stop wpa_supplicant
-sudo timeout 15s wpa_supplicant -i ens33 -D wired -c /etc/wpa_supplicant/lab/wired-8021x.conf -dd
+sudo timeout 15s wpa_supplicant -i ens33 -D wired -c 
+        /etc/wpa_supplicant/lab/wired-8021x.conf -dd
 
 access-node:
 sudo timeout 20s tcpdump -i ens38 -w ~/pcaps/success_8021x_ens38.pcap ether proto 0x888e &
-sudo timeout 20s tcpdump -i ens39 -w ~/pcaps/success_8021x_ens39.pcap host 10.0.30.10 and udp port 1812 &
+sudo timeout 20s tcpdump -i ens39 -w ~/pcaps/success_8021x_ens39.pcap host 10.0.30.10 and
+        udp port 1812 &
 sleep 2
 
 client-1:
 sudo systemctl stop wpa_supplicant
-sudo timeout 15s wpa_supplicant -i ens33 -D wired -c /etc/wpa_supplicant/lab/wired-8021x.conf -dd
+sudo timeout 15s wpa_supplicant -i ens33 -D wired -c 
+        /etc/wpa_supplicant/lab/wired-8021x.conf -dd
 \end{verbatim}
 
 % ---------------------------------------------------------------------
-% SUBSECTION B.6.3: WIRESHARK FIGURE INVENTORY
-% ---------------------------------------------------------------------
-% This subsection preserves the authoritative Wireshark screenshot
-% inventory referenced in the packet-analysis section.
-% ---------------------------------------------------------------------
-
-\subsubsection{B.6.3 Wireshark Figure Inventory}
-\label{sec:appendix-b-wireshark-figure-inventory}
-
-\begin{verbatim}
-Figure candidate 1: failed client-side screenshot --- available
-Figure candidate 2: failed authenticator-side screenshot --- available
-Figure candidate 3: success client-side screenshot --- available
-Figure candidate 4: success authenticator-side screenshot --- available
-\end{verbatim}
-
-% ---------------------------------------------------------------------
-% SUBSECTION B.6.4: PACKET CAPTURE REDACTION POLICY
+% SUBSECTION B.6.3: PACKET CAPTURE REDACTION POLICY
 % ---------------------------------------------------------------------
 % This subsection preserves the approved publication-safe redaction
 % policy for Wireshark packet screenshots.
