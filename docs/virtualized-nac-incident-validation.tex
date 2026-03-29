@@ -126,27 +126,28 @@
 \hline
 Document Title & Virtualized NAC with Automated Wired 802.1X Incident Validation \\
 \hline
+Author & Eric Schmitt \\
+\hline
 Document Version & 1.0 \\
 \hline
-Document Status & Production Draft (Educational / Proof-of-Concept Lab) \\
+Date of Issue & March 24, 2026 \\
+\hline
+Document Status & Production Draft (Educational Lab / Proof-of-Concept) \\
 \hline
 Document Type & Engineering Lab Implementation and Validation Report \\
 \hline
-Primary Scope & Virtualized wired 802.1X NAC proof-of-concept with policy-based guest access enforcement, incident simulation, automation, and packet-level validation \\
+Primary Scope & Virtualized wired 802.1X NAC proof-of-concept with policy-based guest access \\
+        enforcement, incident simulation, automation, and packet-level validation \\
 \hline
-Author & Eric Schmitt \\
+Primary Technologies & IEEE 802.1X via hostapd (wired mode) + wpa_supplicant, \\
+        pfSense, FreeRADIUS, GLPI on Apache + MariaDB, Splunk Universal Forwarder, \\
+        Python, Ansible, tcpdump, Wireshark \\
 \hline
-Execution Platform & VMware Workstation Pro on Ubuntu Server 24.04 LTS host \\
+VM Platform & VMware Workstation Pro: Ubuntu Server 24.04 LTS \\
 \hline
-Primary Lab Purpose & Demonstrate a realistic small-scale NAC architecture with authenticated access control, constrained guest access, observability, ITSM workflow integration, automation, and protocol validation \\
-\hline
-Standards Context & IEEE 802.1X / EAP / RADIUS-aligned proof-of-concept implementation with explicitly documented virtualization constraints \\
-\hline
-Publication Intent & Portfolio-grade technical artifact written in the style of an internal enterprise engineering document \\
-\hline
-Artifact Format & Single monolithic \texttt{.tex} source for Pandoc-driven PDF and HTML generation \\
-\hline
-Evidence Handling Policy & Final-state operational evidence included inline and in appendices using verbatim blocks; GUI-derived evidence represented by explicit figure placeholders and later screenshot insertion \\
+Primary Lab Purpose & Demonstrate a realistic small-scale NAC architecture with authenticated access \\
+        control, constrained guest access, observability, ITSM workflow integration, automation, \\
+        and protocol validation \\
 \hline
 \end{tabular}
 \end{center}
@@ -171,7 +172,7 @@ This document is intentionally written as an engineering implementation and vali
 \hline
 \textbf{Version} & \textbf{Date} & \textbf{Author} & \textbf{Description} \\
 \hline
-1.0 & 2026-03-24 & Eric Schmitt & Initial documentation draft; text-only. \\
+1.0 & 2026-03-24 & Eric Schmitt & Initial document draft; text-only. \\
 \hline
 \end{tabular}
 \end{center}
@@ -3081,9 +3082,9 @@ radius-splunk: tail -n 15 /var/log/syslog
         update-notifier-download.service - Download data for packages that failed at package 
         install time.
 2026-03-24T13:19:31.934534+00:00 radius-splunk systemd[1376]: launchpadlib-cache-clean.
-        service - Clean up old files in the Launchpadlib cache was skipped because of an unmet 
-        condition check (ConditionPathExists=/home/nac-lab/.launchpadlib/api.launchpad.net
-        /cache).
+        service - Clean up old files in the Launchpadlib cache was skipped because of an
+        unmet condition check (ConditionPathExists=/home/nac-lab/.launchpadlib/
+        api.launchpad.net/cache).
 \end{verbatim}
 
 This excerpt is not included because each line is individually important. Rather, it demonstrates the character of the source: \texttt{syslog} is a general-purpose host operational log that complements more specialized sources such as \texttt{radius.log}.
@@ -4960,7 +4961,8 @@ radius-splunk: ~/incident-evidence/wpa_supplicant_failed_auth_incident.txt
 wpa_supplicant v2.10
 random: getrandom() support available
 Successfully initialized wpa_supplicant
-Initializing interface 'ens33' conf '/etc/wpa_supplicant/lab/wired-8021x.conf' driver 'wired' ctrl_interface 'N/A' bridge 'N/A'
+Initializing interface 'ens33' conf '/etc/wpa_supplicant/lab/wired-8021x.conf' driver 
+        'wired' ctrl_interface 'N/A' bridge 'N/A'
 Configuration file '/etc/wpa_supplicant/lab/wired-8021x.conf' -> '/etc/wpa_supplicant/lab/
         wired-8021x.conf'
 Reading configuration file '/etc/wpa_supplicant/lab/wired-8021x.conf'
@@ -5706,39 +5708,43 @@ radiusd: #### Instantiating modules ####
   	ignore_null = no
   }
   # Loaded module rlm_attr_filter
-  # Loading module "attr_filter.post-proxy" from file /etc/freeradius/3.0/mods-enabled/attr_filter
+  # Loading module "attr_filter.post-proxy" from file /etc/freeradius/3.0/mods-enabled/
+          attr_filter
   attr_filter attr_filter.post-proxy {
   	filename = "/etc/freeradius/3.0/mods-config/attr_filter/post-proxy"
   	key = "%{Realm}"
   	relaxed = no
   }
-  # Loading module "attr_filter.pre-proxy" from file /etc/freeradius/3.0/mods-enabled/attr_filter
+  # Loading module "attr_filter.pre-proxy" from file /etc/freeradius/3.0/mods-enabled/
+          attr_filter
   attr_filter attr_filter.pre-proxy {
   	filename = "/etc/freeradius/3.0/mods-config/attr_filter/pre-proxy"
   	key = "%{Realm}"
   	relaxed = no
   }
-  # Loading module "attr_filter.access_reject" from file /etc/freeradius/3.0/mods-enabled/attr_filter
+  # Loading module "attr_filter.access_reject" from file /etc/freeradius/3.0/
+          mods-enabled/attr_filter
   attr_filter attr_filter.access_reject {
   	filename = "/etc/freeradius/3.0/mods-config/attr_filter/access_reject"
   	key = "%{User-Name}"
   	relaxed = no
   }
-  # Loading module "attr_filter.access_challenge" from file /etc/freeradius/3.0/mods-enabled/attr_filter
+  # Loading module "attr_filter.access_challenge" from file /etc/freeradius/3.0/
+          mods-enabled/attr_filter
   attr_filter attr_filter.access_challenge {
   	filename = "/etc/freeradius/3.0/mods-config/attr_filter/access_challenge"
   	key = "%{User-Name}"
   	relaxed = no
   }
-  # Loading module "attr_filter.accounting_response" from file /etc/freeradius/3.0/mods-en
-        abled/attr_filter
+  # Loading module "attr_filter.accounting_response" from file /etc/freeradius/3.0/
+          mods-enabled/attr_filter
   attr_filter attr_filter.accounting_response {
   	filename = "/etc/freeradius/3.0/mods-config/attr_filter/accounting_response"
   	key = "%{User-Name}"
   	relaxed = no
   }
-  # Loading module "attr_filter.coa" from file /etc/freeradius/3.0/mods-enabled/attr_filte
-        r
+  # Loading module "attr_filter.coa" from file /etc/freeradius/3.0/
+          mods-enabled/attr_filter
   attr_filter attr_filter.coa {
   	filename = "/etc/freeradius/3.0/mods-config/attr_filter/coa"
   	key = "%{User-Name}"
@@ -7427,15 +7433,16 @@ radius-splunk: sudo tail -n 15 /var/log/syslog
 2026-03-24T13:17:01.652202+00:00 radius-splunk CRON[1587]: (root) CMD (cd / && run-parts 
         --report /etc/cron.hourly)
 2026-03-24T13:19:05.468094+00:00 radius-splunk systemd[1]: Starting update-notifier-
-        download.service - Download data for packages that failed at package install time...
+        download.service - Download data for packages that failed at package install 
+        time...
 2026-03-24T13:19:05.678561+00:00 radius-splunk systemd[1]: update-notifier-download.
         service: Deactivated successfully.
 2026-03-24T13:19:05.678792+00:00 radius-splunk systemd[1]: Finished update-notifier-
         download.service - Download data for packages that failed at package install time.
 2026-03-24T13:19:31.934534+00:00 radius-splunk systemd[1376]: launchpadlib-cache-clean.
-        service - Clean up old files in the Launchpadlib cache was skipped because of an unmet 
-        condition check (ConditionPathExists=/home/nac-lab/.launchpadlib/api.launchpad.net
-        /cache).
+        service - Clean up old files in the Launchpadlib cache was skipped because of an
+        unmet condition check (ConditionPathExists=/home/nac-lab/.launchpadlib/
+        api.launchpad.net/cache).
 \end{verbatim}
 
 % ---------------------------------------------------------------------
