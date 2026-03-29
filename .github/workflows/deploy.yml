@@ -39,26 +39,46 @@ jobs:
           rm -rf dist
           mkdir -p dist/docs/diagrams dist/docs/assets
 
+          # ------------------------------------------------------------
+          # Render Mermaid diagrams to repo-local PNGs for PDF build,
+          # then copy them into dist/docs/diagrams for HTML deployment.
+          # ------------------------------------------------------------
           if compgen -G "diagrams/*.mmd" > /dev/null; then
             for f in diagrams/*.mmd; do
               base="$(basename "$f" .mmd)"
+
+              # Use a smaller scale for topology diagrams if needed.
+              scale=3
+              if [ "$base" = "reference-topology" ]; then
+                scale=2
+              fi
+
               docker run --rm \
                 -v "$PWD:/data" \
                 minlag/mermaid-cli \
                 -i "/data/$f" \
-                -o "/data/dist/docs/diagrams/${base}.png" \
+                -o "/data/diagrams/${base}.png" \
                 -t default \
                 -b transparent \
-                -s 3
+                -s "$scale"
+
+              cp "diagrams/${base}.png" "dist/docs/diagrams/${base}.png"
             done
           else
             echo "No Mermaid diagrams found."
           fi
 
+          # ------------------------------------------------------------
+          # Copy static assets (including screenshots) into dist/docs/assets
+          # so HTML can resolve relative paths from /docs/<slug>.html
+          # ------------------------------------------------------------
           if [ -d assets ]; then
             cp -R assets/* dist/docs/assets/ || true
           fi
 
+          # ------------------------------------------------------------
+          # Build HTML
+          # ------------------------------------------------------------
           pandoc "$TEX_SOURCE" \
             -s \
             --toc \
@@ -70,6 +90,9 @@ jobs:
             -M title="$LAB_TITLE" \
             -o "dist/docs/${LAB_SLUG}.html"
 
+          # ------------------------------------------------------------
+          # Build PDF
+          # ------------------------------------------------------------
           pandoc "$TEX_SOURCE" \
             -s \
             --toc \
@@ -104,11 +127,15 @@ jobs:
           fi
 
           if [ -d dist/docs/assets ]; then
-            aws s3 sync dist/docs/assets/ s3://network-blog-assets/assets/
+            aws s3 sync dist/docs/assets/ s3://network-blog-assets/docs/assets/
           fi
 
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
             --distribution-id E2K6CM81Z0U5LV \
-            --paths "/docs/${LAB_SLUG}.html" "/docs/${LAB_SLUG}.pdf" "/docs/diagrams/*" "/assets/*"
+            --paths \
+              "/docs/${LAB_SLUG}.html" \
+              "/docs/${LAB_SLUG}.pdf" \
+              "/docs/diagrams/*" \
+              "/docs/assets/*"
