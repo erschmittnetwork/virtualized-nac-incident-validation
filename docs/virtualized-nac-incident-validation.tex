@@ -48,11 +48,39 @@
 % Enables:
 %   - Internal section cross-referencing
 %   - Clickable TOC entries
+%   - Clickable figure, table, and appendix references
 %   - Clean PDF open behavior (FitH view)
 %
-% No custom link coloring applied to preserve formal documentation tone.
+% No custom link coloring is applied in order to preserve a formal,
+% documentation-oriented visual style.
 % -----------------------------------------------------------------------------
 \usepackage{hyperref}
+
+% -----------------------------------------------------------------------------
+% Graphicx Configuration
+% -----------------------------------------------------------------------------
+% Enables:
+%   - Inclusion of externally rendered image assets
+%   - Embedding of Mermaid-exported PNG diagrams
+%   - Controlled figure scaling via \includegraphics
+%
+% This package is required for static diagram insertion in the main body,
+% including the reference topology diagram and later figure assets.
+% -----------------------------------------------------------------------------
+\usepackage{graphicx}
+
+% -----------------------------------------------------------------------------
+% Float Configuration
+% -----------------------------------------------------------------------------
+% Enables:
+%   - Use of stricter figure placement specifiers such as [H]
+%   - More predictable handling of topology and evidence figures
+%   - Reduced float drift in long technical sections
+%
+% This package is included to improve placement control for diagrams and
+% screenshots when the default LaTeX float algorithm is too permissive.
+% -----------------------------------------------------------------------------
+\usepackage{float}
 
 \hypersetup{
   pdfstartpage=1,
@@ -592,26 +620,41 @@ Its final-state configuration and deployment validation will be documented later
 
 Figure~\ref{fig:reference-topology-diagram} is the authoritative logical topology placeholder for the final document. The diagram should preserve the segment boundaries and role relationships defined in Sections~\ref{sec:logical-topology-overview} through~\ref{sec:final-system-roles}.
 
-%\begin{figure}[h!]
-    %\centering
-    % ================================================================
-    % FIGURE PLACEHOLDER: REFERENCE TOPOLOGY DIAGRAM
-    %
-    % Insert final topology diagram here. Recommended content:
-    %   - client-1 on 10.0.12.0/24
-    %   - access-node bridging/authenticating role and routed path
-    %   - dist-router as intermediate transit
-    %   - pfSense with 10.0.34.2 / 10.0.30.1 / 10.0.20.254
-    %   - radius-splunk and ops-glpi on 10.0.30.0/24
-    %   - guest segment on 10.0.20.0/24
-    %   - optional host-side management path notation
-    % ================================================================
-    %\fbox{\parbox[c][3.2in][c]{0.88\textwidth}{\centering
-    %Placeholder for final reference topology diagram\\
-    %(Mermaid export or static image asset)}}
-    %\caption{Reference topology diagram for the final virtualized NAC implementation.}
+\begin{quote}
+\textit{Diagram implementation note:}\\
+The source-of-truth for this diagram is maintained in Mermaid format under
+\texttt{diagrams/reference-topology-diagram.mmd}. During CI/CD, Mermaid is rendered to
+\texttt{dist/docs/diagrams/reference-topology-diagram.png}, and the document embeds the generated PNG artifact so that both HTML and PDF outputs are consistent and deterministic.
+\end{quote}
+
+% -----------------------------------------------------------------------------
+% FIGURE: REFERENCE TOPOLOGY DIAGRAM
+%
+% Source of truth:
+%   diagrams/reference-topology-diagram.mmd
+%
+% Build behavior:
+%   Mermaid diagram is rendered during CI/CD into a static PNG artifact
+%   at diagrams/reference-topology-diagram.png.
+%
+% Rationale:
+%   - Ensures deterministic PDF builds (no runtime Mermaid dependency).
+%   - Maintains single diagram source for web and PDF outputs.
+%
+% WARNING:
+%   If directory structure changes, update both:
+%     1. CI/CD render path
+%     2. \includegraphics path below
+% -----------------------------------------------------------------------------
+
+\begin{figure}[h!]
+    \centering
+    \fbox{\parbox[c][3.2in][c]{0.88\textwidth}{\centering
+    Placeholder for final reference topology diagram\\
+    (Mermaid export or static image asset)}}
+    \caption{Reference topology diagram for the final virtualized NAC implementation.}
     \label{fig:reference-topology-diagram}
-%\end{figure}
+\end{figure}
 
 The diagram is intended to function as the reader's primary visual reference for the rest of the document. Later sections will rely on the topology as the basis for explaining the authenticated access path, the guest-policy enforcement model, the incident flow, and the packet capture locations. Supporting final-state interface and route evidence will be provided later in the appendices and validation sections rather than embedded directly here (see Section~\ref{sec:platform-build-and-final-state-configuration}).
 

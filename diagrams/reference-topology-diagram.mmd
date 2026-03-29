@@ -1,0 +1,32 @@
+%%{init: {'theme':'default','flowchart':{'htmlLabels': true, 'nodeSpacing':70, 'rankSpacing':70}}}%%
+graph TD
+
+  CLIENT["client-1<br/>wired supplicant<br/>10.0.12.10"]
+
+  ACCESS["access-node<br/>wired 802.1X authenticator<br/>access: 10.0.12.1<br/>transit: 10.0.23.1"]
+
+  DIST["dist-router<br/>10.0.23.2 / 10.0.34.1"]
+
+  PFSENSE["pfSense<br/>transit: 10.0.34.2<br/>services gw: 10.0.30.1<br/>guest gw: 10.0.20.254"]
+
+  RADIUS["radius-splunk<br/>10.0.30.10<br/>FreeRADIUS / Splunk UF<br/>Ansible / Python"]
+
+  GLPI["ops-glpi<br/>10.0.30.20<br/>GLPI / Apache / MariaDB"]
+
+  GUEST["guest-test-1<br/>guest segment<br/>10.0.20.0/24 via DHCP"]
+
+  MGMT["VMware host-side management paths<br/>RFC1918 administrative access"]
+
+  CLIENT -->|"EAPOL / 802.1X"| ACCESS
+  ACCESS -->|"10.0.23.0/24 transit"| DIST
+  DIST -->|"10.0.34.0/30 transit"| PFSENSE
+  ACCESS -->|"RADIUS auth traffic"| RADIUS
+  PFSENSE -->|"10.0.30.0/24 protected services"| RADIUS
+  PFSENSE -->|"10.0.30.0/24 protected services"| GLPI
+
+  GUEST -->|"10.0.20.0/24 guest access"| PFSENSE
+  MGMT --> ACCESS
+  MGMT --> DIST
+  MGMT --> PFSENSE
+  MGMT --> RADIUS
+  MGMT --> GLPI
