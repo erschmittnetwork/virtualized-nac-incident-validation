@@ -73,14 +73,28 @@
 % Float Configuration
 % -----------------------------------------------------------------------------
 % Enables:
-%   - Use of stricter figure placement specifiers such as [H]
-%   - More predictable handling of topology and evidence figures
+%   - Use of stricter figure and table placement specifiers such as [H]
+%   - More predictable handling of topology diagrams, screenshots, and tables
 %   - Reduced float drift in long technical sections
 %
-% This package is included to improve placement control for diagrams and
-% screenshots when the default LaTeX float algorithm is too permissive.
+% This package is included to improve placement control when the default
+% LaTeX float algorithm is too permissive for evidence-heavy documents.
 % -----------------------------------------------------------------------------
 \usepackage{float}
+
+% -----------------------------------------------------------------------------
+% Tabularx Configuration
+% -----------------------------------------------------------------------------
+% Enables:
+%   - Automatically width-constrained tables that fit within \textwidth
+%   - Flexible wrapping for long prose-heavy columns in PDF output
+%   - More reliable rendering than fixed p{} widths for mixed-content tables
+%
+% This package is preferred for metadata tables, technical matrices, and
+% other wide documentation tables that must render consistently in both
+% HTML and PDF outputs under the Pandoc workflow.
+% -----------------------------------------------------------------------------
+\usepackage{tabularx}
 
 \hypersetup{
   pdfstartpage=1,
@@ -119,8 +133,12 @@
 \subsection{1.1 Document Metadata}
 \label{subsec:document-metadata}
 
-\begin{center}
-\begin{tabular}{|p{0.30\textwidth}|p{0.62\textwidth}|}
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{|p{0.28\textwidth}|X|}
 \hline
 \textbf{Field} & \textbf{Value} \\
 \hline
@@ -136,21 +154,16 @@ Document Status & Production Draft (Educational Lab / Proof-of-Concept) \\
 \hline
 Document Type & Engineering Lab Implementation and Validation Report \\
 \hline
-Primary Scope & Virtualized wired 802.1X NAC proof-of-concept with policy-based guest access \\
-        enforcement, incident simulation, automation, and packet-level validation \\
+Primary Scope & Virtualized wired 802.1X NAC proof-of-concept with policy-based guest access enforcement, incident simulation, automation, and packet-level validation \\
 \hline
-Primary Technologies & IEEE 802.1X via hostapd (wired mode) + wpa_supplicant, \\
-        pfSense, FreeRADIUS, GLPI on Apache + MariaDB, Splunk Universal Forwarder, \\
-        Python, Ansible, tcpdump, Wireshark \\
+Primary Technologies & IEEE 802.1X via \texttt{hostapd} (wired mode) and \texttt{wpa\_supplicant}; pfSense; FreeRADIUS; GLPI on Apache and MariaDB; Splunk Universal Forwarder; Python; Ansible; \texttt{tcpdump}; Wireshark \\
 \hline
-VM Platform & VMware Workstation Pro: Ubuntu Server 24.04 LTS \\
+VM Platform & VMware Workstation Pro with Ubuntu Server 24.04 LTS virtual machines \\
 \hline
-Primary Lab Purpose & Demonstrate a realistic small-scale NAC architecture with authenticated access \\
-        control, constrained guest access, observability, ITSM workflow integration, automation, \\
-        and protocol validation \\
+Primary Lab Purpose & Demonstrate a realistic small-scale NAC architecture with authenticated access control, constrained guest access, observability, ITSM workflow integration, automation, and protocol validation \\
 \hline
-\end{tabular}
-\end{center}
+\end{tabularx}
+\end{table}
 
 The purpose of this document is to provide a complete, technically rigorous, and reproducible record of the final implemented state of the lab environment, the access-control model selected for the environment, the operational validation performed against that environment, and the incident simulation used to demonstrate practical NAC troubleshooting and remediation workflows.
 
@@ -485,25 +498,49 @@ This architecture is sufficiently complex to demonstrate realistic operational d
 
 The final environment uses multiple RFC1918 segments to model distinct functional domains. These segments are intentionally small and purpose-driven. The authoritative logical addressing model used throughout this document is summarized below.
 
-\begin{center}
-\begin{tabular}{|p{0.18\textwidth}|p{0.22\textwidth}|p{0.22\textwidth}|p{0.28\textwidth}|}
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{|p{0.14\textwidth}|p{0.15\textwidth}|X|X|}
 \hline
 \textbf{Segment} & \textbf{Subnet} & \textbf{Primary Function} & \textbf{Representative Systems / Interfaces} \\
 \hline
-Access Client Segment & \texttt{10.0.12.0/24} & Authenticated endpoint attachment segment for the wired supplicant validation path & \texttt{client-1} (\texttt{10.0.12.10}), \texttt{access-node} access-facing interface (\texttt{10.0.12.1}) \\
+Access Client Segment &
+\texttt{10.0.12.0/24} &
+Authenticated endpoint attachment segment for the wired supplicant validation path &
+\texttt{client-1} (\texttt{10.0.12.10}), \texttt{access-node} access-facing interface (\texttt{10.0.12.1}) \\
 \hline
-Access-to-Distribution Transit & \texttt{10.0.23.0/24} & Routed transit between the access node and the intermediate distribution router & \texttt{access-node} (\texttt{10.0.23.1}), \texttt{dist-router} (\texttt{10.0.23.2}) \\
+Access-to-Distribution Transit &
+\texttt{10.0.23.0/24} &
+Routed transit between the access node and the intermediate distribution router &
+\texttt{access-node} (\texttt{10.0.23.1}), \texttt{dist-router} (\texttt{10.0.23.2}) \\
 \hline
-Protected Services Segment & \texttt{10.0.30.0/24} & Service hosting for RADIUS, logging, automation control, and ITSM systems & pfSense OPT1 (\texttt{10.0.30.1}), \texttt{radius-splunk} (\texttt{10.0.30.10}), \texttt{ops-glpi} (\texttt{10.0.30.20}) \\
+Protected Services Segment &
+\texttt{10.0.30.0/24} &
+Service hosting for RADIUS, logging, automation control, and ITSM systems &
+pfSense OPT1 (\texttt{10.0.30.1}), \texttt{radius-splunk} (\texttt{10.0.30.10}), \texttt{ops-glpi} (\texttt{10.0.30.20}) \\
 \hline
-Distribution-to-Firewall Transit & \texttt{10.0.34.0/30} & Point-to-point transit between the Linux distribution router and pfSense & \texttt{dist-router} (\texttt{10.0.34.1}), pfSense LAN/transit (\texttt{10.0.34.2}) \\
+Distribution-to-Firewall Transit &
+\texttt{10.0.34.0/30} &
+Point-to-point transit between the Linux distribution router and pfSense &
+\texttt{dist-router} (\texttt{10.0.34.1}), pfSense LAN/transit (\texttt{10.0.34.2}) \\
 \hline
-Guest Access Segment & \texttt{10.0.20.0/24} & Guest or non-trusted endpoint segment used for policy-based guest access simulation & pfSense GUEST/OPT2 (\texttt{10.0.20.254}), DHCP pool (\texttt{10.0.20.100--10.0.20.199}) \\
+Guest Access Segment &
+\texttt{10.0.20.0/24} &
+Guest or non-trusted endpoint segment used for policy-based guest access simulation &
+pfSense GUEST/OPT2 (\texttt{10.0.20.254}), DHCP pool (\texttt{10.0.20.100--10.0.20.199}) \\
 \hline
-Host / Hypervisor Management Segments & VMware-provided RFC1918 segments (e.g., \texttt{192.168.195.0/24}, \texttt{192.168.205.0/24}) & Administrative reachability and host-level VM management paths & Host virtual interfaces, VM management adapters, temporary host-side management access where required \\
+Host / Hypervisor Management Segments &
+VMware-provided RFC1918 segments (e.g., \texttt{192.168.195.0/24}, \texttt{192.168.205.0/24}) &
+Administrative reachability and host-level VM management paths &
+Host virtual interfaces, VM management adapters, temporary host-side management access where required \\
 \hline
-\end{tabular}
-\end{center}
+\end{tabularx}
+\caption{Logical network segments and their roles in the final virtualized NAC environment.}
+\label{tab:logical-network-segments}
+\end{table}
 
 The protected services segment (\texttt{10.0.30.0/24}) is the most operationally significant network in the final design. It hosts the RADIUS policy authority, the log-forwarding instrumentation, the Python and Ansible automation artifacts, and the ITSM platform used to record the incident lifecycle. This segment is reachable from the authenticated access path through the routed chain \texttt{access-node} $\rightarrow$ \texttt{dist-router} $\rightarrow$ pfSense, and it is intentionally protected from direct guest-segment access by pfSense firewall policy.
 
