@@ -1582,12 +1582,18 @@ The guest firewall policy is implemented as an ordered first-match ruleset on th
 
 \begin{verbatim}
 pfSense GUEST rules (top-to-bottom)
-Pass  | IPv4* | Source: 10.0.20.0/24 | Destination: This Firewall (Self) | ALLOW-GUEST-TO-PFSENSE
-Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.30.0/24       | BLOCK-GUEST-TO-SERVICES
-Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.34.0/30       | BLOCK-GUEST-TO-TRANSIT
-Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.23.0/24       | BLOCK-GUEST-TO-DIST
-Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.12.0/24       | BLOCK-GUEST-TO-AUTH-ACCESS
-Pass  | IPv4* | Source: 10.0.20.0/24 | Destination: *                  | ALLOW-GUEST-TO-INTERNET-AND-OTHER-NON-INTERNAL
+Pass  | IPv4* | Source: 10.0.20.0/24 | Destination: This Firewall (Self)
+        | ALLOW-GUEST-TO-PFSENSE
+Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.30.0/24       
+        | BLOCK-GUEST-TO-SERVICES
+Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.34.0/30       
+        | BLOCK-GUEST-TO-TRANSIT
+Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.23.0/24       
+        | BLOCK-GUEST-TO-DIST
+Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.12.0/24       
+        | BLOCK-GUEST-TO-AUTH-ACCESS
+Pass  | IPv4* | Source: 10.0.20.0/24 | Destination: *                  
+        | ALLOW-GUEST-TO-INTERNET-AND-OTHER-NON-INTERNAL
 \end{verbatim}
 
 This ruleset is deliberately explicit. Rather than relying on an implicit deny plus a broad allow, the internal networks are individually enumerated and blocked before the final permissive rule. That makes the guest policy easier to explain, easier to audit, and more suitable for publication as a portfolio artifact.
@@ -1968,10 +1974,14 @@ On the authenticator side, \texttt{hostapd} recorded repeated attempts to send t
 
 \begin{verbatim}
 hostapd failed-auth indicators
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authentication server
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authentication server
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authentication server
-Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authentication server
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to 
+        authentication server
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to 
+        authentication server
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to 
+        authentication server
+Mar 22 22:32:33 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to 
+        authentication server
 \end{verbatim}
 
 This is operationally important because it shows that the failure was not caused by a silent client or by an absence of authenticator activity. The authenticator was actively participating in the 802.1X control path and attempting to obtain a RADIUS decision.
@@ -2096,22 +2106,34 @@ The successful re-test on the authenticator shows the expected sequence of RADIU
 
 \begin{verbatim}
 hostapd success indicators
-Mar 23 02:49:00 access-node hostapd[2052]: Encapsulating EAP message into a RADIUS packet
+Mar 23 02:49:00 access-node hostapd[2052]: Encapsulating EAP message into a RADIUS 
+        packet
 Mar 23 02:49:00 access-node hostapd[2052]: Copied RADIUS State Attribute
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to authentication server
-Mar 23 02:49:00 access-node hostapd[2052]: RADIUS message: code=1 (Access-Request) identifier=4 length=193
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: unauthorizing port
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 3 seconds
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received 53 bytes from RADIUS server
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Sending RADIUS message to 
+        authentication server
+Mar 23 02:49:00 access-node hostapd[2052]: RADIUS message: code=1 (Access-Request) 
+        identifier=4 length=193
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: 
+        unauthorizing port
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Next RADIUS client retransmit in 
+        3 seconds
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received 53 bytes from RADIUS 
+        server
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: RADIUS Received RADIUS message
-Mar 23 02:49:00 access-node hostapd[2052]: RADIUS message: code=2 (Access-Accept) identifier=4 length=53
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received RADIUS packet matched with a pending request, round trip time 0.00 sec
-Mar 23 02:49:00 access-node hostapd[2052]: RADIUS packet matching with station <REDACTED>
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: decapsulated EAP packet (code=3 id=255 len=4) from RADIUS server: EAP Success
+Mar 23 02:49:00 access-node hostapd[2052]: RADIUS message: code=2 (Access-Accept) 
+        identifier=4 length=53
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: Received 
+        RADIUS packet matched with a pending request, round trip time 0.00 sec
+Mar 23 02:49:00 access-node hostapd[2052]: RADIUS packet matching with station 
+        <REDACTED>
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: 
+        decapsulated EAP packet (code=3 id=255 len=4) from RADIUS server: EAP Success
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: CTRL-EVENT-EAP-SUCCESS2 <REDACTED>
 Mar 23 02:49:00 access-node hostapd[2052]: ens38: AP-STA-CONNECTED <REDACTED>
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: authorizing port
-Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: starting accounting session 2268479955CB85A0
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> IEEE 802.1X: 
+        authorizing port
+Mar 23 02:49:00 access-node hostapd[2052]: ens38: STA <REDACTED> RADIUS: starting 
+        accounting session 2268479955CB85A0
 \end{verbatim}
 
 This is the strongest authenticator-side proof of successful remediation. The sequence explicitly shows:
@@ -2168,7 +2190,8 @@ The full incident text recorded in GLPI is reproduced below.
 
 \begin{verbatim}
 Incident summary:
-client-1 failed wired 802.1X authentication during NAC validation after the supplicant password was intentionally changed to an incorrect value to simulate a credential issue.
+client-1 failed wired 802.1X authentication during NAC validation after the supplicant 
+        password was intentionally changed to an incorrect value to simulate a credential issue.
 
 Observed behavior:
 - client-1 remained unauthorized during the failed test
@@ -2190,7 +2213,8 @@ Recovery validation:
 - access-node hostapd logs showed AP-STA-CONNECTED and port authorization
 
 Impact:
-This simulated a realistic enterprise NAC incident involving endpoint credential failure and demonstrated successful troubleshooting and service restoration.
+This simulated a realistic enterprise NAC incident involving endpoint credential failure and 
+        demonstrated successful troubleshooting and service restoration.
 \end{verbatim}
 
 This GLPI record matters for two reasons. First, it makes the lab operationally richer by tying technical evidence to a formal incident artifact. Second, it helps position the project as an enterprise-style environment rather than as a purely technical sandbox.
@@ -2308,10 +2332,12 @@ The authoritative revised playbook and the Python incident parser were both conf
 
 \begin{verbatim}
 radius-splunk: ls -lh ~/ansible-nac/playbooks/nac_validation.yml
--rw-r--r-- 1 root root 5.6K Mar 24 12:19 /home/nac-lab/ansible-nac/playbooks/nac_validation.yml
+-rw-r--r-- 1 root root 5.6K Mar 24 12:19 /home/nac-lab/ansible-nac/playbooks/
+        nac_validation.yml
 
 radius-splunk: ls -lh ~/incident-evidence/nac_incident_parser.py
--rw-r--r-- 1 root root 3.5K Mar 24 09:52 /home/nac-lab/incident-evidence/nac_incident_parser.py
+-rw-r--r-- 1 root root 3.5K Mar 24 09:52 /home/nac-lab/incident-evidence/
+        nac_incident_parser.py
 \end{verbatim}
 
 The full inventory file, the authoritative revised playbook, and the full parser source are reproduced in Appendix A (see Section~\ref{sec:appendix-a-ansible-inventory-hosts-ini}, Section~\ref{sec:appendix-a-ansible-nac-validation-playbook}, and Section~\ref{sec:appendix-a-python-nac-incident-parser}).
@@ -2467,8 +2493,10 @@ skipping: [access-node]
 ok: [radius-splunk -> localhost]
 
 PLAY RECAP *********************************************************************
-access-node                : ok=8    changed=3    unreachable=0    failed=0    skipped=11   rescued=0    ignored=0
-radius-splunk              : ok=10   changed=3    unreachable=0    failed=0    skipped=9    rescued=0    ignored=0
+access-node                : ok=8    changed=3    unreachable=0    failed=0    skipped=11   
+        rescued=0    ignored=0
+radius-splunk              : ok=10   changed=3    unreachable=0    failed=0    skipped=9    
+        rescued=0    ignored=0
 \end{verbatim}
 
 This run demonstrates the intended baseline behavior:
@@ -2590,8 +2618,10 @@ skipping: [access-node]
 changed: [radius-splunk -> localhost]
 
 PLAY RECAP *********************************************************************
-access-node                : ok=9    changed=4    unreachable=0    failed=0    skipped=10   rescued=0    ignored=0
-radius-splunk              : ok=11   changed=5    unreachable=0    failed=0    skipped=8    rescued=0    ignored=0
+access-node                : ok=9    changed=4    unreachable=0    failed=0    skipped=10   
+        rescued=0    ignored=0
+radius-splunk              : ok=11   changed=5    unreachable=0    failed=0    skipped=8    
+        rescued=0    ignored=0
 \end{verbatim}
 
 This run confirms that the automation can perform controlled remediation without abandoning its evidence-preservation role. The restart tasks executed successfully on both nodes:
@@ -2646,7 +2676,8 @@ Selected excerpts from the generated artifacts are reproduced below to demonstra
 \begin{verbatim}
 ===== /home/nac-lab/ansible-nac/artifacts/access-node_hostapd_logs.txt =====
 Mar 24 12:23:12 access-node hostapd[1927]: hostapd_interface_deinit_free(0x61845b677590)
-Mar 24 12:23:12 access-node hostapd[1927]: hostapd_interface_deinit_free: num_bss=1 conf->num_bss=1
+Mar 24 12:23:12 access-node hostapd[1927]: hostapd_interface_deinit_free: num_bss=1 
+        conf->num_bss=1
 Mar 24 12:23:12 access-node hostapd[1927]: hostapd_interface_deinit(0x61845b677590)
 Mar 24 12:23:12 access-node hostapd[1927]: ens38: interface state ENABLED->DISABLED
 Mar 24 12:23:12 access-node hostapd[1927]: hostapd_bss_deinit: deinit bss ens38
@@ -2688,20 +2719,27 @@ remediation not requested
      CGroup: /system.slice/hostapd.service
 
 ===== /home/nac-lab/ansible-nac/artifacts/radius-splunk_freeradius_journal.txt =====
-Mar 24 12:22:39 radius-splunk freeradius[3253]: Compiling Post-Auth-Type Challenge for attr Post-Auth-Type
-Mar 24 12:22:39 radius-splunk freeradius[3253]: Compiling Post-Auth-Type Client-Lost for attr Post-Auth-Type
-Mar 24 12:22:39 radius-splunk freeradius[3253]: radiusd: #### Skipping IP addresses and Ports ####
+Mar 24 12:22:39 radius-splunk freeradius[3253]: Compiling Post-Auth-Type Challenge for 
+        attr Post-Auth-Type
+Mar 24 12:22:39 radius-splunk freeradius[3253]: Compiling Post-Auth-Type Client-Lost for 
+        attr Post-Auth-Type
+Mar 24 12:22:39 radius-splunk freeradius[3253]: radiusd: #### Skipping IP addresses and 
+        Ports ####
 Mar 24 12:22:39 radius-splunk freeradius[3253]: Configuration appears to be OK
-Mar 24 12:22:39 radius-splunk systemd[1]: Started freeradius.service - FreeRADIUS multi-protocol policy server.
-Mar 24 12:23:12 radius-splunk systemd[1]: Stopping freeradius.service - FreeRADIUS multi-protocol policy server...
+Mar 24 12:22:39 radius-splunk systemd[1]: Started freeradius.service - FreeRADIUS 
+        multi-protocol policy server.
+Mar 24 12:23:12 radius-splunk systemd[1]: Stopping freeradius.service - FreeRADIUS 
+        multi-protocol policy server...
 Mar 24 12:23:12 radius-splunk systemd[1]: freeradius.service: Deactivated successfully.
-Mar 24 12:23:12 radius-splunk systemd[1]: Stopped freeradius.service - FreeRADIUS multi-protocol policy server.
+Mar 24 12:23:12 radius-splunk systemd[1]: Stopped freeradius.service - FreeRADIUS 
+        multi-protocol policy server.
 
 ===== /home/nac-lab/ansible-nac/artifacts/radius-splunk_freeradius_radiuslog.txt =====
 Tue Mar 24 11:34:18 2026 : Info: Loaded virtual server <default>
 Tue Mar 24 11:34:18 2026 : Warning: Ignoring "sql" (see raddb/mods-available/README.rst)
 Tue Mar 24 11:34:18 2026 : Warning: Ignoring "ldap" (see raddb/mods-available/README.rst)
-Tue Mar 24 11:34:18 2026 : Info:  # Skipping contents of 'if' as it is always 'false' -- /etc/freeradius/3.0/sites-enabled/inner-tunnel:366
+Tue Mar 24 11:34:18 2026 : Info:  # Skipping contents of 'if' as it is always 'false' --
+        /etc/freeradius/3.0/sites-enabled/inner-tunnel:366
 Tue Mar 24 11:34:18 2026 : Info: Loaded virtual server inner-tunnel
 Tue Mar 24 11:34:18 2026 : Info: Loaded virtual server default
 Tue Mar 24 11:34:18 2026 : Info: Ready to process requests
@@ -3022,16 +3060,29 @@ The system log provides host-level operational context such as service start/sto
 
 \begin{verbatim}
 radius-splunk: tail -n 15 /var/log/syslog
-2026-03-24T13:14:41.348438+00:00 radius-splunk multipathd[467]: sda: failed to get sgio uid: No such file or directory
-2026-03-24T13:14:41.348468+00:00 radius-splunk multipathd[467]: sda: no WWID in state "undef
+2026-03-24T13:14:41.348438+00:00 radius-splunk multipathd[467]: sda: failed to get sgio 
+        uid: No such file or directory
+2026-03-24T13:14:41.348468+00:00 radius-splunk multipathd[467]: sda: no WWID in state 
+        "undef
 2026-03-24T13:14:41.348639+00:00 radius-splunk multipathd[467]: ", giving up
-2026-03-24T13:14:41.348690+00:00 radius-splunk multipathd[467]: sda: check_path() failed, removing
-2026-03-24T13:15:01.629554+00:00 radius-splunk CRON[1579]: (root) CMD (command -v debian-sa1 > /dev/null && debian-sa1 1 1)
-2026-03-24T13:17:01.652202+00:00 radius-splunk CRON[1587]: (root) CMD (cd / && run-parts --report /etc/cron.hourly)
-2026-03-24T13:19:05.468094+00:00 radius-splunk systemd[1]: Starting update-notifier-download.service - Download data for packages that failed at package install time...
-2026-03-24T13:19:05.678561+00:00 radius-splunk systemd[1]: update-notifier-download.service: Deactivated successfully.
-2026-03-24T13:19:05.678792+00:00 radius-splunk systemd[1]: Finished update-notifier-download.service - Download data for packages that failed at package install time.
-2026-03-24T13:19:31.934534+00:00 radius-splunk systemd[1376]: launchpadlib-cache-clean.service - Clean up old files in the Launchpadlib cache was skipped because of an unmet condition check (ConditionPathExists=/home/nac-lab/.launchpadlib/api.launchpad.net/cache).
+2026-03-24T13:14:41.348690+00:00 radius-splunk multipathd[467]: sda: check_path() failed, 
+        removing
+2026-03-24T13:15:01.629554+00:00 radius-splunk CRON[1579]: (root) CMD (command -v 
+        debian-sa1 > /dev/null && debian-sa1 1 1)
+2026-03-24T13:17:01.652202+00:00 radius-splunk CRON[1587]: (root) CMD (cd / && run-parts 
+        --report /etc/cron.hourly)
+2026-03-24T13:19:05.468094+00:00 radius-splunk systemd[1]: Starting 
+        update-notifier-download.service - Download data for packages that failed at package 
+        install time...
+2026-03-24T13:19:05.678561+00:00 radius-splunk systemd[1]: update-notifier-download.service
+        : Deactivated successfully.
+2026-03-24T13:19:05.678792+00:00 radius-splunk systemd[1]: Finished 
+        update-notifier-download.service - Download data for packages that failed at package 
+        install time.
+2026-03-24T13:19:31.934534+00:00 radius-splunk systemd[1376]: launchpadlib-cache-clean.
+        service - Clean up old files in the Launchpadlib cache was skipped because of an unmet 
+        condition check (ConditionPathExists=/home/nac-lab/.launchpadlib/api.launchpad.net
+        /cache).
 \end{verbatim}
 
 This excerpt is not included because each line is individually important. Rather, it demonstrates the character of the source: \texttt{syslog} is a general-purpose host operational log that complements more specialized sources such as \texttt{radius.log}.
@@ -3043,21 +3094,35 @@ The administrative and authentication log captures local privilege elevation act
 
 \begin{verbatim}
 radius-splunk: tail -n 15 /var/log/auth.log
-2026-03-24T13:20:04.756710+00:00 radius-splunk sshd[1628]: pam_unix(sshd:session): session opened for user nac-lab(uid=1000) by nac-lab(uid=0)
-2026-03-24T13:20:04.762714+00:00 radius-splunk systemd-logind[816]: New session 5 of user nac-lab.
-2026-03-24T13:20:05.503276+00:00 radius-splunk sshd[1686]: Received disconnect from 192.168.195.1 port 41932:11: disconnected by user
-2026-03-24T13:20:05.503525+00:00 radius-splunk sshd[1686]: Disconnected from user nac-lab 192.168.195.1 port 41932
-2026-03-24T13:20:05.504875+00:00 radius-splunk sshd[1628]: pam_unix(sshd:session): session closed for user nac-lab
-2026-03-24T13:20:05.511847+00:00 radius-splunk systemd-logind[816]: Session 5 logged out. Waiting for processes to exit.
+2026-03-24T13:20:04.756710+00:00 radius-splunk sshd[1628]: pam_unix(sshd:session): session 
+        opened for user nac-lab(uid=1000) by nac-lab(uid=0)
+2026-03-24T13:20:04.762714+00:00 radius-splunk systemd-logind[816]: New session 5 of user 
+        nac-lab.
+2026-03-24T13:20:05.503276+00:00 radius-splunk sshd[1686]: Received disconnect from 
+        192.168.195.1 port 41932:11: disconnected by user
+2026-03-24T13:20:05.503525+00:00 radius-splunk sshd[1686]: Disconnected from user nac-lab 
+        192.168.195.1 port 41932
+2026-03-24T13:20:05.504875+00:00 radius-splunk sshd[1628]: pam_unix(sshd:session): session 
+        closed for user nac-lab
+2026-03-24T13:20:05.511847+00:00 radius-splunk systemd-logind[816]: Session 5 logged out. 
+        Waiting for processes to exit.
 2026-03-24T13:20:05.514296+00:00 radius-splunk systemd-logind[816]: Removed session 5.
-2026-03-24T13:20:37.703552+00:00 radius-splunk sudo:  nac-lab : TTY=tty1 ; PWD=/home/nac-lab ; USER=root ; COMMAND=/usr/bin/tail -n 15 /var/log/syslog
-2026-03-24T13:20:37.704672+00:00 radius-splunk sudo: pam_unix(sudo:session): session opened for user root(uid=0) by nac-lab(uid=1000)
-2026-03-24T13:20:37.731117+00:00 radius-splunk sudo: pam_unix(sudo:session): session closed for user root
-2026-03-24T13:21:39.041208+00:00 radius-splunk sudo:  nac-lab : TTY=tty1 ; PWD=/home/nac-lab ; USER=root ; COMMAND=/usr/bin/tail -n 15 /var/log/auth.log
-2026-03-24T13:21:39.042808+00:00 radius-splunk sudo: pam_unix(sudo:session): session opened for user root(uid=0) by nac-lab(uid=1000)
-2026-03-24T13:21:39.068864+00:00 radius-splunk sudo: pam_unix(sudo:session): session closed for user root
-2026-03-24T13:22:03.513481+00:00 radius-splunk sudo:  nac-lab : TTY=tty1 ; PWD=/home/nac-lab ; USER=root ; COMMAND=/usr/bin/tail -n 15 /var/log/auth.log
-2026-03-24T13:22:03.514636+00:00 radius-splunk sudo: pam_unix(sudo:session): session opened for user root(uid=0) by nac-lab(uid=1000)
+2026-03-24T13:20:37.703552+00:00 radius-splunk sudo:  nac-lab : TTY=tty1 ; 
+        PWD=/home/nac-lab ; USER=root ; COMMAND=/usr/bin/tail -n 15 /var/log/syslog
+2026-03-24T13:20:37.704672+00:00 radius-splunk sudo: pam_unix(sudo:session): session opened 
+        for user root(uid=0) by nac-lab(uid=1000)
+2026-03-24T13:20:37.731117+00:00 radius-splunk sudo: pam_unix(sudo:session): session closed 
+        for user root
+2026-03-24T13:21:39.041208+00:00 radius-splunk sudo:  nac-lab : TTY=tty1 ; 
+        PWD=/home/nac-lab ; USER=root ; COMMAND=/usr/bin/tail -n 15 /var/log/auth.log
+2026-03-24T13:21:39.042808+00:00 radius-splunk sudo: pam_unix(sudo:session): session opened 
+        for user root(uid=0) by nac-lab(uid=1000)
+2026-03-24T13:21:39.068864+00:00 radius-splunk sudo: pam_unix(sudo:session): session closed 
+        for user root
+2026-03-24T13:22:03.513481+00:00 radius-splunk sudo:  nac-lab : TTY=tty1 ; 
+        PWD=/home/nac-lab ; USER=root ; COMMAND=/usr/bin/tail -n 15 /var/log/auth.log
+2026-03-24T13:22:03.514636+00:00 radius-splunk sudo: pam_unix(sudo:session): session opened 
+        for user root(uid=0) by nac-lab(uid=1000)
 \end{verbatim}
 
 This source is especially useful in a lab of this type because it records operator activity, privilege escalation, and remote administrative access events that may be relevant during incident reconstruction or audit-style review.
@@ -3083,7 +3148,8 @@ Tue Mar 24 12:23:12 2026 : Info: systemd watchdog interval is 30.00 secs
 Tue Mar 24 12:23:12 2026 : Info: Loaded virtual server <default>
 Tue Mar 24 12:23:12 2026 : Warning: Ignoring "sql" (see raddb/mods-available/README.rst)
 Tue Mar 24 12:23:12 2026 : Warning: Ignoring "ldap" (see raddb/mods-available/README.rst)
-Tue Mar 24 12:23:12 2026 : Info:  # Skipping contents of 'if' as it is always 'false' -- /etc/freeradius/3.0/sites-enabled/inner-tunnel:366
+Tue Mar 24 12:23:12 2026 : Info:  # Skipping contents of 'if' as it is always 'false' --
+        /etc/freeradius/3.0/sites-enabled/inner-tunnel:366
 Tue Mar 24 12:23:12 2026 : Info: Loaded virtual server inner-tunnel
 Tue Mar 24 12:23:12 2026 : Info: Loaded virtual server default
 Tue Mar 24 12:23:12 2026 : Info: Ready to process requests
@@ -3094,7 +3160,8 @@ Tue Mar 24 13:14:05 2026 : Info: systemd watchdog interval is 30.00 secs
 Tue Mar 24 13:14:05 2026 : Info: Loaded virtual server <default>
 Tue Mar 24 13:14:05 2026 : Warning: Ignoring "sql" (see raddb/mods-available/README.rst)
 Tue Mar 24 13:14:05 2026 : Warning: Ignoring "ldap" (see raddb/mods-available/README.rst)
-Tue Mar 24 13:14:05 2026 : Info:  # Skipping contents of 'if' as it is always 'false' -- /etc/freeradius/3.0/sites-enabled/inner-tunnel:366
+Tue Mar 24 13:14:05 2026 : Info:  # Skipping contents of 'if' as it is always 'false' -- 
+        /etc/freeradius/3.0/sites-enabled/inner-tunnel:366
 Tue Mar 24 13:14:05 2026 : Info: Loaded virtual server inner-tunnel
 Tue Mar 24 13:14:05 2026 : Info: Loaded virtual server default
 Tue Mar 24 13:14:05 2026 : Info: Ready to process requests
@@ -3152,23 +3219,29 @@ A representative journal excerpt is reproduced below.
 access-node: journalctl -u hostapd-wired.service -n 20 --no-pager
 Mar 24 02:13:55 access-node hostapd[2398]: ens38: CTRL-EVENT-TERMINATING
 Mar 24 02:13:55 access-node hostapd[2398]: hostapd_free_hapd_data(ens38)
-Mar 24 02:13:55 access-node hostapd[2398]: hostapd_interface_deinit_free: driver=0x565a2d747060 drv_priv=0x565a38444cd0 -> hapd_deinit
+Mar 24 02:13:55 access-node hostapd[2398]: hostapd_interface_deinit_free: 
+        driver=0x565a2d747060 drv_priv=0x565a38444cd0 -> hapd_deinit
 Mar 24 02:13:55 access-node hostapd[2398]: hostapd_interface_free(0x565a38442590)
 Mar 24 02:13:55 access-node hostapd[2398]: hostapd_interface_free: free hapd 0x565a38443d40
 Mar 24 02:13:55 access-node hostapd[2398]: hostapd_cleanup_iface(0x565a38442590)
 Mar 24 02:13:55 access-node hostapd[2398]: hostapd_cleanup_iface_partial(0x565a38442590)
 Mar 24 02:13:55 access-node hostapd[2398]: hostapd_cleanup_iface: free iface=0x565a38442590
 Mar 24 02:13:55 access-node systemd[1]: hostapd-wired.service: Deactivated successfully.
-Mar 24 02:13:55 access-node systemd[1]: Stopped hostapd-wired.service - hostapd wired 802.1X authenticator (lab).
+Mar 24 02:13:55 access-node systemd[1]: Stopped hostapd-wired.service - hostapd wired 
+        802.1X authenticator (lab).
 -- Boot 4efbb5bbbad2458a94bc281c688f0c9b --
-Mar 24 04:20:41 access-node systemd[1]: Started hostapd-wired.service - hostapd wired 802.1X authenticator (lab).
+Mar 24 04:20:41 access-node systemd[1]: Started hostapd-wired.service - hostapd wired 
+        802.1X authenticator (lab).
 Mar 24 04:20:41 access-node hostapd[975]: random: getrandom() support available
-Mar 24 04:20:41 access-node hostapd[975]: Configuration file: /etc/hostapd/lab/hostapd-wired.conf
+Mar 24 04:20:41 access-node hostapd[975]: Configuration file: 
+        /etc/hostapd/lab/hostapd-wired.conf
 Mar 24 04:20:41 access-node hostapd[975]: eapol_version=2
 Mar 24 04:20:41 access-node hostapd[975]: ctrl_interface_group=0
 Mar 24 04:20:41 access-node hostapd[975]: Opening raw packet socket for ifindex 3
-Mar 24 04:20:41 access-node hostapd[975]: BSS count 1, BSSID mask 00:00:00:00:00:00 (0 bits)
-Mar 24 04:20:41 access-node hostapd[975]: ens38: IEEE 802.11 Fetching hardware channel/rate support not supported.
+Mar 24 04:20:41 access-node hostapd[975]: BSS count 1, BSSID mask 00:00:00:00:00:00 
+        (0 bits)
+Mar 24 04:20:41 access-node hostapd[975]: ens38: IEEE 802.11 Fetching hardware 
+        channel/rate support not supported.
 Mar 24 04:20:41 access-node hostapd[975]: Completing interface initialization
 ...
 Mar 24 04:20:41 access-node hostapd[975]: ens38: AP-ENABLED
@@ -3372,21 +3445,25 @@ The captures were obtained by starting two concurrent \texttt{tcpdump} processes
 \begin{verbatim}
 access-node:
 sudo timeout 20s tcpdump -i ens38 -w /tmp/failed_8021x_ens38.pcap ether proto 0x888e &
-sudo timeout 20s tcpdump -i ens39 -w /tmp/failed_8021x_ens39.pcap host 10.0.30.10 and udp port 1812 &
+sudo timeout 20s tcpdump -i ens39 -w /tmp/failed_8021x_ens39.pcap host 10.0.30.10 and udp 
+        port 1812 &
 sleep 2
 
 client-1:
 sudo systemctl stop wpa_supplicant
-sudo timeout 15s wpa_supplicant -i ens33 -D wired -c /etc/wpa_supplicant/lab/wired-8021x.conf -dd
+sudo timeout 15s wpa_supplicant -i ens33 -D wired -c 
+        /etc/wpa_supplicant/lab/wired-8021x.conf -dd
 
 access-node:
 sudo timeout 20s tcpdump -i ens38 -w ~/pcaps/success_8021x_ens38.pcap ether proto 0x888e &
-sudo timeout 20s tcpdump -i ens39 -w ~/pcaps/success_8021x_ens39.pcap host 10.0.30.10 and udp port 1812 &
+sudo timeout 20s tcpdump -i ens39 -w ~/pcaps/success_8021x_ens39.pcap host 10.0.30.10 and udp
+        port 1812 &
 sleep 2
 
 client-1:
 sudo systemctl stop wpa_supplicant
-sudo timeout 15s wpa_supplicant -i ens33 -D wired -c /etc/wpa_supplicant/lab/wired-8021x.conf -dd
+sudo timeout 15s wpa_supplicant -i ens33 -D wired -c 
+        /etc/wpa_supplicant/lab/wired-8021x.conf -dd
 \end{verbatim}
 
 This method is appropriate for a controlled lab because it produces deterministic, low-noise captures focused only on the authentication event under investigation.
@@ -4410,12 +4487,18 @@ Address Pool Range: 10.0.20.100 - 10.0.20.199
 \label{sec:appendix-a-pfsense-guest-firewall-rules}
 
 \begin{verbatim}
-Pass  | IPv4* | Source: 10.0.20.0/24 | Destination: This Firewall (Self) | ALLOW-GUEST-TO-PFSENSE
-Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.30.0/24       | BLOCK-GUEST-TO-SERVICES
-Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.34.0/30       | BLOCK-GUEST-TO-TRANSIT
-Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.23.0/24       | BLOCK-GUEST-TO-DIST
-Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.12.0/24       | BLOCK-GUEST-TO-AUTH-ACCESS
-Pass  | IPv4* | Source: 10.0.20.0/24 | Destination: *                  | ALLOW-GUEST-TO-INTERNET-AND-OTHER-NON-INTERNAL
+Pass  | IPv4* | Source: 10.0.20.0/24 | Destination: This Firewall (Self) 
+        | ALLOW-GUEST-TO-PFSENSE
+Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.30.0/24       
+        | BLOCK-GUEST-TO-SERVICES
+Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.34.0/30       
+        | BLOCK-GUEST-TO-TRANSIT
+Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.23.0/24       
+        | BLOCK-GUEST-TO-DIST
+Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.12.0/24       
+        | BLOCK-GUEST-TO-AUTH-ACCESS
+Pass  | IPv4* | Source: 10.0.20.0/24 | Destination: *                  
+        | ALLOW-GUEST-TO-INTERNET-AND-OTHER-NON-INTERNAL
 \end{verbatim}
 
 % ---------------------------------------------------------------------
@@ -4720,16 +4803,23 @@ def summarize():
     print()
 
     print("[1] Failed authentication simulation")
-    print(f"- Client remained unauthorized: {'YES' if results['client_failed_unauthorized'] else 'NO'}")
-    print(f"- Client showed successful connection during failed test: {'YES' if results['client_failed_connected'] else 'NO'}")
-    print(f"- hostapd saw authentication attempt: {'YES' if results['hostapd_failed_attempt_seen'] else 'NO'}")
-    print(f"- FreeRADIUS recorded failed auth / reject path: {'YES' if results['radius_failed_reject'] else 'NO'}")
+    print(f"- Client remained unauthorized: {'YES' if results['client_failed_unauthorized']
+            else 'NO'}")
+    print(f"- Client showed successful connection during failed test: {'YES' if 
+            results['client_failed_connected'] else 'NO'}")
+    print(f"- hostapd saw authentication attempt: {'YES' if 
+            results['hostapd_failed_attempt_seen'] else 'NO'}")
+    print(f"- FreeRADIUS recorded failed auth / reject path: {'YES' if 
+            results['radius_failed_reject'] else 'NO'}")
     print()
 
     print("[2] Remediation / successful re-test")
-    print(f"- Client reached CTRL-EVENT-CONNECTED: {'YES' if results['client_success_connected'] else 'NO'}")
-    print(f"- Client reached Authorized state: {'YES' if results['client_success_authorized'] else 'NO'}")
-    print(f"- hostapd showed successful authorization indicators: {'YES' if results['hostapd_success_authorized'] else 'NO'}")
+    print(f"- Client reached CTRL-EVENT-CONNECTED: {'YES' if 
+            results['client_success_connected'] else 'NO'}")
+    print(f"- Client reached Authorized state: {'YES' if 
+            results['client_success_authorized'] else 'NO'}")
+    print(f"- hostapd showed successful authorization indicators: {'YES' if 
+            results['hostapd_success_authorized'] else 'NO'}")
     print()
 
     if (
