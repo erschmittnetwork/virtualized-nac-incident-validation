@@ -10,28 +10,15 @@
 %   based guest access enforcement, centralized logging, incident
 %   tracking, automation, and packet capture analysis.
 %
-% BUILD / FORMAT NOTES
-%   - This document is intentionally authored as a single monolithic
-%     .tex file for Pandoc-driven PDF and HTML generation.
-%   - Section numbering is embedded directly in section titles to match
-%     established document conventions.
-%   - Raw operational evidence is included inline via verbatim blocks or
-%     appendix sections as approved.
-%   - Screenshots and figures are represented by explicit placeholders in
-%     early draft form and may be replaced with final image assets later.
+% Build Notes:
+%   - Compiled via standard LaTeX toolchain (Pandoc/pdflatex).
+%   - Hyperref used for internal cross-referencing and PDF metadata behavior.
 %
-% COMMENTING CONVENTION
-%   - Comment blocks precede major sections and subsections.
-%   - Comment blocks are used to preserve authoring intent, improve
-%     maintainability, and keep the document aligned with the author's
-%     existing engineering documentation standards.
-%
-% SECURITY / PUBLICATION NOTES
-%   - Private RFC1918 addressing, hostnames, interface names, and route
-%     structures are intentionally preserved as part of the architecture.
-%   - Passwords, shared secrets, tokens, authentication blobs, and MAC
-%     addresses MUST be redacted in all published artifacts.
-%
+% Commenting Philosophy:
+%   - Comment blocks contextualize normative requirements, architectural
+%     intent, change sensitivity, and verbatim operational evidence.
+%   - Comment blocks may be intentionally omitted for self-contained or
+%     mechanically descriptive subsections.
 % =====================================================================
 
 % -----------------------------------------------------------------------------
@@ -224,7 +211,7 @@ The operational evidence included in this document is constrained by the followi
     \item Final-state command outputs, configuration files, service states, validation results, and automation artifacts are considered in scope;
     \item Packet capture interpretation and protocol-state observations are considered in scope;
     \item Full debug logs are not reproduced wholesale; only explicitly selected excerpts are included where necessary to support an incident conclusion;
-    \item GUI-derived evidence (e.g., pfSense, GLPI, Wireshark) is represented by figures and screenshots rather than terminal transcription unless a manual transcription is operationally clearer;
+    \item GUI-derived evidence (e.g., pfSense, GLPI, Wireshark) is represented by screenshots rather than terminal transcription unless a manual transcription is operationally clearer;
     \item Sensitive values, including passwords, shared secrets, tokens, and authentication material, MUST be redacted in all published forms of the document.
 \end{itemize}
 
@@ -623,7 +610,7 @@ pfSense is the authoritative security boundary and policy-enforcement node in th
     \item serving as the primary firewall boundary used to simulate guest access control in the absence of true switch-native dynamic VLAN reassignment.
 \end{itemize}
 
-Its final interface assignments, DHCP configuration, and guest firewall rules will be documented later (see Section~\ref{sec:appendix-a-pfsense-authenticated-interface-summary}, Section~\ref{sec:appendix-a-pfsense-guest-interface-summary}, Section~\ref{sec:appendix-a-pfsense-guest-firewall-rules}, and the related figure placeholders in the main body).
+Its final interface assignments, DHCP configuration, and guest firewall rules will be documented later (see Section~\ref{sec:appendix-a-pfsense-authenticated-interface-summary}, Section~\ref{sec:appendix-a-pfsense-guest-interface-summary}, Section~\ref{sec:appendix-a-pfsense-guest-firewall-rules}, and the related screenshots in the main body).
 
 \subsubsection{4.3.5 radius-splunk}
 \label{sec:radius-splunk-role}
@@ -650,20 +637,22 @@ Because this node combines policy authority, observability, and automation, it i
     \item maintaining the incident ticket used to document the failed authentication event, remediation, and closure.
 \end{itemize}
 
-Its final-state configuration and deployment validation will be documented later (see Section~\ref{sec:appendix-a-ops-glpi-netplan-config}, Section~\ref{sec:glpi-final-configuration}, and the later GLPI figure placeholders in the incident section).
+Its final-state configuration and deployment validation will be documented later (see Section~\ref{sec:appendix-a-ops-glpi-netplan-config}, Section~\ref{sec:glpi-final-configuration}, and the later GLPI figure screenshots in the incident section).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 4.4: TOPOLOGY DIAGRAM
 % ---------------------------------------------------------------------
-% This subsection reserves the figure placeholder for the final rendered
-% topology diagram. A Mermaid workflow or static exported figure may be
-% inserted later depending on the final build path.
+% This subsection defines the canonical architectural model for the lab
+% implementation via Mermaid diagram. This section serves as the normative
+% design baseline against which configuration and validation sections
+% are evaluated. Diagram source is maintained separately and embedded
+% as a static PNG for deterministic HTML and PDF output.
 % ---------------------------------------------------------------------
 
 \subsection{4.4 Topology Diagram}
 \label{sec:topology-diagram}
 
-Figure~\ref{fig:reference-topology-diagram} is the authoritative logical topology placeholder for the final document. The diagram should preserve the segment boundaries and role relationships defined in Sections~\ref{sec:logical-topology-overview} through~\ref{sec:final-system-roles}.
+Figure~\ref{fig:reference-topology-diagram} is the authoritative logical topology diagram for the lab document. The diagram should preserve the segment boundaries and role relationships defined in Sections~\ref{sec:logical-topology-overview} through~\ref{sec:final-system-roles}.
 
 \begin{quote}
 \textit{Diagram implementation note:}\\
@@ -830,7 +819,7 @@ pfSense is the authoritative security boundary in the environment. Its final int
 
 This interface design allows pfSense to sit directly between the routed access path and the protected services segment, while also hosting a guest segment whose policy can be enforced independently.
 
-The authoritative manual transcription of the final pfSense interface summary is reproduced below and will later be supported by a figure placeholder and appendix reference (see Section~\ref{sec:appendix-a-pfsense-authenticated-interface-summary}).
+The authoritative manual transcription of the final pfSense interface summary is reproduced below and has an equivalent appendix reference (see Section~\ref{sec:appendix-a-pfsense-authenticated-interface-summary}).
 
 \begin{verbatim}
 pfSense final interface summary
@@ -1320,7 +1309,7 @@ Operationally, GLPI is not treated as a passive accessory to the environment. In
     \item a resolved ticket state reflecting successful remediation.
 \end{itemize}
 
-These GUI-derived artifacts will be represented later through figure placeholders and appendix references rather than terminal transcription alone (see Section~\ref{sec:glpi-final-configuration} and the later incident section of this document).
+These GUI-derived artifacts will be represented later through screenshots and appendix references rather than terminal transcription alone (see Section~\ref{sec:glpi-final-configuration} and the later incident section of this document).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 5.8: PYTHON AND ANSIBLE AUTOMATION ARTIFACTS
@@ -3553,7 +3542,7 @@ Accordingly, the client-facing failed capture supports the same conclusion alrea
 
 \begin{figure}[H]
     \centering
-    % \includegraphics[width=\textwidth]{figures/failed_8021x_ens38_redacted.png}
+    \includegraphics[width=\textwidth]{screenshots/Wireshark_failed_8021x_ens38_pcap.png}
     \caption{Failed wired 802.1X authentication on the client-facing EAPOL segment}
     \label{sec:fig-failed-8021x-ens38}
 \end{figure}
@@ -3593,7 +3582,7 @@ This point matters analytically. It confirms that the failed incident was not ca
 
 \begin{figure}[H]
     \centering
-    % \includegraphics[width=\textwidth]{figures/failed_8021x_ens39_redacted.png}
+    \includegraphics[width=\textwidth]{screenshots/Wireshark_failed_8021x_ens39_pcap.png}
     \caption{Failed wired 802.1X authentication on the authenticator-to-RADIUS path}
     \label{sec:fig-failed-8021x-ens39}
 \end{figure}
@@ -3635,7 +3624,7 @@ The successful client-facing capture therefore confirms that the remediated endp
 
 \begin{figure}[H]
     \centering
-    % \includegraphics[width=\textwidth]{figures/success_8021x_ens38_redacted.png}
+    \includegraphics[width=\textwidth]{screenshots/Wireshark_success_8021x_ens38_pcap.png}
     \caption{Successful wired 802.1X authentication on the client-facing EAPOL segment}
     \label{sec:fig-success-8021x-ens38}
 \end{figure}
@@ -3675,7 +3664,7 @@ This is the protocol-level counterpart to the operational conclusion already est
 
 \begin{figure}[H]
     \centering
-    % \includegraphics[width=\textwidth]{figures/success_8021x_ens39_redacted.png}
+    \includegraphics[width=\textwidth]{screenshots/Wireshark_success_8021x_ens39_pcap.png}
     \caption{Successful wired 802.1X authentication on the authenticator-to-RADIUS path}
     \label{sec:fig-success-8021x-ens39}
 \end{figure}

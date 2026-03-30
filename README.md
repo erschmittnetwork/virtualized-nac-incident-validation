@@ -106,7 +106,7 @@ The objective is to model realistic SME-scale access-control and incident-respon
 │   └── reference-topology-diagram.mmd
 ├── docs
 │   └── virtualized-nac-incident-validation.tex
-├── figures [TO BE ADDED]
+├── screenshots
 │   ├── pfSense_DHCP_Server_GUEST.png
 │   ├── pfSense_Firewall_Rules_GUEST.png
 │   ├── pfSense_Interfaces_GUEST.png
@@ -133,8 +133,8 @@ Contains the Mermaid source file defining the logical and architectural topology
 **docs/**
 Contains the primary LaTeX documentation source from which artifacts are generated.
 
-**figures/**
-[TO BE ADDED] Contains redacted publication-ready screenshots referenced by the document. In this lab, figures are intentionally limited to:
+**screenshots/**
+Contains redacted publication-ready screenshots referenced by the document. In this lab, figures are intentionally limited to:
 
 * GLPI and pfSense GUI evidence
 * Wireshark packet-capture screenshots
