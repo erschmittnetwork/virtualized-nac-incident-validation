@@ -95,6 +95,10 @@
 % HTML and PDF outputs under the Pandoc workflow.
 % -----------------------------------------------------------------------------
 \usepackage{tabularx}
+\usepackage{array}
+\usepackage{adjustbox}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 
 \hypersetup{
   pdfstartpage=1,
@@ -135,10 +139,11 @@
 
 \begin{table}[H]
 \centering
-\small
-\setlength{\tabcolsep}{5pt}
-\renewcommand{\arraystretch}{1.2}
-\begin{tabularx}{\textwidth}{|p{0.28\textwidth}|X|}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabularx}{\textwidth}{|p{0.24\textwidth}|Y|}
 \hline
 \textbf{Field} & \textbf{Value} \\
 \hline
@@ -154,15 +159,16 @@ Document Status & Production Draft (Educational Lab / Proof-of-Concept) \\
 \hline
 Document Type & Engineering Lab Implementation and Validation Report \\
 \hline
-Primary Scope & Virtualized wired 802.1X NAC proof-of-concept with policy-based guest access enforcement, incident simulation, automation, and packet-level validation \\
+Primary Scope & Virtualized wired IEEE 802.1X NAC proof-of-concept with policy-based guest access enforcement, incident simulation, automation, and packet-level validation \\
 \hline
 Primary Technologies & IEEE 802.1X via \texttt{hostapd} (wired mode) and \texttt{wpa\_supplicant}; pfSense; FreeRADIUS; GLPI on Apache and MariaDB; Splunk Universal Forwarder; Python; Ansible; \texttt{tcpdump}; Wireshark \\
 \hline
-VM Platform & VMware Workstation Pro with Ubuntu Server 24.04 LTS virtual machines \\
+VM Platform & VMware Workstation Pro: Ubuntu Server 24.04 LTS \\
 \hline
 Primary Lab Purpose & Demonstrate a realistic small-scale NAC architecture with authenticated access control, constrained guest access, observability, ITSM workflow integration, automation, and protocol validation \\
 \hline
 \end{tabularx}
+\end{adjustbox}
 \end{table}
 
 The purpose of this document is to provide a complete, technically rigorous, and reproducible record of the final implemented state of the lab environment, the access-control model selected for the environment, the operational validation performed against that environment, and the incident simulation used to demonstrate practical NAC troubleshooting and remediation workflows.
