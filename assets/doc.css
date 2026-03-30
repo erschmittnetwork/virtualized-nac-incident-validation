@@ -313,10 +313,12 @@ body {
   padding-top: 120px;
 }
 
-td:empty {
+tr:has(> td:first-child:empty) > td,
+tr:has(> td:first-child > p:empty) > td {
   border-top: none !important;
 }
 
-td:empty + td {
-  border-top: none !important;
+tr:has(+ tr > td:first-child:empty) > td,
+tr:has(+ tr > td:first-child > p:empty) > td {
+  border-bottom: none !important;
 }
