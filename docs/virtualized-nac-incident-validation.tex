@@ -547,6 +547,8 @@ The final environment uses multiple RFC1918 segments to model distinct functiona
 \textbf{Primary Function:} Administrative reachability and host-level VM management paths. \\
 \textbf{Representative Systems / Interfaces:} Host virtual interfaces, VM management adapters, temporary host-side management access where required.
 
+\medskip
+
 The protected services segment (\texttt{10.0.30.0/24}) is the most operationally significant network in the final design. It hosts the RADIUS policy authority, the log-forwarding instrumentation, the Python and Ansible automation artifacts, and the ITSM platform used to record the incident lifecycle. This segment is reachable from the authenticated access path through the routed chain \texttt{access-node} $\rightarrow$ \texttt{dist-router} $\rightarrow$ pfSense, and it is intentionally protected from direct guest-segment access by pfSense firewall policy.
 
 The guest access segment (\texttt{10.0.20.0/24}) is not intended to be interpreted as a dynamically assigned VLAN in the switch-native sense. Rather, it is the authoritative guest-policy enforcement domain used by this lab to represent how an unauthenticated or otherwise restricted endpoint would be treated under a constrained virtualized implementation. The guest segment receives DHCP from pfSense and can reach the guest gateway for local validation, but it is intentionally restricted from reaching the protected services segment as part of the policy model described later in Section~\ref{sec:access-control-model-and-policy-enforcement}.

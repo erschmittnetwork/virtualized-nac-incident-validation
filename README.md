@@ -99,10 +99,11 @@ The objective is to model realistic SME-scale access-control and incident-respon
 ├── .github/workflows
 │   └── deploy.yml
 ├── assets
+│   ├── appendix-numbering-filter.lua
 │   ├── doc.css
 │   └── header.html
-├── diagrams [TO BE ADDED]
-│   └── virtualized-nac-logical-architecture.mmd
+├── diagrams
+│   └── reference-topology-diagram.mmd
 ├── docs
 │   └── virtualized-nac-incident-validation.tex
 ├── figures [TO BE ADDED]
@@ -124,10 +125,10 @@ The objective is to model realistic SME-scale access-control and incident-respon
 Defines the GitHub Actions workflow used to build and deploy documentation artifacts.
 
 **assets/**
-Contains CSS and reusable HTML fragments injected into generated output.
+Contains CSS, a Lua script for appendix numbering, and a reusable HTML fragment injected into generated output.
 
 **diagrams/**
-[TO BE ADDED] Contains the Mermaid source file defining the logical and architectural topology diagram.
+Contains the Mermaid source file defining the logical and architectural topology diagram.
 
 **docs/**
 Contains the primary LaTeX documentation source from which artifacts are generated.
