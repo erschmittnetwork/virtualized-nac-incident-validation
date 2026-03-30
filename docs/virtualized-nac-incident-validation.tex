@@ -95,10 +95,6 @@
 % HTML and PDF outputs under the Pandoc workflow.
 % -----------------------------------------------------------------------------
 \usepackage{tabularx}
-\usepackage{array}
-\usepackage{adjustbox}
-
-\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 
 \hypersetup{
   pdfstartpage=1,
@@ -137,13 +133,11 @@
 \subsection{1.1 Document Metadata}
 \label{subsec:document-metadata}
 
-\begin{table}[H]
-\centering
-\footnotesize
+\begin{center}
+\small
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.15}
-\begin{adjustbox}{max width=\textwidth}
-\begin{tabularx}{\textwidth}{|p{0.24\textwidth}|Y|}
+\begin{tabular}{|p{0.22\textwidth}|p{0.54\textwidth}|}
 \hline
 \textbf{Field} & \textbf{Value} \\
 \hline
@@ -167,9 +161,8 @@ VM Platform & VMware Workstation Pro: Ubuntu Server 24.04 LTS \\
 \hline
 Primary Lab Purpose & Demonstrate a realistic small-scale NAC architecture with authenticated access control, constrained guest access, observability, ITSM workflow integration, automation, and protocol validation \\
 \hline
-\end{tabularx}
-\end{adjustbox}
-\end{table}
+\end{tabular}
+\end{center}
 
 The purpose of this document is to provide a complete, technically rigorous, and reproducible record of the final implemented state of the lab environment, the access-control model selected for the environment, the operational validation performed against that environment, and the incident simulation used to demonstrate practical NAC troubleshooting and remediation workflows.
 
@@ -3858,7 +3851,7 @@ The automation implemented in this lab is intentionally narrow in scope and shou
 
 The same principle applies to the Python parser. The parser is a purpose-built evidence summarizer that evaluates a known set of captured artifact files in fixed paths and produces a human-readable incident conclusion. It is valuable because it demonstrates structured evidence interpretation and repeatable operator validation, but it is not a generalized incident correlation engine or a reusable NAC analytics platform.
 
-This narrowness is not a flaw. It is exactly what makes the automation credible in the context of the lab. The tools are tightly aligned to the services, filenames, and operational checkpoints that were actually implemented and validated. The document should therefore present the automation as operationally useful and technically appropriate, while avoiding any implication that it is broader or more portable than it was designed to be.
+The tools are tightly aligned to the services, filenames, and operational checkpoints that were actually implemented and validated. The document should therefore present the automation as operationally useful and technically appropriate, while avoiding any implication that it is broader or more portable than it was designed to be.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 11.5: GUI AND EVIDENCE SCOPE LIMITATIONS
@@ -3887,8 +3880,6 @@ For that reason, the document intentionally avoids dependence on hypervisor sett
     \item GLPI as the human-readable incident management record; and
     \item Wireshark as the visual representation of protocol-layer success and failure.
 \end{itemize}
-
-This approach improves clarity and keeps the document aligned with the actual strengths of the lab.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 11.6: OPERATIONAL SCOPE BOUNDARIES
