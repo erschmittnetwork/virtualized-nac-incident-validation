@@ -503,49 +503,49 @@ This architecture is sufficiently complex to demonstrate realistic operational d
 
 The final environment uses multiple RFC1918 segments to model distinct functional domains. These segments are intentionally small and purpose-driven. The authoritative logical addressing model used throughout this document is summarized below.
 
-\begin{table}[H]
-\centering
-\small
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.2}
-\begin{tabularx}{\textwidth}{|p{0.14\textwidth}|p{0.15\textwidth}|X|X|}
-\hline
-\textbf{Segment} & \textbf{Subnet} & \textbf{Primary Function} & \textbf{Representative Systems / Interfaces} \\
-\hline
-Access Client Segment &
-\texttt{10.0.12.0/24} &
-Authenticated endpoint attachment segment for the wired supplicant validation path &
-\texttt{client-1} (\texttt{10.0.12.10}), \texttt{access-node} access-facing interface (\texttt{10.0.12.1}) \\
-\hline
-Access-to-Distribution Transit &
-\texttt{10.0.23.0/24} &
-Routed transit between the access node and the intermediate distribution router &
-\texttt{access-node} (\texttt{10.0.23.1}), \texttt{dist-router} (\texttt{10.0.23.2}) \\
-\hline
-Protected Services Segment &
-\texttt{10.0.30.0/24} &
-Service hosting for RADIUS, logging, automation control, and ITSM systems &
-pfSense OPT1 (\texttt{10.0.30.1}), \texttt{radius-splunk} (\texttt{10.0.30.10}), \texttt{ops-glpi} (\texttt{10.0.30.20}) \\
-\hline
-Distribution-to-Firewall Transit &
-\texttt{10.0.34.0/30} &
-Point-to-point transit between the Linux distribution router and pfSense &
-\texttt{dist-router} (\texttt{10.0.34.1}), pfSense LAN/transit (\texttt{10.0.34.2}) \\
-\hline
-Guest Access Segment &
-\texttt{10.0.20.0/24} &
-Guest or non-trusted endpoint segment used for policy-based guest access simulation &
-pfSense GUEST/OPT2 (\texttt{10.0.20.254}), DHCP pool (\texttt{10.0.20.100--10.0.20.199}) \\
-\hline
-Host / Hypervisor Management Segments &
-VMware-provided RFC1918 segments (e.g., \texttt{192.168.195.0/24}, \texttt{192.168.205.0/24}) &
-Administrative reachability and host-level VM management paths &
-Host virtual interfaces, VM management adapters, temporary host-side management access where required \\
-\hline
-\end{tabularx}
-\caption{Logical network segments and their roles in the final virtualized NAC environment.}
-\label{tab:logical-network-segments}
-\end{table}
+\textbf{Logical Network Segments and Addressing}
+
+\medskip
+
+\textbf{Access Client Segment} \\
+\textbf{Subnet:} \texttt{10.0.12.0/24} \\
+\textbf{Primary Function:} Authenticated endpoint attachment segment for the wired supplicant validation path. \\
+\textbf{Representative Systems / Interfaces:} \texttt{client-1} (\texttt{10.0.12.10}), \texttt{access-node} access-facing interface (\texttt{10.0.12.1}).
+
+\medskip
+
+\textbf{Access-to-Distribution Transit} \\
+\textbf{Subnet:} \texttt{10.0.23.0/24} \\
+\textbf{Primary Function:} Routed transit between the access node and the intermediate distribution router. \\
+\textbf{Representative Systems / Interfaces:} \texttt{access-node} (\texttt{10.0.23.1}), \texttt{dist-router} (\texttt{10.0.23.2}).
+
+\medskip
+
+\textbf{Protected Services Segment} \\
+\textbf{Subnet:} \texttt{10.0.30.0/24} \\
+\textbf{Primary Function:} Service hosting for RADIUS, logging, automation control, and ITSM systems. \\
+\textbf{Representative Systems / Interfaces:} pfSense OPT1 (\texttt{10.0.30.1}), \texttt{radius-splunk} (\texttt{10.0.30.10}), \texttt{ops-glpi} (\texttt{10.0.30.20}).
+
+\medskip
+
+\textbf{Distribution-to-Firewall Transit} \\
+\textbf{Subnet:} \texttt{10.0.34.0/30} \\
+\textbf{Primary Function:} Point-to-point transit between the Linux distribution router and pfSense. \\
+\textbf{Representative Systems / Interfaces:} \texttt{dist-router} (\texttt{10.0.34.1}), pfSense LAN/transit (\texttt{10.0.34.2}).
+
+\medskip
+
+\textbf{Guest Access Segment} \\
+\textbf{Subnet:} \texttt{10.0.20.0/24} \\
+\textbf{Primary Function:} Guest or non-trusted endpoint segment used for policy-based guest access simulation. \\
+\textbf{Representative Systems / Interfaces:} pfSense GUEST/OPT2 (\texttt{10.0.20.254}), DHCP pool (\texttt{10.0.20.100--10.0.20.199}).
+
+\medskip
+
+\textbf{Host / Hypervisor Management Segments} \\
+\textbf{Subnet:} VMware-provided RFC1918 segments (e.g., \texttt{192.168.195.0/24}, \texttt{192.168.205.0/24}). \\
+\textbf{Primary Function:} Administrative reachability and host-level VM management paths. \\
+\textbf{Representative Systems / Interfaces:} Host virtual interfaces, VM management adapters, temporary host-side management access where required.
 
 The protected services segment (\texttt{10.0.30.0/24}) is the most operationally significant network in the final design. It hosts the RADIUS policy authority, the log-forwarding instrumentation, the Python and Ansible automation artifacts, and the ITSM platform used to record the incident lifecycle. This segment is reachable from the authenticated access path through the routed chain \texttt{access-node} $\rightarrow$ \texttt{dist-router} $\rightarrow$ pfSense, and it is intentionally protected from direct guest-segment access by pfSense firewall policy.
 

@@ -313,6 +313,13 @@ body {
   padding-top: 120px;
 }
 
+/*
+   Continuation row border suppression for Pandoc-rendered tables that
+   removes the visual horizontal divider between intentionally wrapped
+   ontinuation rows in Pandoc-generated HTML tables. It is used in
+   conjunction with LaTeX table rows where the first cell is left blank to
+   simulate multi-line content within a single logical field/value pair
+*/
 tr:has(> td:first-child:empty) > td,
 tr:has(> td:first-child > p:empty) > td {
   border-top: none !important;
