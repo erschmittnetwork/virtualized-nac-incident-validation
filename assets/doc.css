@@ -312,3 +312,11 @@ img {
 body {
   padding-top: 120px;
 }
+
+td:empty {
+  border-top: none !important;
+}
+
+td:empty + td {
+  border-top: none !important;
+}
