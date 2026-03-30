@@ -1,13 +1,53 @@
+# =============================================================================
+# WORKFLOW: DEPLOY LAB ARTIFACTS TO S3
+# =============================================================================
+# This GitHub Actions workflow builds the lab document from LaTeX source into
+# both HTML and PDF, renders Mermaid diagrams to static PNG assets for reliable
+# cross-format inclusion, copies supporting static assets (including screenshots),
+# uploads the resulting artifacts to S3, and invalidates the corresponding
+# CloudFront paths so the latest published version is served immediately.
+# =============================================================================
+
 name: Deploy lab artifacts to S3
 
+# -----------------------------------------------------------------------------
+# WORKFLOW TRIGGER
+# -----------------------------------------------------------------------------
+# This workflow runs automatically on pushes to the main branch. The intent is
+# to treat main as the publication branch for the lab document so that every
+# committed change to the authoritative source automatically rebuilds and
+# republishes the HTML and PDF artifacts.
+# -----------------------------------------------------------------------------
 on:
   push:
     branches: [ "main" ]
 
+# -----------------------------------------------------------------------------
+# WORKFLOW PERMISSIONS
+# -----------------------------------------------------------------------------
+# id-token: write
+#   Required for GitHub OIDC federation to AWS so the workflow can assume the
+#   deployment role without storing long-lived AWS access keys.
+#
+# contents: read
+#   Required so the workflow can read repository contents after checkout.
+# -----------------------------------------------------------------------------
 permissions:
   id-token: write
   contents: read
 
+# -----------------------------------------------------------------------------
+# GLOBAL ENVIRONMENT VARIABLES
+# -----------------------------------------------------------------------------
+# LAB_SLUG
+#   Canonical filename stem used for generated HTML and PDF outputs.
+#
+# LAB_TITLE
+#   Human-readable document title passed into Pandoc metadata.
+#
+# TEX_SOURCE
+#   Authoritative LaTeX source file for the lab document.
+# -----------------------------------------------------------------------------
 env:
   LAB_SLUG: virtualized-nac-incident-validation
   LAB_TITLE: Virtualized NAC with Automated Wired 802.1X Incident Validation
@@ -15,12 +55,33 @@ env:
 
 jobs:
   deploy:
+    # -------------------------------------------------------------------------
+    # JOB: DEPLOY
+    # -------------------------------------------------------------------------
+    # Executes the full build and publication workflow on the latest Ubuntu
+    # GitHub-hosted runner.
+    # -------------------------------------------------------------------------
     runs-on: ubuntu-latest
 
     steps:
+      # -----------------------------------------------------------------------
+      # STEP: CHECK OUT REPOSITORY
+      # -----------------------------------------------------------------------
+      # Pulls the repository contents into the runner workspace so the workflow
+      # can access the LaTeX source, Mermaid diagrams, CSS, screenshots, and
+      # other static assets required for the build.
+      # -----------------------------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # -----------------------------------------------------------------------
+      # STEP: INSTALL BUILD DEPENDENCIES
+      # -----------------------------------------------------------------------
+      # Installs Pandoc and the required LaTeX packages needed to render the
+      # document to PDF via pdflatex. The selected TeX Live bundles provide the
+      # core packages typically required by a technical report that includes
+      # figures, tables, hyperlinks, and extended formatting features.
+      # -----------------------------------------------------------------------
       - name: Install build dependencies
         run: |
           sudo apt-get update
@@ -31,6 +92,14 @@ jobs:
             texlive-fonts-recommended \
             lmodern
 
+      # -----------------------------------------------------------------------
+      # STEP: BUILD LAB ARTIFACTS INTO DIST/
+      # -----------------------------------------------------------------------
+      # Creates a clean build output tree, renders Mermaid diagrams into static
+      # PNG files, copies static assets (including screenshots), then runs Pandoc
+      # twice to produce the final HTML and PDF deliverables. This step is the
+      # core document assembly phase.
+      # -----------------------------------------------------------------------
       - name: Build lab artifacts into dist/
         shell: bash
         run: |
@@ -39,15 +108,30 @@ jobs:
           rm -rf dist
           mkdir -p dist/docs/diagrams dist/docs/assets
 
-          # ------------------------------------------------------------
-          # Render Mermaid diagrams to repo-local PNGs for PDF build,
-          # then copy them into dist/docs/diagrams for HTML deployment.
-          # ------------------------------------------------------------
+          # -------------------------------------------------------------------
+          # MERMAID DIAGRAM RENDERING
+          # -------------------------------------------------------------------
+          # Renders all Mermaid source files from diagrams/*.mmd into static PNG
+          # images using mermaid-cli in Docker. The PNGs are written directly to
+          # the repository-local diagrams/ directory so the LaTeX source can
+          # resolve them reliably during PDF generation. They are then copied
+          # into dist/docs/diagrams for deployment so the HTML artifact can
+          # resolve the same images through relative paths.
+          #
+          # A reduced scale is applied selectively to the reference-topology
+          # diagram to help it fit legibly within a portrait-oriented PDF page.
+          # -------------------------------------------------------------------
           if compgen -G "diagrams/*.mmd" > /dev/null; then
             for f in diagrams/*.mmd; do
               base="$(basename "$f" .mmd)"
 
-              # Use a smaller scale for topology diagrams if needed.
+              # ---------------------------------------------------------------
+              # DIAGRAM-SPECIFIC SCALE OVERRIDE
+              # ---------------------------------------------------------------
+              # Most diagrams render at scale 3 for improved readability. The
+              # reference topology diagram uses scale 2 to reduce overall image
+              # dimensions so it remains more manageable in the PDF layout.
+              # ---------------------------------------------------------------
               scale=3
               if [ "$base" = "reference-topology" ]; then
                 scale=2
@@ -68,17 +152,40 @@ jobs:
             echo "No Mermaid diagrams found."
           fi
 
-          # ------------------------------------------------------------
-          # Copy static assets (including screenshots) into dist/docs/assets
-          # so HTML can resolve relative paths from /docs/<slug>.html
-          # ------------------------------------------------------------
+          # -------------------------------------------------------------------
+          # STATIC ASSET STAGING
+          # -------------------------------------------------------------------
+          # Copies the contents of assets/ into dist/docs/assets so the deployed
+          # HTML document can resolve CSS, header fragments, screenshots, and
+          # any other referenced static files using stable relative paths under
+          # the /docs/assets/ prefix.
+          # -------------------------------------------------------------------
           if [ -d assets ]; then
             cp -R assets/* dist/docs/assets/ || true
           fi
 
-          # ------------------------------------------------------------
-          # Build HTML
-          # ------------------------------------------------------------
+          # -------------------------------------------------------------------
+          # BUILD HTML ARTIFACT
+          # -------------------------------------------------------------------
+          # Generates the standalone HTML version of the lab document.
+          #
+          # Key options:
+          #   - --toc / --toc-depth=3
+          #       Produces a clickable table of contents through subsubsection
+          #       depth.
+          #   - --css=assets/doc.css
+          #       Applies the custom stylesheet for HTML presentation.
+          #   - --resource-path=.:dist:dist/docs
+          #       Ensures Pandoc can resolve referenced files across the working
+          #       tree and staged build directories.
+          #   - --include-after-body=assets/header.html
+          #       Injects the custom footer/header fragment after the document
+          #       body for site branding or navigation.
+          #   - --lua-filter=assets/appendix-numbering-filter.lua
+          #       Applies appendix numbering normalization for HTML (and also PDF
+          #       in the later build step) so appendix references render as
+          #       Appendix A / Section A.1.x instead of numeric section values.
+          # -------------------------------------------------------------------
           pandoc "$TEX_SOURCE" \
             -s \
             --toc \
@@ -90,9 +197,14 @@ jobs:
             -M title="$LAB_TITLE" \
             -o "dist/docs/${LAB_SLUG}.html"
 
-          # ------------------------------------------------------------
-          # Build PDF
-          # ------------------------------------------------------------
+          # -------------------------------------------------------------------
+          # BUILD PDF ARTIFACT
+          # -------------------------------------------------------------------
+          # Generates the standalone PDF version of the lab document using
+          # pdflatex as the PDF engine. The same appendix numbering filter is
+          # applied so section and appendix references remain consistent between
+          # HTML and PDF outputs.
+          # -------------------------------------------------------------------
           pandoc "$TEX_SOURCE" \
             -s \
             --toc \
@@ -103,12 +215,37 @@ jobs:
             --pdf-engine=pdflatex \
             -o "dist/docs/${LAB_SLUG}.pdf"
 
+      # -----------------------------------------------------------------------
+      # STEP: CONFIGURE AWS CREDENTIALS
+      # -----------------------------------------------------------------------
+      # Uses GitHub OIDC to assume the AWS IAM role required for S3 upload and
+      # CloudFront invalidation. This avoids embedding static AWS credentials in
+      # the repository or workflow secrets.
+      # -----------------------------------------------------------------------
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::948544151710:role/GitHubActionsDeployRole
           aws-region: us-east-1
 
+      # -----------------------------------------------------------------------
+      # STEP: UPLOAD LAB ARTIFACTS TO S3
+      # -----------------------------------------------------------------------
+      # Publishes the generated HTML and PDF to their canonical S3 locations and
+      # syncs the diagrams/ and assets/ directories so referenced images, Mermaid
+      # exports, and screenshots remain available to the deployed HTML document.
+      #
+      # Important pathing:
+      #   HTML/PDF:
+      #     s3://network-blog-assets/docs/<slug>.html
+      #     s3://network-blog-assets/docs/<slug>.pdf
+      #
+      #   Diagrams:
+      #     s3://network-blog-assets/docs/diagrams/
+      #
+      #   Static assets (CSS, screenshots, etc.):
+      #     s3://network-blog-assets/docs/assets/
+      # -----------------------------------------------------------------------
       - name: Upload lab artifacts
         shell: bash
         run: |
@@ -130,6 +267,19 @@ jobs:
             aws s3 sync dist/docs/assets/ s3://network-blog-assets/docs/assets/
           fi
 
+      # -----------------------------------------------------------------------
+      # STEP: INVALIDATE CLOUDFRONT CACHE
+      # -----------------------------------------------------------------------
+      # Invalidates the published HTML, PDF, diagrams, and assets paths so the
+      # latest build is served immediately rather than waiting for cached objects
+      # to expire at the CDN edge.
+      #
+      # This is especially important when:
+      #   - a Mermaid diagram is revised but the filename is unchanged;
+      #   - screenshots are replaced in-place;
+      #   - CSS changes must take effect immediately;
+      #   - the HTML or PDF document is updated under the same canonical slug.
+      # -----------------------------------------------------------------------
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
