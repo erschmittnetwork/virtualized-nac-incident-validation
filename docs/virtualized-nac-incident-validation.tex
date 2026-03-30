@@ -131,38 +131,20 @@
 % ---------------------------------------------------------------------
 
 \subsection{1.1 Document Metadata}
-\label{subsec:document-metadata}
+\label{sec:document-metadata}
 
-\begin{center}
-\small
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.15}
-\begin{tabularx}{0.92\textwidth}{|p{0.24\textwidth}|X|}
-\hline
-\textbf{Field} & \textbf{Value} \\
-\hline
-Document Title & Virtualized NAC with Automated Wired 802.1X Incident Validation \\
-\hline
-Author & Eric Schmitt \\
-\hline
-Document Version & 1.0 \\
-\hline
-Date of Issue & March 24, 2026 \\
-\hline
-Document Status & Production Draft (Educational Lab / Proof-of-Concept) \\
-\hline
-Document Type & Engineering Lab Implementation and Validation Report \\
-\hline
-Primary Scope & Virtualized wired IEEE 802.1X NAC proof-of-concept with policy-based guest access enforcement, incident simulation, automation, and packet-level validation \\
-\hline
-Primary Technologies & IEEE 802.1X via \texttt{hostapd} (wired mode) and \texttt{wpa\_supplicant}; pfSense; FreeRADIUS; GLPI on Apache and MariaDB; Splunk Universal Forwarder; Python; Ansible; \texttt{tcpdump}; Wireshark \\
-\hline
-VM Platform & VMware Workstation Pro: Ubuntu Server 24.04 LTS \\
-\hline
-Primary Lab Purpose & Demonstrate a realistic small-scale NAC architecture with authenticated access control, constrained guest access, observability, ITSM workflow integration, automation, and protocol validation \\
-\hline
-\end{tabularx}
-\end{center}
+\begin{description}
+  \item[\textbf{Document Title}] Virtualized NAC with Automated Wired 802.1X Incident Validation
+  \item[\textbf{Author}] Eric Schmitt
+  \item[\textbf{Document Version}] 1.0
+  \item[\textbf{Date of Issue}] March 24, 2026
+  \item[\textbf{Document Status}] Production Draft (Educational Lab / Proof-of-Concept)
+  \item[\textbf{Document Type}] Engineering Lab Implementation and Validation Report
+  \item[\textbf{Primary Scope}] Virtualized wired IEEE 802.1X NAC proof-of-concept with policy-based guest access enforcement, incident simulation, automation, and packet-level validation
+  \item[\textbf{Primary Technologies}] IEEE 802.1X; \texttt{hostapd} (wired mode); \texttt{wpa\_supplicant}; pfSense; FreeRADIUS; GLPI; Apache; MariaDB; Splunk Universal Forwarder; Python; Ansible; \texttt{tcpdump}; Wireshark
+  \item[\textbf{VM Platform}] VMware Workstation Pro : Ubuntu 24.04 LTS
+  \item[\textbf{Primary Lab Purpose}] Demonstrate a realistic small-scale NAC architecture with authenticated access control, constrained guest access, observability, ITSM workflow integration, automation, and protocol validation
+\end{description}
 
 The purpose of this document is to provide a complete, technically rigorous, and reproducible record of the final implemented state of the lab environment, the access-control model selected for the environment, the operational validation performed against that environment, and the incident simulation used to demonstrate practical NAC troubleshooting and remediation workflows.
 
@@ -177,7 +159,7 @@ This document is intentionally written as an engineering implementation and vali
 % ---------------------------------------------------------------------
 
 \subsection{1.2 Change History}
-\label{subsec:change-history}
+\label{sec:change-history}
 
 \begin{center}
 \begin{tabular}{|p{0.14\textwidth}|p{0.14\textwidth}|p{0.20\textwidth}|p{0.42\textwidth}|}
@@ -199,7 +181,7 @@ Future revisions should preserve the same evidence-handling model used in this d
 % ---------------------------------------------------------------------
 
 \subsection{1.3 Intended Audience and Usage}
-\label{subsec:intended-audience-and-usage}
+\label{sec:intended-audience-and-usage}
 
 This document is intended for the following audiences:
 
