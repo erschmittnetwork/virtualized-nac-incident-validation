@@ -182,7 +182,7 @@ This document is intentionally written as an engineering implementation and vali
 \end{tabular}
 \end{center}
 
-Future revisions should preserve the same evidence-handling model used in this document: final-state operational outputs, explicitly approved log excerpts, complete configuration artifacts where relevant, and untruncated raw data in verbatim blocks for all authoritative command or file-based evidence included in scope.
+Future revisions should preserve the same evidence-handling model used in this document: final-state operational outputs, log excerpts, complete configuration artifacts where relevant, and untruncated raw data in verbatim blocks for all authoritative command or file-based evidence included in scope.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 1.3: INTENDED AUDIENCE AND USAGE
@@ -3702,7 +3702,7 @@ The captures therefore visually reinforce the distinction between the pre-authen
 % ---------------------------------------------------------------------
 % SUBSECTION 10.9: PUBLICATION AND REDACTION GUIDANCE
 % ---------------------------------------------------------------------
-% This subsection records the approved publication policy for packet
+% This subsection records the publication policy for packet
 % screenshots and identifies the specific fields visible in the current
 % Wireshark screenshots that must be redacted before public release.
 % ---------------------------------------------------------------------
@@ -3710,7 +3710,7 @@ The captures therefore visually reinforce the distinction between the pre-authen
 \subsection{10.9 Publication and Redaction Guidance}
 \label{sec:publication-and-redaction-guidance}
 
-The approved publication policy for packet screenshots is:
+The publication policy for packet screenshots is:
 
 \begin{itemize}
     \item private IP addresses may remain visible;
@@ -7642,7 +7642,7 @@ Mar 24 04:20:41 access-node hostapd[975]: ctrl_iface not configured!
 % SUBSECTION B.6: PACKET CAPTURE METADATA AND FIGURE MAPPING
 % ---------------------------------------------------------------------
 % This subsection preserves the pcap inventory, capture commands,
-% Wireshark figure mapping, and the approved redaction policy.
+% Wireshark figure mapping, and the data redaction policy.
 % ---------------------------------------------------------------------
 
 \subsection{B.6 Packet Capture Metadata and Figure Mapping}
@@ -7703,7 +7703,7 @@ sudo timeout 15s wpa_supplicant -i ens33 -D wired -c
 % ---------------------------------------------------------------------
 % SUBSECTION B.6.3: PACKET CAPTURE REDACTION POLICY
 % ---------------------------------------------------------------------
-% This subsection preserves the approved publication-safe redaction
+% This subsection preserves the publication-safe redaction
 % policy for Wireshark packet screenshots.
 % ---------------------------------------------------------------------
 
@@ -7711,7 +7711,7 @@ sudo timeout 15s wpa_supplicant -i ens33 -D wired -c
 \label{sec:appendix-b-packet-capture-redaction-policy}
 
 \begin{verbatim}
-Approved publication policy:
+Publication policy:
 - private IP addresses: keep visible
 - MAC addresses: redact
 - passwords/shared secrets/auth blobs: redact
