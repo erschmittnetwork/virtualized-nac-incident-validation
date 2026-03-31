@@ -6,7 +6,7 @@ This repository contains documentation sources and a publishing pipeline for a v
 
 The environment is implemented as a proof-of-concept and is designed to reflect enterprise access-control and incident-response principles, including deterministic authentication flow, segmentation between authenticated and guest access domains, controlled failure simulation, targeted remediation, and evidentiary validation through service logs, packet captures, and ticketing artifacts.
 
-Infrastructure build steps, platform configuration artifacts, and selected automation evidence are referenced by the documentation. Depending on repository scope, these operational artifacts may be documented but not included as executable deployment content.
+Infrastructure provisioning artifacts and node configuration scripts are referenced by the documentation but are not included in this repository.
 
 ---
 
@@ -190,9 +190,7 @@ PDF
 
 ## 7. Exclusions
 
-This repository does not need to include full operational deployment content unless explicitly desired.
-
-By default, the repository may exclude:
+This repository excludes:
 
 * Full VM build scripts
 * Hypervisor-specific network adapter configuration exports
@@ -202,7 +200,7 @@ By default, the repository may exclude:
 * Unredacted RADIUS or supplicant secrets
 * Production-ready provisioning automation
 
-These elements are referenced by the documentation but intentionally excluded from source control.
+Some of these elements are referenced by the documentation but intentionally excluded from source control.
 
 ---
 
@@ -210,7 +208,7 @@ These elements are referenced by the documentation but intentionally excluded fr
 
 This repository serves as:
 
-* A reproducible technical reference for a virtualized NAC proof-of-concept
+* A reproducible technical reference for a virtualized NAC proof-of-concept lab
 * A documentation artifact for wired 802.1X access-control design and validation
 * A portfolio demonstration of incident simulation and remediation methodology
 * An example of evidence-driven technical reporting
@@ -258,6 +256,6 @@ This layered approach is intended to demonstrate that incident conclusions are s
 
 ## 10. Versioning
 
-The current documented version is **1.0.**
+The current documented version is **1.1.**
 
 Version metadata is maintained within the LaTeX source and rendered outputs.
