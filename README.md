@@ -105,7 +105,7 @@ The objective is to model realistic SME-scale access-control and incident-respon
 │   └── screenshots
 │       ├── pfSense_DHCP_Server_GUEST.png
 │       ├── pfSense_Firewall_Rules_GUEST.png
-│       ├── pfSense_Interfaces.png
+│       ├── pfSense_Interfaces_Terminal.png
 │       ├── GLPI_client-1_computer_asset.png
 │       ├── GLPI-client-1_incident_ticket.png
 │       ├── Wireshark_failed_8021x_ens38_pcap.png
