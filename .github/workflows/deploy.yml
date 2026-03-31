@@ -143,7 +143,6 @@ jobs:
                 -i "/data/$f" \
                 -o "/data/diagrams/${base}.png" \
                 -t default \
-                -b transparent \
                 -s "$scale"
 
               cp "diagrams/${base}.png" "dist/docs/diagrams/${base}.png"
