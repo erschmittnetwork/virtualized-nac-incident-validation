@@ -826,7 +826,7 @@ OPT1 (opt1) -> em2 -> v4: 10.0.30.1/24
 GUEST (opt2) -> em3 -> v4: 10.0.20.254/24
 \end{verbatim}
 
-The associated pfSense interfaces terminal screenshot is shown below:
+The associated pfSense interfaces terminal screenshot is shown below.
 
 \begin{figure}[H]
     \centering
@@ -1315,7 +1315,7 @@ Operationally, GLPI is not treated as a passive accessory to the environment. In
     \item a resolved ticket state reflecting successful remediation.
 \end{itemize}
 
-The associated GLPI GUI screenshots are shown below:
+The associated GLPI GUI screenshots are shown below.
 
 \begin{figure}[H]
     \centering
@@ -1626,7 +1626,7 @@ Subnet Range: 10.0.20.1 - 10.0.20.254
 Address Pool Range: 10.0.20.100 - 10.0.20.199
 \end{verbatim}
 
-The associated pfSense GUI screenshot is shown below:
+The associated pfSense GUI screenshot is shown below.
 
 \begin{figure}[H]
     \centering
@@ -1659,7 +1659,7 @@ Pass  | IPv4* | Source: 10.0.20.0/24 | Destination: *
         | ALLOW-GUEST-TO-INTERNET-AND-OTHER-NON-INTERNAL
 \end{verbatim}
 
-The associated pfSense GUI screenshot is shown below:
+The associated pfSense GUI screenshot is shown below.
 
 \begin{figure}[H]
     \centering
@@ -1668,7 +1668,7 @@ The associated pfSense GUI screenshot is shown below:
     \label{sec:fig-pfsense_firewall_rules_guest}
 \end{figure}
 
-This ruleset is deliberately explicit. Rather than relying on an implicit deny plus a broad allow, the internal networks are individually enumerated and blocked before the final permissive rule. That makes the guest policy easier to explain, easier to audit, and more suitable for publication as a portfolio artifact.
+This ruleset is deliberately explicit. Rather than relying on an implicit deny plus a broad allow, the internal networks are individually enumerated and blocked before the final permissive rule. That makes the guest policy easier to explain and easier to audit.
 
 At the time of validation, pfSense outbound NAT was confirmed to be in Automatic mode, which is relevant because it explains why the guest network can successfully access the internet without requiring separately documented manual NAT rules.
 
@@ -2290,7 +2290,7 @@ This simulated a realistic enterprise NAC incident involving endpoint credential
         and demonstrated successful troubleshooting and service restoration.
 \end{verbatim}
 
-For associate GLPI GUI screenshots, see Section~\ref{sec:glpi-final-configuration}.
+For associated GLPI GUI screenshots, see Section~\ref{sec:glpi-final-configuration}.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 7.9: INCIDENT CONCLUSION
@@ -3900,9 +3900,10 @@ The tools are tightly aligned to the services, filenames, and operational checkp
 \subsection{11.5 GUI and Evidence Scope Limitations}
 \label{sec:gui-and-evidence-scope-limitations}
 
-The production document intentionally limits GUI evidence to two categories:
+The production document intentionally limits GUI evidence to three categories:
 
 \begin{itemize}
+    \item the pfSense terminal menu on boot and network GUI;
     \item the GLPI incident record; and
     \item Wireshark packet-analysis screenshots.
 \end{itemize}
@@ -3912,6 +3913,7 @@ This is an explicit documentation choice rather than an omission. The lab is pri
 For that reason, the document intentionally avoids dependence on hypervisor settings walkthroughs, appliance UI tours, or other screenshot-heavy administrative paths. The goal is to keep the evidence model focused on raw technical artifacts and protocol behavior while using GUI elements only where they provide uniquely valuable context, specifically:
 
 \begin{itemize}
+    \item pfSense as the source of network traffic rules and logic;
     \item GLPI as the human-readable incident management record; and
     \item Wireshark as the visual representation of protocol-layer success and failure.
 \end{itemize}
@@ -3944,39 +3946,14 @@ Accordingly, the lab does not attempt to model any of the following:
 These exclusions are intentional design boundaries. They do not diminish the proof-of-concept objective, which is to validate a coherent and technically defensible NAC incident workflow in a virtualized environment. In fact, by avoiding artificial breadth, the lab remains focused on a smaller set of claims that are strongly supported by direct evidence.
 
 % ---------------------------------------------------------------------
-% SUBSECTION 11.7: CREDIBILITY THROUGH EXPLICIT CONSTRAINTS
-% ---------------------------------------------------------------------
-% This subsection explains why documenting limitations is itself a
-% positive quality attribute of the report and frames the constraints as
-% deliberate boundaries that improve accuracy and trustworthiness.
-% ---------------------------------------------------------------------
-
-\subsection{11.7 Credibility Through Explicit Constraints}
-\label{sec:credibility-through-explicit-constraints}
-
-The constraints documented in this section should be understood as a strength of the report rather than as a disclaimer of weakness. In technical portfolio work, credibility is improved when the implementation is described precisely and bounded accurately. Overstating what a lab represents is more damaging than acknowledging where simplifications were made.
-
-This lab makes strong, defensible claims in the areas where direct evidence exists:
-
-\begin{itemize}
-    \item functional wired 802.1X authentication behavior;
-    \item RADIUS-backed authorization decisions;
-    \item guest versus protected path differentiation;
-    \item deterministic incident reproduction and remediation;
-    \item operational evidence preservation through logs, automation, GLPI, and packet capture.
-\end{itemize}
-
-By explicitly stating what the lab does not attempt to represent, the document becomes more trustworthy. The result is a stronger portfolio artifact because the scope is narrow enough to be believable and broad enough to demonstrate meaningful engineering and operational skill.
-
-% ---------------------------------------------------------------------
-% SUBSECTION 11.8: SECTION CONCLUSION
+% SUBSECTION 11.7: SECTION CONCLUSION
 % ---------------------------------------------------------------------
 % This subsection closes the limitations section by restating that the
 % lab should be read as a disciplined proof-of-concept with intentional
 % scope boundaries, not as a claim of full production equivalence.
 % ---------------------------------------------------------------------
 
-\subsection{11.8 Section Conclusion}
+\subsection{11.7 Section Conclusion}
 \label{sec:section-11-conclusion}
 
 This lab should be read as a disciplined proof-of-concept implementation with intentional scope boundaries. It successfully demonstrates the targeted behaviors it set out to validate: wired 802.1X access control, protected and guest path differentiation, incident reproduction, remediation, automation-assisted validation, and packet-level protocol corroboration.
