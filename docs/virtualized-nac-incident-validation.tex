@@ -164,9 +164,7 @@ This document is intentionally written as an engineering implementation and vali
 % ---------------------------------------------------------------------
 % SUBSECTION 1.2: CHANGE HISTORY
 % ---------------------------------------------------------------------
-% This subsection records formal revision history. The initial entry is
-% intentionally concise; additional revisions may be appended later if
-% the document is updated after first publication.
+% This subsection records formal revision history.
 % ---------------------------------------------------------------------
 
 \subsection{1.2 Change History}
@@ -546,7 +544,7 @@ The authoritative final-state interface configurations and route outputs that su
 % SUBSECTION 4.3: FINAL SYSTEM ROLES
 % ---------------------------------------------------------------------
 % This subsection defines the authoritative role of each major node in
-% the final design and creates forward references for later appendices.
+% the final design and creates forward references for appendices.
 % ---------------------------------------------------------------------
 
 \subsection{4.3 Final System Roles}
@@ -637,7 +635,7 @@ Because this node combines policy authority, observability, and automation, it i
     \item maintaining the incident ticket used to document the failed authentication event, remediation, and closure.
 \end{itemize}
 
-Its final-state configuration and deployment validation will be documented later (see Section~\ref{sec:appendix-a-ops-glpi-netplan-config}, Section~\ref{sec:glpi-final-configuration}, and the later GLPI figure screenshots in the incident section).
+Its final-state configuration and deployment validation will be documented later (see Section~\ref{sec:appendix-a-ops-glpi-netplan-config} and Section~\ref{sec:glpi-final-configuration}).
 
 % ---------------------------------------------------------------------
 % SUBSECTION 4.4: TOPOLOGY DIAGRAM
@@ -819,7 +817,7 @@ pfSense is the authoritative security boundary in the environment. Its final int
 
 This interface design allows pfSense to sit directly between the routed access path and the protected services segment, while also hosting a guest segment whose policy can be enforced independently.
 
-The authoritative manual transcription of the final pfSense interface summary is reproduced below and has an equivalent appendix reference (see Section~\ref{sec:appendix-a-pfsense-authenticated-interface-summary}).
+The authoritative manual transcription of the final pfSense interface summary is reproduced below and in the appendix (see Section~\ref{sec:appendix-a-pfsense-authenticated-interface-summary}).
 
 \begin{verbatim}
 pfSense final interface summary
@@ -828,6 +826,15 @@ LAN (lan) -> em1 -> v4: 10.0.34.2/30
 OPT1 (opt1) -> em2 -> v4: 10.0.30.1/24
 GUEST (opt2) -> em3 -> v4: 10.0.20.254/24
 \end{verbatim}
+
+The associated pfSense interfaces terminal screenshot is shown below:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{assets/screenshots/pfSense_Interfaces.png}
+    \caption{pfSense interface assignments showing WAN, LAN/transit, OPT1 (services), and GUEST (OPT2)}
+    \label{sec:fig-pfsense_interfaces}
+\end{figure}
 
 % ---------------------------------------------------------------------
 % SUBSECTION 5.3: FREERADIUS FINAL CONFIGURATION
@@ -1309,7 +1316,21 @@ Operationally, GLPI is not treated as a passive accessory to the environment. In
     \item a resolved ticket state reflecting successful remediation.
 \end{itemize}
 
-These GUI-derived artifacts will be represented later through screenshots and appendix references rather than terminal transcription alone (see Section~\ref{sec:glpi-final-configuration} and the later incident section of this document).
+The associated GLPI GUI screenshots are shown below:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{assets/screenshots/GLPI_client-1_computer_asset.png}
+    \caption{GLPI managed asset record for \texttt{client-1} used in the NAC incident workflow}
+    \label{sec:fig-glpi_client-1_computer_asset}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{assets/screenshots/GLPI_client-1_incident_ticket.png}
+    \caption{GLPI incident ticket for the wired 802.1X authentication failure and remediation workflow affecting \texttt{client-1}}
+    \label{sec:fig-glpi_client-1_incident_ticket}
+\end{figure}
 
 % ---------------------------------------------------------------------
 % SUBSECTION 5.8: PYTHON AND ANSIBLE AUTOMATION ARTIFACTS
@@ -1606,6 +1627,15 @@ Subnet Range: 10.0.20.1 - 10.0.20.254
 Address Pool Range: 10.0.20.100 - 10.0.20.199
 \end{verbatim}
 
+The associated pfSense GUI screenshot is shown below:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{assets/screenshots/pfSense_DHCP_Server_GUEST.png}
+    \caption{pfSense GUEST DHCP server configuration for the policy-based guest access segment}
+    \label{sec:fig-pfsense_dhcp_server_guest}
+\end{figure}
+
 The guest firewall policy is implemented as an ordered first-match ruleset on the pfSense GUEST interface. The final manually transcribed rules are reproduced below and were explicitly re-confirmed as unchanged and in the same top-to-bottom order at the time of Section 6 validation.
 
 % ---------------------------------------------------------------------
@@ -1629,6 +1659,15 @@ Block | IPv4* | Source: 10.0.20.0/24 | Destination: 10.0.12.0/24
 Pass  | IPv4* | Source: 10.0.20.0/24 | Destination: *                  
         | ALLOW-GUEST-TO-INTERNET-AND-OTHER-NON-INTERNAL
 \end{verbatim}
+
+The associated pfSense GUI screenshot is shown below:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{assets/screenshots/pfSense_Firewall_Rules_GUEST.png}
+    \caption{pfSense GUEST interface firewall rules enforcing internal isolation and controlled outbound access}
+    \label{sec:fig-pfsense_firewall_rules_guest}
+\end{figure}
 
 This ruleset is deliberately explicit. Rather than relying on an implicit deny plus a broad allow, the internal networks are individually enumerated and blocked before the final permissive rule. That makes the guest policy easier to explain, easier to audit, and more suitable for publication as a portfolio artifact.
 
@@ -2252,7 +2291,7 @@ This simulated a realistic enterprise NAC incident involving endpoint credential
         and demonstrated successful troubleshooting and service restoration.
 \end{verbatim}
 
-This GLPI record matters for two reasons. First, it makes the lab operationally richer by tying technical evidence to a formal incident artifact. Second, it helps position the project as an enterprise-style environment rather than as a purely technical sandbox.
+For associate GLPI GUI screenshots, see Section~\ref{sec:glpi-final-configuration}.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 7.9: INCIDENT CONCLUSION
@@ -3542,7 +3581,7 @@ Accordingly, the client-facing failed capture supports the same conclusion alrea
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{screenshots/Wireshark_failed_8021x_ens38_pcap.png}
+    \includegraphics[width=\textwidth]{assets/screenshots/Wireshark_failed_8021x_ens38_pcap.png}
     \caption{Failed wired 802.1X authentication on the client-facing EAPOL segment}
     \label{sec:fig-failed-8021x-ens38}
 \end{figure}
@@ -3582,7 +3621,7 @@ This point matters analytically. It confirms that the failed incident was not ca
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{screenshots/Wireshark_failed_8021x_ens39_pcap.png}
+    \includegraphics[width=\textwidth]{assets/screenshots/Wireshark_failed_8021x_ens39_pcap.png}
     \caption{Failed wired 802.1X authentication on the authenticator-to-RADIUS path}
     \label{sec:fig-failed-8021x-ens39}
 \end{figure}
@@ -3624,7 +3663,7 @@ The successful client-facing capture therefore confirms that the remediated endp
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{screenshots/Wireshark_success_8021x_ens38_pcap.png}
+    \includegraphics[width=\textwidth]{assets/screenshots/Wireshark_success_8021x_ens38_pcap.png}
     \caption{Successful wired 802.1X authentication on the client-facing EAPOL segment}
     \label{sec:fig-success-8021x-ens38}
 \end{figure}
@@ -3664,7 +3703,7 @@ This is the protocol-level counterpart to the operational conclusion already est
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{screenshots/Wireshark_success_8021x_ens39_pcap.png}
+    \includegraphics[width=\textwidth]{assets/screenshots/Wireshark_success_8021x_ens39_pcap.png}
     \caption{Successful wired 802.1X authentication on the authenticator-to-RADIUS path}
     \label{sec:fig-success-8021x-ens39}
 \end{figure}
