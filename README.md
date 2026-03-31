@@ -101,21 +101,21 @@ The objective is to model realistic SME-scale access-control and incident-respon
 ├── assets
 │   ├── appendix-numbering-filter.lua
 │   ├── doc.css
-│   └── header.html
+│   ├── header.html
+│   └── screenshots
+│       ├── pfSense_DHCP_Server_GUEST.png
+│       ├── pfSense_Firewall_Rules_GUEST.png
+│       ├── pfSense_Interfaces.png
+│       ├── GLPI_client-1_computer_asset.png
+│       ├── GLPI-client-1_incident_ticket.png
+│       ├── Wireshark_failed_8021x_ens38_pcap.png
+│       ├── Wireshark_failed_8021x_ens39_pcap.png
+│       ├── Wireshark_success_8021x_ens38_pcap.png
+│       └── Wireshark_success_8021x_ens39_pcap.png
 ├── diagrams
 │   └── reference-topology-diagram.mmd
 ├── docs
 │   └── virtualized-nac-incident-validation.tex
-├── screenshots
-│   ├── pfSense_DHCP_Server_GUEST.png
-│   ├── pfSense_Firewall_Rules_GUEST.png
-│   ├── pfSense_Interfaces.png
-│   ├── GLPI_client-1_computer_asset.png
-│   ├── GLPI-client-1_incident_ticket.png
-│   ├── Wireshark_failed_8021x_ens38_pcap.png
-│   ├── Wireshark_failed_8021x_ens39_pcap.png
-│   ├── Wireshark_success_8021x_ens38_pcap.png
-│   └── Wireshark_success_8021x_ens39_pcap.png
 └── README.md
 ```
 
@@ -125,19 +125,13 @@ The objective is to model realistic SME-scale access-control and incident-respon
 Defines the GitHub Actions workflow used to build and deploy documentation artifacts.
 
 **assets/**
-Contains CSS, a Lua script for appendix numbering, and a reusable HTML fragment injected into generated output.
+Contains CSS, a Lua script for appendix numbering, evidence screenshots, and a reusable HTML fragment injected into generated output.
 
 **diagrams/**
 Contains the Mermaid source file defining the logical and architectural topology diagram.
 
 **docs/**
 Contains the primary LaTeX documentation source from which artifacts are generated.
-
-**screenshots/**
-Contains redacted publication-ready screenshots referenced by the document. In this lab, figures are intentionally limited to:
-
-* GLPI and pfSense GUI evidence
-* Wireshark packet-capture screenshots
 
 **README.md**
 Provides an overview of the lab scope, architecture, and publishing workflow.
