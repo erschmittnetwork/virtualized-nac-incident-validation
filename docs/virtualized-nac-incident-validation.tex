@@ -197,7 +197,7 @@ This document is intended for the following audiences:
     \item Network engineering practitioners evaluating the design and validation of a virtualized NAC proof-of-concept;
     \item Security engineering practitioners reviewing the use of wired IEEE 802.1X, RADIUS-backed authentication, and segmented guest policy enforcement;
     \item Systems engineering practitioners assessing service integration across routing, firewalling, authentication, logging, ITSM, and automation domains;
-    \item Technical reviewers evaluating the project as a portfolio artifact intended to demonstrate enterprise-relevant design and operational execution rather than isolated tool familiarity.
+    \item Technical reviewers evaluating the project as a technical document intended to demonstrate enterprise-relevant design and operational execution rather than isolated tool familiarity.
 \end{itemize}
 
 This document should be interpreted as a formal record of the final implemented state of the environment and the authoritative incident validation path, not as a chronological build log. Intermediate troubleshooting states, temporary misconfigurations, and transient construction artifacts that were used only to arrive at the final design are intentionally excluded unless they are directly relevant to the incident narrative or to explaining an architectural decision.
@@ -274,7 +274,7 @@ The lab further succeeded in demonstrating an operational incident lifecycle rat
 
 Automation was incorporated in a manner that is materially relevant to the environment rather than ornamental. A Python script was developed to parse and summarize incident evidence artifacts, providing a deterministic summary of failed and remediated states. An Ansible playbook was developed to perform repeatable validation of NAC-related services and to support a bounded, operator-invoked remediation mode. These automation artifacts reinforce the document's central claim that the lab demonstrates not only component familiarity, but also repeatable operational procedure.
 
-Finally, packet capture analysis was added as a first-class validation layer. Using \texttt{tcpdump} on the authenticator host and subsequent inspection in Wireshark, the lab captured both failed and successful authentication flows across the EAPOL and RADIUS control paths. This provided protocol-level corroboration of the incident narrative and strengthened the evidentiary value of the environment as a portfolio artifact.
+Finally, packet capture analysis was added as a first-class validation layer. Using \texttt{tcpdump} on the authenticator host and subsequent inspection in Wireshark, the lab captured both failed and successful authentication flows across the EAPOL and RADIUS control paths. This provided protocol-level corroboration of the incident narrative and strengthened the evidentiary value of the environment as a proof-of-concept.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 2.3: ARCHITECTURAL CONSTRAINTS AND DESIGN DECISION
@@ -400,8 +400,8 @@ These assumptions are intentionally conservative. They preserve the lab's credib
 % ---------------------------------------------------------------------
 % SUBSECTION 3.4: SUCCESS CRITERIA
 % ---------------------------------------------------------------------
-% This subsection defines the objective conditions under which the lab is
-% considered successful and portfolio-worthy.
+% This subsection defines the objective conditions under which the
+% lab is considered successful.
 % ---------------------------------------------------------------------
 
 \subsection{3.4 Success Criteria}
@@ -1836,7 +1836,7 @@ Second, the authenticated endpoint path is validated at the network and applicat
 
 Third, the Linux \texttt{hostapd} wired authenticator is used as a practical lab approximation of a switch-based 802.1X authenticator. It is appropriate for demonstrating the control-plane exchange and the operational workflow, but it should not be misrepresented as a drop-in replacement for enterprise access switch behavior.
 
-Within those stated limits, the access-control model is internally consistent, technically validated, and appropriate for inclusion in a portfolio document that aims to present a realistic but accurately scoped virtualized NAC implementation.
+Within those stated limits, the access-control model is internally consistent, technically validated, and appropriate for inclusion in a lab document that aims to present a realistic but accurately scoped virtualized NAC implementation.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 6.8: WIRESHARK CROSS-REFERENCE FOR POLICY VALIDATION
@@ -3801,9 +3801,9 @@ The authoritative capture commands and packet inventory will be referenced again
 
 The lab documented in this report is a deliberate proof-of-concept implementation intended to validate core NAC behaviors, incident handling workflow, and operational evidence collection in a constrained virtual environment. It is not presented as a one-to-one reproduction of a full enterprise campus access control deployment. This distinction is important and intentional.
 
-The design succeeds at the objective for which it was built: it demonstrates credential-gated wired access control, protected and guest network segmentation, deterministic incident reproduction, structured remediation, lightweight automation, and packet-level protocol validation. However, it does so through a set of explicit design constraints chosen to keep the lab tractable, reproducible, and appropriate for portfolio documentation.
+The design succeeds at the objective for which it was built: it demonstrates credential-gated wired access control, protected and guest network segmentation, deterministic incident reproduction, structured remediation, lightweight automation, and packet-level protocol validation. However, it does so through a set of explicit design constraints chosen to keep the lab tractable and reproducible.
 
-These limitations should not be interpreted as weaknesses in the proof-of-concept. On the contrary, making them explicit increases the credibility of the document because it clearly separates what was actually implemented and validated from what would exist in a larger or more production-like deployment.
+These limitations are intended clearly separate what was actually implemented and validated as a proof-of-concept from what would exist in a larger or more production-like deployment.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 11.1: PLATFORM REALISM BOUNDARIES
@@ -3977,11 +3977,9 @@ The next section will use this bounded interpretation as the basis for a final c
 
 The lab documented in this report successfully met its original objective: to implement and validate a multi-segment network access control proof-of-concept that demonstrates wired 802.1X authentication, RADIUS-backed authorization, protected and guest path differentiation, incident simulation and remediation, lightweight automation, and packet-level protocol corroboration. Within the scope defined by the design, each major component was not only configured but also validated through direct operational evidence.
 
-The authenticated path was shown to function through successful 802.1X supplicant behavior, hostapd authenticator processing, and FreeRADIUS acceptance. The guest path was shown to function through DHCP-based onboarding, gateway reachability, continued internet access, and enforced isolation from protected internal segments. The incident workflow further strengthened the implementation by proving that the environment could intentionally reproduce an authentication failure, preserve the resulting evidence, document the event in GLPI, restore correct configuration, and verify successful recovery. This moved the lab beyond simple service installation and into a more operationally credible validation model.
+The authenticated path was shown to function through successful 802.1X supplicant behavior, hostapd authenticator processing, and FreeRADIUS acceptance. The guest path was shown to function through DHCP-based onboarding, gateway reachability, continued internet access, and enforced isolation from protected internal segments. The incident workflow further strengthened the implementation by proving that the environment could intentionally reproduce an authentication failure, preserve the resulting evidence, document the event in GLPI, restore correct configuration, and verify successful recovery. The lab demonstrated end-to-end engineering continuity as a coherent chain from design and segmentation through implementation, validation, troubleshooting, remediation, automation-assisted verification, and evidence preservation. The environment was built with enough rigor to support not only successful outcomes, but also controlled failure analysis and structured recovery.
 
-Equally important, the lab demonstrated end-to-end engineering continuity. The document does not merely show isolated services; it shows a coherent chain from design and segmentation through implementation, validation, troubleshooting, remediation, automation-assisted verification, and evidence preservation. That continuity is the strongest portfolio value of the project. It shows that the environment was built with enough rigor to support not only successful outcomes, but also controlled failure analysis and structured recovery.
-
-As documented in Section~\ref{sec:design-constraints-and-limitations}, the lab is intentionally bounded and does not claim full enterprise production equivalence. That is a strength rather than a weakness. By explicitly limiting the claims to what was actually implemented and verified, the document remains technically credible and avoids overstating the realism of the environment. The result is a more trustworthy proof-of-concept and a stronger professional artifact.
+As documented in Section~\ref{sec:design-constraints-and-limitations}, the lab is intentionally bounded and does not claim full enterprise production equivalence. By explicitly limiting the claims to what was actually implemented and verified, the document remains technically credible and avoids overstating the realism of the environment.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 12.1: SUMMARY OF ACCOMPLISHMENTS
@@ -4010,42 +4008,14 @@ At a practical level, the lab achieved the following validated outcomes:
 Taken together, these outcomes demonstrate that the lab was not merely assembled, but systematically tested and evidenced. That distinction is central to the value of the project.
 
 % ---------------------------------------------------------------------
-% SUBSECTION 12.2: PROFESSIONAL AND PORTFOLIO VALUE
-% ---------------------------------------------------------------------
-% This subsection explains why the completed lab functions as a useful
-% portfolio artifact by emphasizing the operational coherence, evidence-
-% driven methodology, and disciplined scope control demonstrated across
-% the report.
-% ---------------------------------------------------------------------
-
-\subsection{12.2 Professional and Portfolio Value}
-\label{sec:professional-and-portfolio-value}
-
-The completed lab is a useful and credible portfolio piece because it demonstrates practical infrastructure and security-adjacent engineering in a disciplined way. It shows that the environment was designed intentionally, implemented from first principles, validated with repeatable test procedures, and documented with a strong evidentiary chain.
-
-From a professional standpoint, the lab is especially valuable because it combines multiple modes of technical work in one coherent project:
-
-\begin{itemize}
-    \item network segmentation and path design;
-    \item AAA and access-control service configuration;
-    \item endpoint supplicant testing;
-    \item troubleshooting and incident-style reasoning;
-    \item log and packet evidence interpretation;
-    \item automation-assisted operational validation; and
-    \item structured technical documentation.
-\end{itemize}
-
-This breadth is meaningful because it reflects how real infrastructure work is often evaluated: not by whether a single service starts, but by whether the operator can connect architecture, implementation, validation, and evidence into a coherent operational story. This document does that successfully.
-
-% ---------------------------------------------------------------------
-% SUBSECTION 12.3: FUTURE EXPANSION OPPORTUNITIES
+% SUBSECTION 12.2: FUTURE EXPANSION OPPORTUNITIES
 % ---------------------------------------------------------------------
 % This subsection identifies realistic next-step enhancements that would
 % extend the lab while remaining clearly framed as future work rather
 % than as features already implemented in the current environment.
 % ---------------------------------------------------------------------
 
-\subsection{12.3 Future Expansion Opportunities}
+\subsection{12.2 Future Expansion Opportunities}
 \label{sec:future-expansion-opportunities}
 
 Although the current implementation is complete within its stated scope, it also provides a strong foundation for future expansion. Several next-step enhancements would extend the realism or operational depth of the lab while preserving the same evidence-driven methodology used throughout this report.
@@ -4065,35 +4035,21 @@ Finally, the GLPI workflow could be extended from its current manual but effecti
 Each of these expansion opportunities is intentionally framed as future work. None of them are necessary to validate the success of the current build. Rather, they demonstrate that the lab has been constructed on a foundation strong enough to support meaningful iterative growth.
 
 % ---------------------------------------------------------------------
-% SUBSECTION 12.4: FINAL ASSESSMENT
+% SUBSECTION 12.3: FINAL ASSESSMENT
 % ---------------------------------------------------------------------
 % This subsection provides the final evaluative judgment of the lab in
 % concise form, closing the report with a scope-bounded but affirmative
 % statement of technical success and professional usefulness.
 % ---------------------------------------------------------------------
 
-\subsection{12.4 Final Assessment}
+\subsection{12.3 Final Assessment}
 \label{sec:final-assessment}
 
 In final assessment, the lab should be considered successful both as a technical implementation and as a professional documentation artifact. It achieved the intended proof-of-concept objectives, produced direct evidence for each major claim, and maintained strong internal consistency between architecture, validation, incident handling, automation, and protocol analysis.
 
 Just as importantly, the document avoids the common failure mode of overstatement. It does not claim enterprise completeness where none was implemented. Instead, it presents a bounded, defensible, and well-evidenced engineering exercise that demonstrates practical competence across several adjacent domains.
 
-Within its stated scope, the lab provides a technically defensible and well-documented proof-of-concept for wired NAC validation.
-
-% ---------------------------------------------------------------------
-% SUBSECTION 12.5: TRANSITION TO APPENDICES
-% ---------------------------------------------------------------------
-% This subsection provides a brief transition from the main body to the
-% appendices, clarifying that the appendices preserve the raw artifacts
-% already referenced throughout the report rather than introducing new
-% substantive claims.
-% ---------------------------------------------------------------------
-
-\subsection{12.5 Transition to Appendices}
-\label{sec:transition-to-appendices}
-
-The appendices that follow preserve the raw configurations, scripts, command outputs, and supporting artifacts referenced throughout the body of the report. They are included to support traceability, reproducibility, and evidentiary completeness, and should be read as the authoritative source for the full raw materials cited in earlier sections.
+Within its stated scope, the lab provides technically defensible documentation of a proof-of-concept for wired NAC validation.
 
 % =====================================================================
 % APPENDIX A: RAW CONFIGURATIONS AND AUTOMATION ARTIFACTS
@@ -4414,7 +4370,7 @@ radius-splunk: /etc/freeradius/3.0/clients.conf
 #
 #  Define RADIUS clients (usually a NAS, Access Point, etc.).
 #
-#  [commentary omitted in summary: file preserved exactly as provided]
+#  [commentary omitted in summary]
 #
 client localhost {
 	ipaddr = 127.0.0.1
@@ -4456,7 +4412,7 @@ radius-splunk: /etc/freeradius/3.0/mods-config/files/authorize
 # 	Configuration file for the rlm_files module.
 # 	Please see rlm_files(5) manpage for more information.
 #
-# 	[commentary and example entries preserved as part of the file]
+# 	[commentary omitted in summary]
 #
 
 DEFAULT	Framed-Protocol == PPP
