@@ -256,6 +256,6 @@ This layered approach is intended to demonstrate that incident conclusions are s
 
 ## 10. Versioning
 
-The current documented version is **1.1.**
+The current documented version is **1.2.**
 
 Version metadata is maintained within the LaTeX source and rendered outputs.
