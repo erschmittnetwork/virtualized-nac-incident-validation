@@ -89,7 +89,7 @@
 }
 
 \title{Virtualized NAC with Automated Wired 802.1X Incident Validation}
-\subtitle{Version 1.1}
+\subtitle{Version 1.2}
 \author{© 2026 Eric Schmitt. All rights reserved.}
 
 \begin{document}
@@ -132,9 +132,9 @@ Document Title & Virtualized NAC with Automated Wired 802.1X Incident Validation
 \hline
 Author & Eric Schmitt \\
 \hline
-Document Version & 1.1 \\
+Document Version & 1.2 \\
 \hline
-Date of Issue & March 30, 2026 \\
+Date of Issue & April 2, 2026 \\
 \hline
 Document Status & Production Draft (Educational Lab / Proof-of-Concept) \\
 \hline
@@ -178,6 +178,8 @@ This document is intentionally written as an engineering implementation and vali
 1.0 & 2026-03-24 & Initial document draft; text-only \\
 \hline
 1.1 & 2026-03-30 & Formatting revisions for raw data and visual references \\
+\hline
+1.2 & 2026-04-02 & Final editorial revision reflecting current lab state \\
 \end{tabular}
 \end{center}
 
@@ -236,7 +238,7 @@ The environment documented herein is intentionally designed as a constrained but
 \subsection{2.1 Objective}
 \label{sec:objective}
 
-The objective of this implementation was to design, build, and validate a small-scale but enterprise-relevant Network Access Control (NAC) proof-of-concept within a fully virtualized lab environment. The target outcome was not merely to demonstrate isolated component installation, but to establish an integrated control path in which a wired endpoint could be authenticated via IEEE 802.1X against a RADIUS policy authority, granted or denied access based on authentication state, observed through centralized logging and evidence collection, and incorporated into a realistic incident-response workflow.
+The objective of this implementation was to design, build, and validate a small-scale but enterprise-relevant Network Access Control (NAC) proof-of-concept within a fully virtualized lab environment. The target outcome was to establish an integrated control path in which a wired endpoint could be authenticated via IEEE 802.1X against a RADIUS policy authority, granted or denied access based on authentication state, observed through centralized logging and evidence collection, and incorporated into a realistic incident-response workflow.
 
 The implemented design intentionally spans multiple operational domains in order to reflect the way NAC is encountered in practice. These domains include endpoint authentication, routed segmentation, firewall policy enforcement, service observability, IT service management (ITSM) workflow, automation-assisted validation, and packet-level protocol analysis. The lab was therefore scoped to produce not only a functional access-control environment, but also a defensible record of how that environment behaves under both normal and failure conditions.
 
@@ -1454,7 +1456,7 @@ default via 10.0.12.1 dev ens33 proto static
 10.0.12.0/24 dev ens33 proto kernel scope link src 10.0.12.10
 \end{verbatim}
 
-The endpoint-side \texttt{wpa\_supplicant} service is active in the final steady state, which confirms that the endpoint is not merely configured but is operating in a post-build state consistent with the intended access model.
+The endpoint-side \texttt{wpa\_supplicant} service is active in the final steady state, which confirms that the endpoint is operating in a post-build state consistent with the intended access model.
 
 \begin{verbatim}
 client-1: systemctl status wpa_supplicant --no-pager
@@ -4005,7 +4007,7 @@ At a practical level, the lab achieved the following validated outcomes:
     \item successful packet-level corroboration of both failed and successful authentication states using \texttt{tcpdump} and Wireshark.
 \end{itemize}
 
-Taken together, these outcomes demonstrate that the lab was not merely assembled, but systematically tested and evidenced. That distinction is central to the value of the project.
+Taken together, these outcomes demonstrate that the lab was systematically tested and evidenced.
 
 % ---------------------------------------------------------------------
 % SUBSECTION 12.2: FUTURE EXPANSION OPPORTUNITIES
